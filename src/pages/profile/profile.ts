@@ -3,13 +3,8 @@ import { NavController, NavParams } from 'ionic-angular';
 import { User } from './../../models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
-/**
- * Generated class for the ProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
+import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import firebase from 'firebase';
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html',
@@ -21,20 +16,14 @@ export class ProfilePage {
     private afAuth: AngularFireAuth,
     private userService: UserServiceProvider,
     private auth: AuthServiceProvider) {
+      console.log("ssddrrr");
 
   }
 
   ionViewWillEnter() {
     //this.xuser$= this.userService.listUser;
     //this.xuser$.subscribe(data => console.log('z'+data.toString()) );
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.userProfile = user;
-        console.log("syyyyy");
-      } else {
-        this.userProfile = null;
-      }
-    });
+  
   }
   doGoogleLogin() {
     let a: User;

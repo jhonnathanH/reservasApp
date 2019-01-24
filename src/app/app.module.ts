@@ -14,6 +14,7 @@ import { HttpModule  } from '@angular/http';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { UserServiceProvider } from '../providers/user-service/user-service';
+import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
 //config firebase 
 export const firebaseConfig = {
@@ -54,7 +55,8 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UserServiceProvider
+    UserServiceProvider,
+    AuthServiceProvider
   ]
 })
 export class AppModule {}

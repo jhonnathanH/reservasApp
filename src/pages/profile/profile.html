@@ -28,5 +28,39 @@
 
 
 <ion-content padding>
+  <button block padding ion-button color="danger" (click)="doGoogleLogin()" *ngIf="!userProfile">
+    <ion-icon name="logo-googleplus"></ion-icon>
+    Login with Google
+  </button>
 
+  <ion-item *ngIf="userProfile">
+    <ion-avatar item-left>
+      <img [src]="userProfile.photoURL">
+    </ion-avatar>
+    <h2>{{ userProfile.name }}</h2>
+    <h3>{{ userProfile.email }}</h3>
+  </ion-item>
+  <ion-buttons end *ngIf="userProfile">
+    <button ion-button clear (click)="signOut()">LogOut</button>
+  </ion-buttons>
+<!--
+    <ion-list>
+      <ion-list-header *ngIf="true">
+        Lista de Usuarios
+      </ion-list-header>
+      <ion-item *ngFor="let user of userService.listUser | async; let i=index">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-2>
+              <img src="{{user.photoURL}}" alt="{{user.name}}" title="{{user.name}}" />
+            </ion-col>
+            <ion-col col-10>
+              <div>
+                <h2 class="user-name"> {{user.name}} </h2>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>-->
 </ion-content>
