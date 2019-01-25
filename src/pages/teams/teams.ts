@@ -20,5 +20,8 @@ export class TeamsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad TeamsPage');
   }
+  createTeam(){
+    
+  }
 
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { User } from './../../models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -23,7 +23,14 @@ export class ProfilePage {
   ionViewWillEnter() {
     //this.xuser$= this.userService.listUser;
     //this.xuser$.subscribe(data => console.log('z'+data.toString()) );
-  
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.userProfile = user;
+        console.log("syyyyy");
+      } else {
+        this.userProfile = null;
+      }
+    });
   }
   doGoogleLogin() {
     let a: User;
