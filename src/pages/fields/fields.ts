@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { CalendarMatchPage } from '../calendar-match/calendar-match';
 
 /**
  * Generated class for the FieldsPage page.
@@ -20,5 +21,11 @@ export class FieldsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad FieldsPage');
   }
+
+  goToCalendar(){
+    this.navCtrl.push(CalendarMatchPage);
+  }
+//CalendarMatchPage
+
 
 }

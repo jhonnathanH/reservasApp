@@ -1,0 +1,15 @@
+page-calendar-match {
+    ion-grid,.calendar-header,.calendar-header{
+        box-shadow: inset 0 0 10px #000000 !important;
+    }
+    .hour{
+        background-color: color($colors, light);
+        box-shadow: inset 0 0 1px #000000 !important;
+        margin: 5px;
+    }
+    .head{
+        margin-top: 30px;
+        background-color:  lightblue;
+        box-sizing: border-box;
+    }
+}

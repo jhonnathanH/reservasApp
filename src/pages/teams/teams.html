@@ -28,6 +28,39 @@
 
 
 <ion-content padding>
+
+    <ion-list>
+        <ion-list-header *ngIf="true" text-center>
+          Lista de Equipos
+        </ion-list-header>
+        <ion-item *ngFor="let team of teamService.listTeams | async; let i=index">
+          <ion-grid>
+            <ion-row>
+              <!-- <ion-col col-2>
+                <div *ngIf="!product.thumbnailImageUrl">
+                  <img src="assets/imgs/noPhoto.png" />
+                </div>
+                <div *ngIf="product.thumbnailImageUrl">
+                    <img src="{{product.thumbnailImageUrl}}" />
+                </div>
+              </ion-col> -->
+              <ion-col col-auto (click)="goToDetails(team)">
+                <div>
+                  <h2 class="product-name"> {{team.name}} </h2>
+                  <h3 class="product-name"><ion-note>Capacidad: </ion-note> {{team.sizeTeam}} </h3>
+                </div>
+              </ion-col>
+            
+              <!-- <ion-col col-2>
+                <button  (click)="addRegistry(product)">
+                  <ion-icon color="dark" name="md-add"></ion-icon>
+                </button>
+              </ion-col> -->
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
   <ion-fab class="addButtonfab">
     <button ion-fab mini class="addButton" round icon-only (click)="createTeam()">
       <ion-icon color="primary" name="md-add"></ion-icon>

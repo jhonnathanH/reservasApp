@@ -16,6 +16,9 @@ export class AuthServiceProvider {
     console.log('Hello AuthServiceProvider Provider');
   }
   
+  signup(email: string, pass: string) {
+    return firebase.auth().createUserWithEmailAndPassword(email, pass);
+  }
   getUser(): Observable<User>{
     return this.afAuth.authState
     .take(1)

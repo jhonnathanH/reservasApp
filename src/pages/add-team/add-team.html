@@ -1,0 +1,48 @@
+
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-buttons left>
+     <button 
+          ion-button 
+          clear
+          color="dark" 
+          icon-only 
+         navPop>
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+  </ion-buttons>
+    <ion-title>Añadir Equipo</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="todo"  (ngSubmit)="onAddItem()">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Nombre</ion-label>
+        <ion-input 
+                  type="text" 
+                  formControlName="teamName"
+                  required
+                   ></ion-input>
+      </ion-item>
+      <!-- <ion-item>
+        <ion-label floating>Categoria</ion-label>
+          <ion-select formControlName="categoria">
+            <ion-option
+              *ngFor="let option of selectOptions"
+              [value]="option">{{ option }}</ion-option>
+          </ion-select>
+      </ion-item> -->
+      <ion-item>
+        <ion-label floating>Capacidad</ion-label>
+        <ion-input 
+                 type="number" 
+                 formControlName="sizeTeam"
+                 required></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button type="submit" block [disabled]="!todo.valid">Add Item</button>
+  </form>
+</ion-content>

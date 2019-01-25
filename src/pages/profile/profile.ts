@@ -1,22 +1,26 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController, ToastController, AlertController } from 'ionic-angular';
 import { User } from './../../models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import firebase from 'firebase';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html',
 })
 export class ProfilePage {
   userProfile: any = null;
- // xuser$: any;
+  // xuser$: any;
   constructor(public navCtrl: NavController,
     private afAuth: AngularFireAuth,
     private userService: UserServiceProvider,
-    private auth: AuthServiceProvider) {
-      console.log("ssddrrr");
+    private auth: AuthServiceProvider,
+    public toastCrl: ToastController,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController) {
+    console.log("ssddrrr");
 
   }
 
@@ -32,6 +36,8 @@ export class ProfilePage {
       }
     });
   }
+
+
   doGoogleLogin() {
     let a: User;
     this.auth.loginWithGoogle()
@@ -44,15 +50,72 @@ export class ProfilePage {
           photoURL: v.photoURL,
         };
         console.log("ddffff" + a);
-        return this.userService.addUser(a);
+        return this.userService.addUser(a).then(() => {
+          this.userService.storeUser(a);
+        });
       })
       .catch(console.log);
+
+  }
+  onSingin(form: NgForm) {
+    console.log('este' + form.value);
+  }
+  onSingup(form: NgForm) {
+    console.log(form.value);
+    const loading = this.loadingCtrl.create({
+      content: 'Logeando...'
+    });
+    loading.present();
+    let a = {
+      name: form.value.name,
+      uid: Math.random().toString() + new Date().getUTCMilliseconds(),
+      email: form.value.email,
+      photoURL: "",
+    };
+    this.auth.signup(form.value.email, form.value.password)
+      .then(data => {
+        loading.dismiss();
+        return this.userService.addUser(a).then(() => {
+          this.userService.storeUser(a);
+          this.toastSuccess();
+        });
+      })
+      //.catch(error => console.log(error));
+      .catch(error => {
+        this.showError(error);
+      });
 
   }
 
   signOut(): Promise<void> {
     console.log("press Logout");
     return this.afAuth.auth.signOut();
+  }
+
+  zdoGoogleLogin() {
+    // if (this.platform.is('cordova')) {
+    //   this.nativeGoogleLogin();
+    // } else {
+    //   return this.popoverGmailLogin()
+    // }
+  }
+
+  private toastSuccess() {
+    const toast = this.toastCrl.create({
+      message: 'Login Completado, Bienvenido!',
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
+  }
+
+  private showError(error: any) {
+    const alert = this.alertCtrl.create({
+      title: 'Error en el Logeo',
+      message: error,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 }
 

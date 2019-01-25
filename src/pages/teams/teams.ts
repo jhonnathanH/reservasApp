@@ -1,3 +1,6 @@
+import { TeamServiceProvider } from './../../providers/team-service/team-service';
+import { Team } from './../../models/team';
+import { AddTeamPage } from './../add-team/add-team';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -14,14 +17,18 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class TeamsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public teamService: TeamServiceProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TeamsPage');
   }
-  createTeam(){
-    
+  createTeam() {
+    this.navCtrl.push(AddTeamPage);
+  }
+  goToDetails(team: Team) {
+
   }
 
 }

@@ -40,13 +40,47 @@
     <h2>{{ userProfile.name }}</h2>
     <h3>{{ userProfile.email }}</h3>
   </ion-item>
+
+  <div text-center padding *ngIf="!userProfile">
+    <ion-note>OR...</ion-note>
+  </div>
+  <form #f="ngForm" (ngSubmit)="onSingup(f)" *ngIf="!userProfile">
+    <ion-list>
+        <ion-item>
+            <ion-label stacked>Nombre</ion-label>
+            <ion-input class="inputEmail" type="string" ngModel name="name" required></ion-input>
+          </ion-item>
+      <ion-item>
+        <ion-label stacked>Email</ion-label>
+        <ion-input class="inputEmail" type="email" ngModel name="email" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Password</ion-label>
+        <ion-input class="inputEmail" type="password" ngModel name="password" [minlength]="8" required></ion-input>
+      </ion-item>
+    </ion-list>
+
+
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button color="light" ion-button block type="submit" ng-click="onSingup(f)" [disabled]="!f.valid">Log in</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button block type="submit" ng-click="onSingin(f)" [disabled]="!f.valid">signup</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
   <ion-buttons end *ngIf="userProfile">
     <button ion-button clear (click)="signOut()">LogOut</button>
   </ion-buttons>
 
     <ion-list>
-      <ion-list-header *ngIf="true">
-        Lista de Usuarios
+      <ion-list-header *ngIf="userProfile">
+        Perfil/Usuario logeado
       </ion-list-header>
       <ion-item *ngFor="let user of userService.listUser | async; let i=index">
         <ion-grid>

@@ -1,3 +1,4 @@
+import { CalendarMatchPage } from './../pages/calendar-match/calendar-match';
 import { ProfilePage } from './../pages/profile/profile';
 import { FieldsPage } from './../pages/fields/fields';
 import { TeamsPage } from './../pages/teams/teams';
@@ -11,10 +12,13 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { HttpModule  } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+import { AddTeamPage } from '../pages/add-team/add-team';
+import { TeamServiceProvider } from '../providers/team-service/team-service';
 
 //config firebase 
 export const firebaseConfig = {
@@ -32,12 +36,15 @@ export const firebaseConfig = {
     ListPage,
     TeamsPage,
     FieldsPage,
-    ProfilePage
+    ProfilePage,
+    AddTeamPage,
+    CalendarMatchPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
+    IonicStorageModule.forRoot(),
     AngularFirestoreModule,
     AngularFireAuthModule,
     HttpModule,
@@ -49,14 +56,17 @@ export const firebaseConfig = {
     ListPage,
     TeamsPage,
     FieldsPage,
-    ProfilePage
+    ProfilePage,
+    AddTeamPage,
+    CalendarMatchPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserServiceProvider,
-    AuthServiceProvider
+    AuthServiceProvider,
+    TeamServiceProvider
   ]
 })
 export class AppModule {}
