@@ -2,7 +2,7 @@ import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { User } from '../../models/user';
 
 import 'rxjs/add/operator/map';

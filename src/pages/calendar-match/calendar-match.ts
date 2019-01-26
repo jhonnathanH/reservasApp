@@ -64,7 +64,7 @@ export class CalendarMatchPage {
     }
 
     var lastDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDay();
-    var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0).getDate();
+   // var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0).getDate();
     for (let i = 0; i < (6 - lastDayThisMonth); i++) {
       this.daysInNextMonth.push(i + 1);
     }
