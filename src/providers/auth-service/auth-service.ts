@@ -44,11 +44,13 @@ export class AuthServiceProvider {
       .catch(err => console.log(err));
   }
   loginWithGoogleNative(): Promise<any> {
+    console.log("22222");
     return this.googlePlus.login({
       'webClientId': '416991332199-grlumqdmjpftnocitghp6fhq4n0gbd9v.apps.googleusercontent.com',
       'offline': true
     })
       .then(res => {
+        console.log("333333");
         return firebase.auth().signInAndRetrieveDataWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
           .then(suc => {
             console.log("Firebase success: " + JSON.stringify(suc));
