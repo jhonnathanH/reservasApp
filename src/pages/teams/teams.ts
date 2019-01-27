@@ -1,8 +1,10 @@
+import { DetailTeamPage } from './../detail-team/detail-team';
 import { TeamServiceProvider } from './../../providers/team-service/team-service';
 import { Team } from './../../models/team';
 import { AddTeamPage } from './../add-team/add-team';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { PlayersServiceProvider } from '../../providers/players-service/players-service';
 
 /**
  * Generated class for the TeamsPage page.
@@ -17,7 +19,9 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class TeamsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor( public playersService: PlayersServiceProvider,
+    public navCtrl: NavController, 
+    public navParams: NavParams,
     public teamService: TeamServiceProvider) {
   }
 
@@ -27,8 +31,10 @@ export class TeamsPage {
   createTeam() {
     this.navCtrl.push(AddTeamPage);
   }
-  goToDetails(team: Team) {
 
+  goToDetail(team: Team) {
+    this.playersService.removeAllPlayerstoTeam();
+    this.navCtrl.push(DetailTeamPage,{team:team});
   }
 
 }

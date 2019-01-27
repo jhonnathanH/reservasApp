@@ -1,3 +1,4 @@
+import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
@@ -5,6 +6,7 @@ import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Team } from '../../models/team';
 import { User } from '../../models/user';
 import { TeamServiceProvider } from '../../providers/team-service/team-service';
+import { DetailTeamPage } from '../detail-team/detail-team';
 
 /**
  * Generated class for the AddTeamPage page.
@@ -21,7 +23,7 @@ export class AddTeamPage {
   private todo: FormGroup;
   user: User;
   userTeam: User[] = [];
-  //selectOptions = ['Comida', 'Higiene', 'Ropa', 'Carro/Repuesto'];
+  //selectOptions = ['Comida', 'Higiene', 'Ropa', 'Carro/Repuesto']; 
   searchTerm: string = '';
   gaming: any;
   constructor(public navCtrl: NavController,
@@ -29,11 +31,12 @@ export class AddTeamPage {
     public navParams: NavParams,
     public userService: UserServiceProvider,
     private formBuilder: FormBuilder) {
-
+   
     this.userService.getStoreUser()
       .then(
         (user: User) => {
           this.user = user;
+          this.userTeam.push(this.user);
           console.log("alaaa" + this.user);
         }
       ).catch(
@@ -58,7 +61,7 @@ export class AddTeamPage {
 
   onAddItem() {
     console.log('ffffpp' + this.todo.value.categoria);
-    this.userTeam.push(this.user);
+   
     let newTeam: Team;
     newTeam = {
       id: this.teamService.lengthListTeams + 1,
@@ -72,7 +75,10 @@ export class AddTeamPage {
          //
        });
     this.todo.reset();
-    this.navCtrl.pop();
+    console.log('sss DetailTeamPage');
+    this.navCtrl.push(DetailTeamPage,{team:newTeam});
+    // const modal = this.modalCtrl.create(OrderPage, { customer: customer , order: null, index: null });
+   
   }
 
   searchProduct(form: NgForm) {

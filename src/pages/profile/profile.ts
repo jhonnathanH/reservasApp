@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ToastController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, ToastController, AlertController, Platform } from 'ionic-angular';
 import { User } from './../../models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -19,6 +19,7 @@ export class ProfilePage {
     private auth: AuthServiceProvider,
     public toastCrl: ToastController,
     public alertCtrl: AlertController,
+    public platform: Platform,
     public loadingCtrl: LoadingController) {
     console.log("ssddrrr");
 
@@ -38,7 +39,7 @@ export class ProfilePage {
   }
 
 
-  doGoogleLogin() {
+  popoverGmailLogin() {
     let a: User;
     this.auth.loginWithGoogle()
       .then((v) => {
@@ -57,6 +58,26 @@ export class ProfilePage {
       .catch(console.log);
 
   }
+  nativeGoogleLogin() {
+    let a: User;
+    this.auth.loginWithGoogleNative()
+      .then((v) => {
+        console.log("dtttdffff" + v.uid);
+        a = {
+          name: v.displayName,
+          uid: v.uid,
+          email: v.email,
+          photoURL: v.photoURL,
+        };
+        console.log("ddffff" + a);
+        return this.userService.addUser(a).then(() => {
+          this.userService.storeUser(a);
+        });
+      })
+      .catch(console.log);
+
+  }
+
   onSingin(form: NgForm) {
     console.log('este' + form.value);
   }
@@ -92,12 +113,12 @@ export class ProfilePage {
     return this.afAuth.auth.signOut();
   }
 
-  zdoGoogleLogin() {
-    // if (this.platform.is('cordova')) {
-    //   this.nativeGoogleLogin();
-    // } else {
-    //   return this.popoverGmailLogin()
-    // }
+  doGoogleLogin() {
+    if (this.platform.is('cordova')) {
+      this.nativeGoogleLogin();
+    } else {
+      this.popoverGmailLogin()
+    }
   }
 
   private toastSuccess() {

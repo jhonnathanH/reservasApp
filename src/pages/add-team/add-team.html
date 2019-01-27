@@ -43,6 +43,27 @@
                  required></ion-input>
       </ion-item>
     </ion-list>
+
+    <ion-list>
+      <ion-list-header >
+        Jugadores
+      </ion-list-header>
+      <ion-item *ngFor="let player of userTeam; let i=index">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-2>
+              <ion-avatar item-left>
+                <img [src]="player.photoURL">
+              </ion-avatar>
+            </ion-col>
+            <ion-col col-10>
+              <h2>{{ player.name }}</h2>
+              <h3>{{ player.email }}</h3>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
     <button ion-button type="submit" block [disabled]="!todo.valid">Add Item</button>
   </form>
 </ion-content>

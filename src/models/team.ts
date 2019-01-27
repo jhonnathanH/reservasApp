@@ -1,10 +1,13 @@
 import { User } from "./user";
 
 export class Team {
-    id: number;
-    name: string;
-    leadUser: User;
-    sizeTeam: number;
-    players: User[];
+    constructor(
+        public id: number,
+        public name: string,
+        public leadUser: User,
+        public sizeTeam: number,
+        public players: User[]) {
+
+    }
 
 }

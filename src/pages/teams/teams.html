@@ -34,7 +34,7 @@
           Lista de Equipos
         </ion-list-header>
         <ion-item *ngFor="let team of teamService.listTeams | async; let i=index">
-          <ion-grid>
+          <ion-grid (click)="goToDetail(team)">
             <ion-row>
               <!-- <ion-col col-2>
                 <div *ngIf="!product.thumbnailImageUrl">
@@ -44,7 +44,7 @@
                     <img src="{{product.thumbnailImageUrl}}" />
                 </div>
               </ion-col> -->
-              <ion-col col-auto (click)="goToDetails(team)">
+              <ion-col col-auto>
                 <div>
                   <h2 class="product-name"> {{team.name}} </h2>
                   <h3 class="product-name"><ion-note>Capacidad: </ion-note> {{team.sizeTeam}} </h3>

@@ -1,3 +1,4 @@
+import { GooglePlus } from '@ionic-native/google-plus';
 import { CalendarMatchPage } from './../pages/calendar-match/calendar-match';
 import { ProfilePage } from './../pages/profile/profile';
 import { FieldsPage } from './../pages/fields/fields';
@@ -19,6 +20,9 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { AddTeamPage } from '../pages/add-team/add-team';
 import { TeamServiceProvider } from '../providers/team-service/team-service';
+import { DetailTeamPage } from '../pages/detail-team/detail-team';
+import { PlayersPage } from '../pages/players/players';
+import { PlayersServiceProvider } from '../providers/players-service/players-service';
 
 //config firebase 
 export const firebaseConfig = {
@@ -38,7 +42,9 @@ export const firebaseConfig = {
     FieldsPage,
     ProfilePage,
     AddTeamPage,
-    CalendarMatchPage
+    CalendarMatchPage,
+    DetailTeamPage,
+    PlayersPage
   ],
   imports: [
     BrowserModule,
@@ -58,7 +64,9 @@ export const firebaseConfig = {
     FieldsPage,
     ProfilePage,
     AddTeamPage,
-    CalendarMatchPage
+    CalendarMatchPage,
+    DetailTeamPage,
+    PlayersPage
   ],
   providers: [
     StatusBar,
@@ -66,7 +74,9 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserServiceProvider,
     AuthServiceProvider,
-    TeamServiceProvider
+    TeamServiceProvider,
+    GooglePlus,
+    PlayersServiceProvider
   ]
 })
 export class AppModule {}

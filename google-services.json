@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "416991332199",
+    "firebase_url": "https://playsport2019-7be22.firebaseio.com",
+    "project_id": "playsport2019-7be22",
+    "storage_bucket": "playsport2019-7be22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416991332199:android:764d2cb7da3280eb",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "416991332199-grlumqdmjpftnocitghp6fhq4n0gbd9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL1a2N9uZeB9wVLcKLT9KoCA_3v6A7gjs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
