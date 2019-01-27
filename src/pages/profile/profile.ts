@@ -1,3 +1,4 @@
+import { GooglePlus } from '@ionic-native/google-plus';
 import { Component } from '@angular/core';
 import { NavController, LoadingController, ToastController, AlertController, Platform } from 'ionic-angular';
 import { User } from './../../models/user';
@@ -15,6 +16,7 @@ export class ProfilePage {
   // xuser$: any;
   constructor(public navCtrl: NavController,
     private afAuth: AngularFireAuth,
+    public googlePlus: GooglePlus,
     private userService: UserServiceProvider,
     private auth: AuthServiceProvider,
     public toastCrl: ToastController,
@@ -58,7 +60,7 @@ export class ProfilePage {
       .catch(console.log);
 
   }
-  nativeGoogleLogin() {
+  xnativeGoogleLogin() {
     let a: User;
     console.log("11111");
     this.auth.loginWithGoogleNative()
@@ -77,6 +79,28 @@ export class ProfilePage {
        // });
       })
       .catch(console.log);
+
+  }
+
+  nativeGoogleLogin() {
+    this.googlePlus.login({
+      'webClientId': '754165434495-gl8qtt77f0m8o177kqr55njs9c7l3a37.apps.googleusercontent.com',
+      'offline': true
+    })
+      .then(res => {
+        firebase.auth().signInAndRetrieveDataWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
+          .then(suc => {
+            console.log(suc);
+            this.toastSuccess();
+
+          })
+          .catch(err => this.showError(err));
+      })
+      .catch((err) => {
+        this.showError(err);
+        console.log(err);
+        this.popoverGmailLogin();
+      });
 
   }
 
