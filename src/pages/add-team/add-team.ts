@@ -1,4 +1,3 @@
-import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';

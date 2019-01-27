@@ -2,7 +2,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { AlertController, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs';
 import { User } from '../../models/user';
@@ -49,11 +49,11 @@ export class AuthServiceProvider {
       'offline': true
     })
       .then(res => {
-        firebase.auth().signInAndRetrieveDataWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
+        return firebase.auth().signInAndRetrieveDataWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
           .then(suc => {
-            console.log(suc);
+            console.log("Firebase success: " + JSON.stringify(suc));
             this.toastSuccess();
-            return res.user;
+            
 
           })
           .catch(err => this.showError(err));
