@@ -61,7 +61,8 @@ export class ProfilePage {
   nativeGoogleLogin() {
     let a: User;
     this.auth.loginWithGoogleNative()
-      .then((v) => {
+      .then((data) => {
+        let v =data.user;
         console.log("dtttdffff" + v.uid);
         a = {
           name: v.displayName,
