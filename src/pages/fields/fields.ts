@@ -14,7 +14,8 @@ import { CalendarMatchPage } from '../calendar-match/calendar-match';
   templateUrl: 'fields.html',
 })
 export class FieldsPage {
-
+  searchTerm: string = '';
+  selectSerch = false;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
@@ -22,10 +23,35 @@ export class FieldsPage {
     console.log('ionViewDidLoad FieldsPage');
   }
 
-  goToCalendar(){
-    this.navCtrl.push(CalendarMatchPage);
+  goToCalendar(nomCancha: string) {
+    console.log('nomCancha'+nomCancha);
+    this.navCtrl.push(CalendarMatchPage, { cancha: nomCancha });
   }
-//CalendarMatchPage
+  //CalendarMatchPage
 
+  searchProducts() {
+    // Reset customers array back to all of the items
+    // this.prodlistTeamsucts = this.teamService.listTeams;
+    // // if the search term is an empty string return all items
+    // if (!this.searchTerm) {
+    //   return this.products;
+    // }
+
+    // Filter recipes
+    //this.products = this.products.filter((item) => {
+    //  return item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+    //});
+  }
+
+  ifSelect() {
+    return this.selectSerch;
+  }
+  onSearch() {
+    this.selectSerch = true;
+  }
+  onCancel(event) {
+    console.log(event);
+    this.selectSerch = false;
+  }
 
 }

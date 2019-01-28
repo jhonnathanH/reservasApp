@@ -21,8 +21,12 @@ export class CalendarMatchPage {
   currentMonth: any;
   currentYear: any;
   currentDate: any;
-  dateMatch:any;
+  dateMatch: any;
+  cancha: string;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+    this.cancha = this.navParams.get("cancha");
+    console.log(' this.canch> ' +  this.cancha);
   }
 
   ionViewWillEnter() {
@@ -32,11 +36,12 @@ export class CalendarMatchPage {
     // this.loadEventThisMonth();
   }
   selectDate(day: any) {
+    console.log('currentDay> ' + this.currentDate);
     console.log('dia es> ' + day);
     console.log('mes es> ' + this.currentMonth);
     console.log('año es> ' + this.currentYear);
-    this.dateMatch='Disponibilidad para el Dia '+day
-
+    this.dateMatch = 'Disponibilidad para el Dia ' + day;
+    this.currentDate = day;
   }
 
 
@@ -48,6 +53,7 @@ export class CalendarMatchPage {
     this.currentYear = this.date.getFullYear();
     if (this.date.getMonth() === new Date().getMonth()) {
       this.currentDate = new Date().getDate();
+      this.dateMatch = 'Disponibilidad para el Dia ' + this.currentDate;
     } else {
       this.currentDate = 999;
     }
@@ -59,14 +65,14 @@ export class CalendarMatchPage {
     }
 
     var thisNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
-    console.log(thisNumOfDays+'acathisNumOfDays');
+    console.log(thisNumOfDays + 'acathisNumOfDays');
     for (let i = 0; i < thisNumOfDays; i++) {
       this.daysInThisMonth.push(i + 1);
     }
-    console.log(JSON.stringify(this.daysInThisMonth)+'daysInThisMonth');
+    console.log(JSON.stringify(this.daysInThisMonth) + 'daysInThisMonth');
 
     var lastDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDay();
-   // var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0).getDate();
+    // var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0).getDate();
     for (let i = 0; i < (6 - lastDayThisMonth); i++) {
       this.daysInNextMonth.push(i + 1);
     }
@@ -84,6 +90,10 @@ export class CalendarMatchPage {
   goToNextMonth() {
     this.date = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0);
     this.getDaysOfMonth();
+  }
+
+  reserve() {
+
   }
 
 }

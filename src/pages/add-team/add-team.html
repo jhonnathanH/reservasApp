@@ -1,7 +1,7 @@
 
 <ion-header>
-  <ion-navbar color="dark">
-    <ion-buttons left>
+  <ion-navbar color="primary">
+    <!-- <ion-buttons left>
      <button 
           ion-button 
           clear
@@ -10,7 +10,7 @@
          navPop>
       <ion-icon name="arrow-back"></ion-icon>
     </button>
-  </ion-buttons>
+  </ion-buttons> -->
     <ion-title>Añadir Equipo</ion-title>
   </ion-navbar>
 </ion-header>
@@ -45,25 +45,23 @@
     </ion-list>
 
     <ion-list>
-      <ion-list-header >
-        Jugadores
-      </ion-list-header>
       <ion-item *ngFor="let player of userTeam; let i=index">
         <ion-grid>
           <ion-row>
             <ion-col col-2>
               <ion-avatar item-left>
-                <img [src]="player.photoURL">
+                <img *ngIf="player?.photoURL" [src]="player.photoURL">
+                <img *ngIf="!player?.photoURL" src="assets/imgs/noPhoto.png">
               </ion-avatar>
             </ion-col>
             <ion-col col-10>
-              <h2>{{ player.name }}</h2>
+              <h2>{{ player.name }} <ion-note text-right>Lider</ion-note></h2>
               <h3>{{ player.email }}</h3>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-item>
     </ion-list>
-    <button ion-button type="submit" block [disabled]="!todo.valid">Add Item</button>
+    <button ion-button type="submit" block [disabled]="!todo.valid">Crear Equipo</button>
   </form>
 </ion-content>

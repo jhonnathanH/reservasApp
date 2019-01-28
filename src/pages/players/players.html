@@ -1,25 +1,30 @@
 <ion-header>
-  <ion-navbar color="dark">
-    <ion-buttons left>
+  <ion-navbar color="primary">
+    <!-- <ion-buttons left>
       <button ion-button clear color="dark" icon-only navPop>
         <ion-icon name="arrow-back"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
     <ion-title>Jugadores disponible</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngFor="let player of teamPlayers | async; let i=index"  (click)="addPlayer(player)">
-    <ion-item>
+  <ion-list>
+    <ion-item *ngFor="let player of teamPlayers | async; let i=index" (click)="addPlayer(player)"> 
       <ion-grid>
         <ion-row>
           <ion-col col-2>
             <ion-avatar item-left>
-              <img [src]="player.photoURL">
+              <div *ngIf="player?.photoURL">
+                <img [src]="player.photoURL">
+              </div>
+              <div *ngIf="!player?.photoURL">
+                <img src="assets/imgs/noPhoto.png" />
+              </div>
             </ion-avatar>
           </ion-col>
-          <ion-col col-10>
+          <ion-col auto>
             <h2>{{ player.name }}</h2>
             <h3>{{ player.email }}</h3>
           </ion-col>

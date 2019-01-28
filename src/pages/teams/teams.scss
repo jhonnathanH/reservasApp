@@ -1,10 +1,10 @@
 page-teams {
     .addButtonfab {
-        right: 8% !important;
-        bottom: 0px;
+      //  right: 8% !important;
+       /// bottom: 0px;
     }
     .addButton {
-        right: 0!important;
+     //   right: 0!important;
         background-color: color($colors, dark);
         &:active{
             background-color: color($colors, secondary);

@@ -6,16 +6,16 @@
 -->
 <ion-header>
 
-  <ion-navbar color="light">
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Perfil/Usuario</ion-title>
-    <ion-buttons end>
+    <!-- <ion-buttons end>
       <button ion-button clear class="search" color="dark" icon-only (click)="onSearch()">
         <ion-icon name="search"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-navbar>
 
 </ion-header>
@@ -26,17 +26,18 @@
 
   <div *ngIf="userProfile">
     <div text-center class="backimg">
-      <img class="perfilImg" [src]="userProfile.photoURL" height="50" width="50">
+      <img *ngIf="userProfile?.photoURL" class="perfilImg" [src]="userProfile.photoURL" height="50" width="50">
+      <img *ngIf="!userProfile?.photoURL" class="perfilImg" src="assets/imgs/noPhoto.png" height="50" width="50">
       <ion-buttons end>
         <button  padding ion-button color="secondary" (click)="upPhoto()" *ngIf="userProfile">
-          <ion-icon name="camera"></ion-icon>
-          Subir Foto
+          <ion-icon class="icoSubir" name="camera"></ion-icon>
+          Subir
         </button>
       </ion-buttons>
     </div>
     <div class="perfilName">
-      <h5 color="primary">Nombre <ion-note>{{ userProfile.displayName }}</ion-note></h5>
-      <h5 color="primary">Email <ion-note>{{ userProfile.email }}</ion-note></h5>
+      <h5 color="primary">Nombre <ion-note>{{ userProfile?.name }}</ion-note></h5>
+      <h5 color="primary">Email <ion-note>{{ userProfile?.email }}</ion-note></h5>
     </div>
   </div>
 

@@ -2,7 +2,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { Component } from '@angular/core';
 import { NavController, LoadingController, ToastController, AlertController, Platform } from 'ionic-angular';
 import { User } from './../../models/user';
-import { AngularFireAuth } from 'angularfire2/auth';
+//import { AngularFireAuth } from 'angularfire2/auth';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import firebase from 'firebase';
@@ -15,7 +15,7 @@ export class ProfilePage {
   userProfile: any = null;
   // xuser$: any;
   constructor(public navCtrl: NavController,
-    private afAuth: AngularFireAuth,
+    // private afAuth: AngularFireAuth,///
     public googlePlus: GooglePlus,
     private userService: UserServiceProvider,
     private auth: AuthServiceProvider,
@@ -23,8 +23,12 @@ export class ProfilePage {
     public alertCtrl: AlertController,
     public platform: Platform,
     public loadingCtrl: LoadingController) {
-    console.log("ssddrrr");
-
+    //console.log(JSON.stringify(this.userService.getStoreUser()) + 'constructor');
+    this.userService.getStoreUser().then(
+      (data) => {
+        this.userProfile = data;
+      }
+    );
   }
 
   ionViewWillEnter() {
@@ -32,10 +36,11 @@ export class ProfilePage {
     //this.xuser$.subscribe(data => console.log('z'+data.toString()) );
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.userProfile = user;
+        console.log(JSON.stringify(this.userService.getStoreUser()) + 'userrrr');
+        // this.userProfile = this.userService.getStoreUser();
         console.log("syyyyy");
       } else {
-        this.userProfile = null;
+        // this.userProfile = null;
       }
     });
   }
@@ -60,29 +65,26 @@ export class ProfilePage {
       .catch(console.log);
 
   }
-  xnativeGoogleLogin() {
+  nativeGoogleLogin() {
     let a: User;
-    console.log("11111");
     this.auth.loginWithGoogleNative()
-      .then((data) => {
-        let v =data;
-        console.log("googleLogin!!!" + JSON.stringify(v));
+      .then((v) => {
+        console.log("dtttdffff" + v.uid);
         a = {
           name: v.displayName,
-          uid: v.userId,
+          uid: v.uid,
           email: v.email,
-          photoURL: v.imageURL,
+          photoURL: v.photoURL,
         };
         console.log("ddffff" + a);
-        //return this.userService.addUser(a).then(() => {
-       //   this.userService.storeUser(a);
-       // });
+        return this.userService.addUser(a).then(() => {
+          this.userService.storeUser(a);
+        });
       })
       .catch(console.log);
-
   }
 
-  nativeGoogleLogin() {
+  xnativeGoogleLogin() {
     this.googlePlus.login({
       'webClientId': '754165434495-gl8qtt77f0m8o177kqr55njs9c7l3a37.apps.googleusercontent.com',
       'offline': true
@@ -110,14 +112,16 @@ export class ProfilePage {
       content: 'Logeando...'
     });
     loading.present();
-    let a = {
-      name: form.value.name,
-      uid: Math.random().toString() + new Date().getUTCMilliseconds(),
-      email: form.value.email,
-      photoURL: "",
-    };
+
     this.auth.signin(form.value.email, form.value.password)
       .then(data => {
+        let a = {
+          name: form.value.name,
+          uid: data.user.uid,
+          email: form.value.email,
+          photoURL: "",
+        };
+        console.log(JSON.stringify(data) + 'signin');
         loading.dismiss();
         return this.userService.addUser(a).then(() => {
           this.userService.storeUser(a);
@@ -127,7 +131,7 @@ export class ProfilePage {
       //.catch(error => console.log(error));
       .catch(error => {
         loading.dismiss();
-        this.showError(error+"singin");
+        this.showError(error + "singin");
       });
   }
   onSingup(form: NgForm) {
@@ -136,16 +140,19 @@ export class ProfilePage {
       content: 'Logeando...'
     });
     loading.present();
-    let a = {
-      name: form.value.name,
-      uid: Math.random().toString() + new Date().getUTCMilliseconds(),
-      email: form.value.email,
-      photoURL: "",
-    };
+
     this.auth.signup(form.value.email, form.value.password)
       .then(data => {
+        let a = {
+          name: form.value.name,
+          uid: data.user.uid,
+          email: form.value.email,
+          photoURL: "",
+        };
         loading.dismiss();
         console.log('bienvenido+');
+        console.log(JSON.stringify(data) + 'signup');
+
         return this.userService.addUser(a).then(() => {
           this.userService.storeUser(a);
           this.toastSuccess();
@@ -172,6 +179,11 @@ export class ProfilePage {
       this.popoverGmailLogin()
     }
   }
+
+  upPhoto(){
+    
+  }
+
 
   private toastSuccess() {
     const toast = this.toastCrl.create({

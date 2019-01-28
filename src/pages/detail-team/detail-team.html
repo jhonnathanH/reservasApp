@@ -1,11 +1,11 @@
 <ion-header>
   <ion-navbar color="dark">
-    <ion-buttons left>
-      <button ion-button clear color="dark" icon-only navPop>
+    <!-- <ion-buttons left>
+      <button ion-button clear color="primary" icon-only navPop>
         <ion-icon name="arrow-back"></ion-icon>
       </button>
-    </ion-buttons>
-    <ion-title>Jugadores de ...</ion-title>
+    </ion-buttons> -->
+    <ion-title>{{team.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -18,7 +18,7 @@
   </ion-fab>
 
   <ion-list>
-    <ion-list-header *ngIf="true">
+    <ion-list-header  text-center *ngIf="true">
       Jugadores
     </ion-list-header>
     <ion-item-sliding *ngFor="let player of team.players; let i=index">
@@ -35,7 +35,7 @@
                 </div>
               </ion-avatar>
             </ion-col>
-            <ion-col col-10>
+            <ion-col auto>
               <h2>{{ player?.name }}</h2>
               <h3>{{ player?.email }}</h3>
             </ion-col>
@@ -54,7 +54,7 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-
-  <button ion-button block color="secondary" (click)="update()">Actualizar</button>
-
+  <div text-center>
+    <button ion-button small round color="secondary" (click)="update()">Actualizar</button>
+  </div>
 </ion-content>

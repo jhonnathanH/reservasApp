@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-navbar color="dark">
-    <ion-buttons left>
+  <ion-navbar color="primary">
+    <!-- <ion-buttons left>
       <button ion-button clear color="dark" icon-only navPop>
         <ion-icon name="arrow-back"></ion-icon>
       </button>
-    </ion-buttons>
-    <ion-title>Calendario</ion-title>
+    </ion-buttons> -->
+    <ion-title>Cancha N°{{cancha}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -45,25 +45,34 @@
   </div>
 
   <ion-list *ngIf="dateMatch">
-      <ion-list-header text-center  class="head">
-         {{dateMatch}}
-        </ion-list-header>
+    <ion-list-header text-center class="head">
+      {{dateMatch}}
+    </ion-list-header>
     <ion-item>
       <div class="hour" padding>
         <ion-note>
           8:00AM - 9:00AM
         </ion-note>
-      </div>
-      <div class="hour" padding>
-          <ion-note>
-            8:00AM - 10:00AM
-          </ion-note>
+        <div class="Disponible" text-center padding>
+          <button ion-button round small clear color="secondary" (click)="reserve(8)">Disponible</button>
         </div>
-        <div class="hour" padding>
-            <ion-note>
-              10:00AM - 11:00AM
-            </ion-note>
-          </div>
+      </div>
+      <div class="hour2" padding>
+        <ion-note>
+          9:00AM - 10:00AM
+        </ion-note>
+        <div class="Disponible2" text-center padding>
+          <button ion-button round small clear color="secondary" (click)="reserve(9)">Disponible</button>
+        </div>
+      </div>
+      <div class="hour3" padding>
+        <ion-note>
+          10:00AM - 11:00AM
+        </ion-note>
+        <div class="Disponible3" text-center padding>
+          <button ion-button round clear small color="secondary" (click)="reserve(10)">Disponible</button>
+        </div>
+      </div>
     </ion-item>
   </ion-list>
 </ion-content>
