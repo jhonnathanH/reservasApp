@@ -1,3 +1,21 @@
 page-profile {
-
+    .perfilImg{
+        width: 159px;
+        height: 154px;
+        border-radius: 50%;
+    }
+    .perfilName{
+        margin-top: 16px; 
+    }
+    .backimg{
+       //background-color:color($colors, light);
+       background-color: aquamarine;
+       margin: -16px; 
+       padding: 6px 0px;
+       padding-top: 10px;
+    }
+    h5{
+        font-size: 14px;
+        color: color($colors, primary);
+    }
 }

@@ -106,6 +106,29 @@ export class ProfilePage {
 
   onSingin(form: NgForm) {
     console.log('este' + form.value);
+    const loading = this.loadingCtrl.create({
+      content: 'Logeando...'
+    });
+    loading.present();
+    let a = {
+      name: form.value.name,
+      uid: Math.random().toString() + new Date().getUTCMilliseconds(),
+      email: form.value.email,
+      photoURL: "",
+    };
+    this.auth.signin(form.value.email, form.value.password)
+      .then(data => {
+        loading.dismiss();
+        return this.userService.addUser(a).then(() => {
+          this.userService.storeUser(a);
+          this.toastSuccess();
+        });
+      })
+      //.catch(error => console.log(error));
+      .catch(error => {
+        loading.dismiss();
+        this.showError(error+"singin");
+      });
   }
   onSingup(form: NgForm) {
     console.log(form.value);
@@ -122,21 +145,24 @@ export class ProfilePage {
     this.auth.signup(form.value.email, form.value.password)
       .then(data => {
         loading.dismiss();
+        console.log('bienvenido+');
         return this.userService.addUser(a).then(() => {
           this.userService.storeUser(a);
           this.toastSuccess();
         });
       })
-      //.catch(error => console.log(error));
       .catch(error => {
+        loading.dismiss();
         this.showError(error);
       });
 
   }
 
   signOut(): Promise<void> {
+    this.userService.deleteUser();
     console.log("press Logout");
-    return this.afAuth.auth.signOut();
+    return this.auth.logoutUser();
+    //return this.afAuth.auth.signOut();
   }
 
   doGoogleLogin() {

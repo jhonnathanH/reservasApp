@@ -12,13 +12,7 @@
     </button>
     <ion-title>Perfil/Usuario</ion-title>
     <ion-buttons end>
-      <button 
-            ion-button 
-            clear
-            class="search" 
-            color="dark" 
-            icon-only 
-            (click)="onSearch()">
+      <button ion-button clear class="search" color="dark" icon-only (click)="onSearch()">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
@@ -28,28 +22,31 @@
 
 
 <ion-content padding>
-  <button block padding ion-button color="danger" (click)="doGoogleLogin()" *ngIf="!userProfile">
-    <ion-icon name="logo-googleplus"></ion-icon>
-    Login with Google
-  </button>
 
-  <ion-item *ngIf="userProfile">
-    <ion-avatar item-left>
-      <img [src]="userProfile.photoURL">
-    </ion-avatar>
-    <h2>{{ userProfile.name }}</h2>
-    <h3>{{ userProfile.email }}</h3>
-  </ion-item>
 
-  <div text-center padding *ngIf="!userProfile">
-    <ion-note>OR...</ion-note>
+  <div *ngIf="userProfile">
+    <div text-center class="backimg">
+      <img class="perfilImg" [src]="userProfile.photoURL" height="50" width="50">
+      <ion-buttons end>
+        <button  padding ion-button color="secondary" (click)="upPhoto()" *ngIf="userProfile">
+          <ion-icon name="camera"></ion-icon>
+          Subir Foto
+        </button>
+      </ion-buttons>
+    </div>
+    <div class="perfilName">
+      <h5 color="primary">Nombre <ion-note>{{ userProfile.displayName }}</ion-note></h5>
+      <h5 color="primary">Email <ion-note>{{ userProfile.email }}</ion-note></h5>
+    </div>
   </div>
-  <form #f="ngForm" (ngSubmit)="onSingup(f)" *ngIf="!userProfile">
+
+
+  <form #f="ngForm" *ngIf="!userProfile">
     <ion-list>
-        <ion-item>
-            <ion-label stacked>Nombre</ion-label>
-            <ion-input class="inputEmail" type="string" ngModel name="name" required></ion-input>
-          </ion-item>
+      <ion-item>
+        <ion-label stacked>Nombre</ion-label>
+        <ion-input class="inputEmail" type="string" ngModel name="name" required></ion-input>
+      </ion-item>
       <ion-item>
         <ion-label stacked>Email</ion-label>
         <ion-input class="inputEmail" type="email" ngModel name="email" required></ion-input>
@@ -59,16 +56,15 @@
         <ion-input class="inputEmail" type="password" ngModel name="password" [minlength]="8" required></ion-input>
       </ion-item>
     </ion-list>
-
-
-
+    
+   
     <ion-grid>
       <ion-row>
         <ion-col>
-          <button color="light" ion-button block type="submit" ng-click="onSingup(f)" [disabled]="!f.valid">Log in</button>
+          <button color="light" ion-button block (click)="onSingin(f)" [disabled]="!f.valid">Log in</button>
         </ion-col>
         <ion-col>
-          <button ion-button block type="submit" ng-click="onSingin(f)" [disabled]="!f.valid">signup</button>
+          <button ion-button block (click)="onSingup(f)" [disabled]="!f.valid">Sing Up</button>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -77,24 +73,30 @@
   <ion-buttons end *ngIf="userProfile">
     <button ion-button clear (click)="signOut()">LogOut</button>
   </ion-buttons>
-
-    <ion-list>
-      <ion-list-header *ngIf="userProfile">
-        Perfil/Usuario logeado
-      </ion-list-header>
-      <ion-item *ngFor="let user of userService.listUser | async; let i=index">
-        <ion-grid>
-          <ion-row>
-            <ion-col col-2>
-              <img src="{{user.photoURL}}"/>
-            </ion-col>
-            <ion-col col-10>
-              <div>
-                <h2 class="user-name"> {{user.name}} </h2>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-    </ion-list>
+  <div text-center padding *ngIf="!userProfile">
+    <ion-note>OR...</ion-note>
+  </div>
+  <button block padding ion-button color="danger" (click)="doGoogleLogin()" *ngIf="!userProfile">
+    <ion-icon name="logo-googleplus"></ion-icon>
+    Login with Google
+  </button>
+  <ion-list>
+    <ion-list-header *ngIf="userProfile">
+      Perfil/Usuario logeado
+    </ion-list-header>
+    <ion-item *ngFor="let user of userService.listUser | async; let i=index">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-2>
+            <img src="{{user.photoURL}}" />
+          </ion-col>
+          <ion-col col-10>
+            <div>
+              <h2 class="user-name"> {{user.name}} </h2>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -23,6 +23,12 @@ export class AuthServiceProvider {
   signup(email: string, pass: string) {
     return firebase.auth().createUserWithEmailAndPassword(email, pass);
   }
+
+  signin(email: string, pass: string) {
+    console.log('Sign in with email');
+    return firebase.auth().signInWithEmailAndPassword(email, pass);
+    //return firebase.auth().
+}
   getUser(): Observable<User> {
     return this.afAuth.authState
       .take(1)
@@ -64,6 +70,10 @@ export class AuthServiceProvider {
         this.showError(err);
         console.log(err);
       });
+  }
+
+  logoutUser():Promise<void> {
+    return firebase.auth().signOut();
   }
 
   private showError(error: any) {

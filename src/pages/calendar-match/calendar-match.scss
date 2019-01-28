@@ -1,6 +1,6 @@
 page-calendar-match {
-    ion-grid,.calendar-header,.calendar-header{
-        box-shadow: inset 0 0 10px #000000 !important;
+    ion-grid,.calendar-header{
+        box-shadow: inset 0 0 7px #000000 !important;
     }
     .hour{
         background-color: color($colors, light);
@@ -12,4 +12,74 @@ page-calendar-match {
         background-color:  lightblue;
         box-sizing: border-box;
     }
+
+
+    [col-1] {
+        -webkit-box-flex: 0;
+        -webkit-flex: 0 0 8.33333%;
+        -ms-flex: 0 0 8.33333%;
+        flex: 0 0 14.285714285714286%;
+        width: 14.285714285714286%;
+        max-width: 14.285714285714286%;
+      }
+      .col {
+        text-align: center;
+        padding: 5px;
+      }
+      .last-month, .next-month {
+        color: #999999;
+        font-size: 90%;
+      }
+      .currentDate, .otherDate {
+        padding: 5px;
+      }
+      .currentDate {
+        font-weight: bold;
+        background-color: color($colors, primary);
+        color: white;
+       // border-radius: 30px;
+      }
+      .calendar-header {
+     //   background-color: #1a732d;
+       // color: #FFFFFF;
+      }
+      .event-bullet {
+        margin: 2px auto;
+        height: 5px;
+        width: 5px;
+        background-color: color($colors, primary);
+        border-radius: 30px;
+      }
+      .selected-date {
+        width: 20px;
+        height: 2px;
+       // background-color: blue;
+      }
+      .unselected-date {
+        border: none;
+      }
+      .calendar-body {
+        .grid {
+          padding: 0;
+        }
+        .col:last-child {
+          border-right: none;
+        }
+        .calendar-weekday, .calendar-date {
+          text-align: center;
+          margin: 0;
+        }
+        .calendar-weekday {
+          font-weight: bold;
+         // border-bottom: solid 1px color($colors, light);
+         // background-color:color($colors, light);
+          
+        }
+        .calendar-date {
+         // border-top: solid 1px color($colors, light);
+          border-bottom: solid 1px color($colors, light);
+          
+        //  background-color: color($colors, light);
+        }
+      }
 }

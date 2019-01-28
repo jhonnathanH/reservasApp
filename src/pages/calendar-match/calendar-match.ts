@@ -59,9 +59,11 @@ export class CalendarMatchPage {
     }
 
     var thisNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
+    console.log(thisNumOfDays+'acathisNumOfDays');
     for (let i = 0; i < thisNumOfDays; i++) {
       this.daysInThisMonth.push(i + 1);
     }
+    console.log(JSON.stringify(this.daysInThisMonth)+'daysInThisMonth');
 
     var lastDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDay();
    // var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0).getDate();
