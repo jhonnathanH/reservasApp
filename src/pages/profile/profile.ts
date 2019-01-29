@@ -67,19 +67,23 @@ export class ProfilePage {
   }
   nativeGoogleLogin() {
     let a: User;
+    console.log("11111");
     this.auth.loginWithGoogleNative()
-      .then((v) => {
-        console.log("dtttdffff" + v.uid);
+      .then((data) => {
+        let v =data.user;
+        console.log("googleLogin!!!" + JSON.stringify(v));
         a = {
           name: v.displayName,
-          uid: v.uid,
+
+          uid: v.userId,
           email: v.email,
-          photoURL: v.photoURL,
+          photoURL: v.imageURL,
         };
         console.log("ddffff" + a);
-        return this.userService.addUser(a).then(() => {
-          this.userService.storeUser(a);
-        });
+        //return this.userService.addUser(a).then(() => {
+       //   this.userService.storeUser(a);
+
+       // });
       })
       .catch(console.log);
   }
