@@ -70,7 +70,7 @@ export class ProfilePage {
     console.log("11111");
     this.auth.loginWithGoogleNative()
       .then((data) => {
-        let v =data.user;
+        let v = data.user;
         console.log("googleLogin!!!" + JSON.stringify(v));
         a = {
           name: v.displayName,
@@ -80,10 +80,9 @@ export class ProfilePage {
           photoURL: v.imageURL,
         };
         console.log("ddffff" + a);
-        //return this.userService.addUser(a).then(() => {
-       //   this.userService.storeUser(a);
-
-       // });
+        return this.userService.addUser(a).then(() => {
+          this.userService.storeUser(a);
+        });
       })
       .catch(console.log);
   }
@@ -184,8 +183,8 @@ export class ProfilePage {
     }
   }
 
-  upPhoto(){
-    
+  upPhoto() {
+
   }
 
 
