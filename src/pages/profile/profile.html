@@ -75,13 +75,13 @@
     <button ion-button clear (click)="signOut()">LogOut</button>
   </ion-buttons>
   <div text-center padding *ngIf="!userProfile">
-    <ion-note>OR...</ion-note>
+    <ion-note>O tambien con..</ion-note>
   </div>
-  <button block padding ion-button color="danger" (click)="doGoogleLogin()" *ngIf="!userProfile">
+  <button block padding ion-button color="darkColor" (click)="doGoogleLogin()" *ngIf="!userProfile">
     <ion-icon name="logo-googleplus"></ion-icon>
-    Login with Google
+    Login con Google
   </button>
-  <ion-list>
+  <!-- <ion-list>
     <ion-list-header *ngIf="userProfile">
       Perfil/Usuario logeado
     </ion-list-header>
@@ -99,5 +99,5 @@
         </ion-row>
       </ion-grid>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 </ion-content>

@@ -14,8 +14,8 @@ import 'rxjs/add/operator/filter';
 export class AuthServiceProvider {
 
   constructor(public http: Http, private afAuth: AngularFireAuth,
-    public alertCtrl:AlertController,
-    public toastCrl:ToastController,
+    public alertCtrl: AlertController,
+    public toastCrl: ToastController,
     public googlePlus: GooglePlus) {
     console.log('Hello AuthServiceProvider Provider');
   }
@@ -28,7 +28,7 @@ export class AuthServiceProvider {
     console.log('Sign in with email');
     return firebase.auth().signInWithEmailAndPassword(email, pass);
     //return firebase.auth().
-}
+  }
   getUser(): Observable<User> {
     return this.afAuth.authState
       .take(1)
@@ -59,10 +59,15 @@ export class AuthServiceProvider {
         console.log("333333");
         return firebase.auth().signInAndRetrieveDataWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
           .then(suc => {
-            console.log("Firebase success: " + JSON.stringify(suc));
-            this.toastSuccess();
-            
-
+            // this.showError("Firebase success: " + JSON.stringify(suc));
+            // this.showError("Firebase success:res " + JSON.stringify(res));
+            //this.toastSuccess();
+            return suc.user;
+            // return suc.user;
+            // email
+            // displayName
+            //photoURL
+            //uid
           })
           .catch(err => this.showError(err));
       })
@@ -72,7 +77,7 @@ export class AuthServiceProvider {
       });
   }
 
-  logoutUser():Promise<void> {
+  logoutUser(): Promise<void> {
     return firebase.auth().signOut();
   }
 

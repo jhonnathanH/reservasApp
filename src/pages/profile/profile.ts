@@ -37,10 +37,13 @@ export class ProfilePage {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         console.log(JSON.stringify(this.userService.getStoreUser()) + 'userrrr');
-        // this.userProfile = this.userService.getStoreUser();
-        console.log("syyyyy");
+        this.userService.getStoreUser().then(
+          (data) => {
+            this.userProfile = data;
+          }
+        );
       } else {
-        // this.userProfile = null;
+        this.userProfile = null;
       }
     });
   }
@@ -60,6 +63,8 @@ export class ProfilePage {
         console.log("ddffff" + a);
         return this.userService.addUser(a).then(() => {
           this.userService.storeUser(a);
+          this.userProfile = a;
+          this.toastSuccess();
         });
       })
       .catch(console.log);
@@ -69,19 +74,17 @@ export class ProfilePage {
     let a: User;
     console.log("11111");
     this.auth.loginWithGoogleNative()
-      .then((data) => {
-        let v = data.user;
-        console.log("googleLogin!!!" + JSON.stringify(v));
+      .then((v) => {
         a = {
           name: v.displayName,
-
-          uid: v.userId,
+          uid: v.uid,
           email: v.email,
-          photoURL: v.imageURL,
+          photoURL: v.photoURL,
         };
-        console.log("ddffff" + a);
         return this.userService.addUser(a).then(() => {
           this.userService.storeUser(a);
+          this.userProfile = a;
+           this.toastSuccess();
         });
       })
       .catch(console.log);
@@ -128,6 +131,7 @@ export class ProfilePage {
         loading.dismiss();
         return this.userService.addUser(a).then(() => {
           this.userService.storeUser(a);
+          this.userProfile = a;
           this.toastSuccess();
         });
       })
@@ -158,6 +162,7 @@ export class ProfilePage {
 
         return this.userService.addUser(a).then(() => {
           this.userService.storeUser(a);
+          this.userProfile = a;
           this.toastSuccess();
         });
       })
