@@ -1,5 +1,5 @@
 import { GooglePlus } from '@ionic-native/google-plus';
-import { AlertController, ToastController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
@@ -15,7 +15,6 @@ export class AuthServiceProvider {
 
   constructor(public http: Http, private afAuth: AngularFireAuth,
     public alertCtrl: AlertController,
-    public toastCrl: ToastController,
     public googlePlus: GooglePlus) {
     console.log('Hello AuthServiceProvider Provider');
   }
@@ -89,12 +88,5 @@ export class AuthServiceProvider {
     });
     alert.present();
   }
-  private toastSuccess() {
-    const toast = this.toastCrl.create({
-      message: 'Login Completado, Bienvenido!',
-      duration: 2000,
-      position: 'bottom'
-    });
-    toast.present();
-  }
+  
 }

@@ -13,10 +13,7 @@ export class PlayersServiceProvider {
     console.log('remove all players to team');
     return this.players = [];
   }
-  removePlayerstoTeam(player: User) {
-    const position = this.players.findIndex((playerNo: User) => {
-      return playerNo.uid == player.uid;
-    });
-    this.players.splice(position, 1);
+  removePlayerstoTeam(index: number) {
+    this.players.splice(index, 1);
   }
 }

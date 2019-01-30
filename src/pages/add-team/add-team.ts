@@ -1,3 +1,4 @@
+import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
@@ -28,6 +29,7 @@ export class AddTeamPage {
   constructor(public navCtrl: NavController,
     public teamService: TeamServiceProvider,
     public navParams: NavParams,
+    public playersService: PlayersServiceProvider,
     public userService: UserServiceProvider,
     private formBuilder: FormBuilder) {
    
@@ -71,11 +73,13 @@ export class AddTeamPage {
     }
     this.teamService.addTeam(newTeam)
        .then(() => {
-         //
+        
+      this.playersService.removeAllPlayerstoTeam();
+      this.navCtrl.push(DetailTeamPage,{team:newTeam});
        });
     this.todo.reset();
     console.log('sss DetailTeamPage');
-    this.navCtrl.push(DetailTeamPage,{team:newTeam});
+   
     // const modal = this.modalCtrl.create(OrderPage, { customer: customer , order: null, index: null });
    
   }

@@ -12,6 +12,7 @@ export class TeamServiceProvider {
   private teams: AngularFirestoreCollection<Team>;
   public listTeams: Observable<Team[]>;
   lengthListTeams: number = 0;
+  teamsStore: Team[] = [];
   constructor(public afs: AngularFirestore) {
     console.log('Hello TeamServiceProvider Provider');
     this.teams = afs.collection<Team>('teams');
@@ -20,12 +21,26 @@ export class TeamServiceProvider {
         return actions.map(item => {
           const data = item.payload.doc.data() as Team;
           console.log('team' + data);
+          // console.log('this.listaNormalTeam' + JSON.stringify(this.listaNormalTeam));
           this.lengthListTeams = actions.length;
           //     const id = item.payload.doc.id;
           return { ...data };
         })
       })
   }
+
+  getTeams() {
+    return this.listTeams;
+  }
+  addTeamsStore(x: Team[]) {
+    this.teamsStore = x;
+    console.log('add  teamsStore');
+  }
+
+  getTeamsStore() {
+    return this.teamsStore.slice();
+  }
+
 
   addTeam(team: Team) {
     return this.teams.doc((this.lengthListTeams + 1).toString()).set(team);

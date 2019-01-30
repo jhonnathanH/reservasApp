@@ -8,11 +8,10 @@ import 'rxjs/add/operator/filter';
 import { Storage } from '@ionic/storage';
 @Injectable()
 export class UserServiceProvider {
-
   private users: AngularFirestoreCollection<User>;
   collection: AngularFirestoreCollection<User> = this.afs.collection('user')
   public listUser: Observable<User[]>;
-
+  userStore: User[] = [];
   constructor(public afs: AngularFirestore, public storage: Storage) {
     this.users = afs.collection<User>('user');
     this.listUser = this.users.snapshotChanges()
@@ -24,6 +23,19 @@ export class UserServiceProvider {
         })
       })
   }
+
+  getUsers() {
+    return this.listUser;
+  }
+  addUserStore(x: User[]) {
+    this.userStore = x;
+    console.log('add  addUserStore');
+  }
+
+  getUserStore() {
+    return this.userStore.slice();
+  }
+
 
   addUser(user: User) {
 

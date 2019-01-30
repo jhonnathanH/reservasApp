@@ -1,8 +1,8 @@
 {
   "name": "reservasApp",
-  "version": "0.1.2",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "version": "0.2.0",
+  "author": "Jhonnathan Henriquez",
+  "homepage": "https://www.linkedin.com/in/jhonnathanhenriquez/",
   "private": true,
   "scripts": {
     "start": "ionic-app-scripts serve",

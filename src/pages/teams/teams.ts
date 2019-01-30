@@ -5,7 +5,7 @@ import { TeamServiceProvider } from './../../providers/team-service/team-service
 import { Team } from './../../models/team';
 import { AddTeamPage } from './../add-team/add-team';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { PlayersServiceProvider } from '../../providers/players-service/players-service';
 import firebase from 'firebase';
 /**
@@ -23,12 +23,37 @@ export class TeamsPage {
   searchTerm: string = '';
   selectSerch = false;
   userProfile: any;
+  listaTeam: Team[] = [];
+  original: Team[];
   constructor(public playersService: PlayersServiceProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
+    public toastCrl: ToastController,
     public userService: UserServiceProvider,
+    public loadingCtrl: LoadingController,
     public teamService: TeamServiceProvider) {
+    
+
+    this.teamService.getTeams().subscribe(res => {
+      let loadingIni = this.loading('Cargando');
+      // ordernar sort
+      // this.res.sort((a1, b1) => new Date(a1.created.toDate()).getTime() - new Date(b1.created.toDate()).getTime());
+      let x = res.sort((n1, n2) => n1.id - n2.id);
+      this.teamService.addTeamsStore(x);
+      this.listaTeam = x;
+      this.original = x;
+      //save Team
+      loadingIni.dismiss();
+      //  console.log('ss' + JSON.stringify(this.listaTeam) + 'ss');
+    });
+    if (this.teamService.getTeamsStore()) {
+      console.log('sssACA');
+      let x = this.teamService.getTeamsStore();
+      this.listaTeam = x;
+      this.original = x;
+      this.toastSuccess('Equipos Cargados');
+    }
   }
 
   ionViewWillEnter() {
@@ -80,18 +105,20 @@ export class TeamsPage {
     this.navCtrl.push(DetailTeamPage, { team: team });
   }
 
-  searchProducts() {
+  searchTeams() {
     // Reset customers array back to all of the items
-    // this.prodlistTeamsucts = this.teamService.listTeams;
-    // // if the search term is an empty string return all items
-    // if (!this.searchTerm) {
-    //   return this.products;
-    // }
+
+    this.listaTeam = this.original;
+
+    // if the search term is an empty string return all items
+    if (!this.searchTerm) {
+      return this.listaTeam;
+    }
 
     // Filter recipes
-    //this.products = this.products.filter((item) => {
-    //  return item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
-    //});
+    this.listaTeam = this.listaTeam.filter((item) => {
+      return item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+    });
   }
 
   ifSelect() {
@@ -103,6 +130,23 @@ export class TeamsPage {
   onCancel(event) {
     console.log(event);
     this.selectSerch = false;
+  }
+
+  private toastSuccess(valor: string) {
+    const toast = this.toastCrl.create({
+      message: valor,
+      duration: 1500,
+      position: 'bottom'
+    });
+    toast.present();
+  }
+
+  private loading(textLoading: string) {
+    let loading = this.loadingCtrl.create({
+      content: textLoading
+    });
+    loading.present();
+    return loading;
   }
 
 }

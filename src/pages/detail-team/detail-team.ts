@@ -1,9 +1,9 @@
-import { TeamsPage } from './../teams/teams';
+
 import { TeamServiceProvider } from './../../providers/team-service/team-service';
 import { PlayersPage } from './../players/players';
 import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Team } from '../../models/team';
 
 /**
@@ -19,9 +19,11 @@ import { Team } from '../../models/team';
 })
 export class DetailTeamPage {
   team: Team;
+  bandLength: boolean;
   constructor(public teamService: TeamServiceProvider,
     public playersService: PlayersServiceProvider,
     public navCtrl: NavController,
+    public alertCtrl: AlertController,
     public navParams: NavParams) {
 
     this.team = this.navParams.get("team");
@@ -34,18 +36,40 @@ export class DetailTeamPage {
 
   ionViewWillEnter() {
     this.team.players = this.playersService.getPlayers();
+    console.log(this.team.sizeTeam + 'teamSizexx');
+    console.log(this.team.players.length + 'lengthxxx');
+    if (this.team.sizeTeam == this.team.players.length) {
+      this.bandLength = true;
+    }
   }
 
   ionViewWillLeave() {
     // this.playersService.removeAllPlayerstoTeam();
   }
+  removePlayer(index: number) {
+    console.log(index + 'index');
+    if (index == 0) {
+      const alert = this.alertCtrl.create({
+        title: 'Accion no permitida',
+        message: 'No Puede eliminar al Lider del equipo',
+        buttons: ['OK']
+      });
+      alert.present();
+    } else {
+      this.playersService.removePlayerstoTeam(index);
+      this.team.players = this.playersService.getPlayers();
+      this.bandLength = false;
+    }
+  }
+
+
   addPlayer() {
+    console.log(this.team.sizeTeam + 'teamSize');
+    console.log(this.team.players.length + 'length');
 
-    //  console.log('sss ggggg' + player.name);
-    //  this.playersService.addPlayerstoTeam(player);
-    //  this.navCtrl.pop();
-
-    this.navCtrl.push(PlayersPage);
+    if (this.team.sizeTeam > this.team.players.length) {
+      this.navCtrl.push(PlayersPage, { players: this.team.players });
+    }
   }
 
   update() {
@@ -58,6 +82,6 @@ export class DetailTeamPage {
         sizeTeam: this.team.sizeTeam,
         players: this.team.players
       });
-    this.navCtrl.push(TeamsPage);
+    this.navCtrl.pop();
   }
 }

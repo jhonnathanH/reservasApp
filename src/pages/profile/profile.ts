@@ -90,28 +90,6 @@ export class ProfilePage {
       .catch(console.log);
   }
 
-  xnativeGoogleLogin() {
-    this.googlePlus.login({
-      'webClientId': '754165434495-gl8qtt77f0m8o177kqr55njs9c7l3a37.apps.googleusercontent.com',
-      'offline': true
-    })
-      .then(res => {
-        firebase.auth().signInAndRetrieveDataWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
-          .then(suc => {
-            console.log(suc);
-            this.toastSuccess();
-
-          })
-          .catch(err => this.showError(err));
-      })
-      .catch((err) => {
-        this.showError(err);
-        console.log(err);
-        this.popoverGmailLogin();
-      });
-
-  }
-
   onSingin(form: NgForm) {
     console.log('este' + form.value);
     const loading = this.loadingCtrl.create({

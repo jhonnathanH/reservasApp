@@ -5,9 +5,10 @@ page-teams {
     }
     .addButton {
      //   right: 0!important;
-        background-color: color($colors, dark);
+        background-color: color($colors, darkColor);
         &:active{
             background-color: color($colors, secondary);
         }
     }
+ 
 }

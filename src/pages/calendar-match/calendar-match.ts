@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Match } from '../../models/match';
 
 /**
  * Generated class for the CalendarMatchPage page.
@@ -23,17 +24,33 @@ export class CalendarMatchPage {
   currentDate: any;
   dateMatch: any;
   cancha: string;
+  reservesMatch: Match[] = [];
+  valueMaxDivHour = 3;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
     this.cancha = this.navParams.get("cancha");
-    console.log(' this.canch> ' +  this.cancha);
+    console.log(' this.canch> ' + this.cancha);
+
   }
 
   ionViewWillEnter() {
     this.date = new Date();
     this.monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     this.getDaysOfMonth();
-    // this.loadEventThisMonth();
+    for (let i = 0; i < this.valueMaxDivHour; i++) {
+      let a: Match;
+      let numHourMin=8+i;
+      let numHourMax=9+i;
+      a = {
+        id: i,
+        day: this.currentDate,
+        month: this.currentMonth,
+        year: this.currentYear,
+        field: Number(this.cancha),
+        hour: numHourMin+':00AM - '+numHourMax+':00AM'
+      }
+      this.reservesMatch.push(a);
+    }
   }
   selectDate(day: any) {
     console.log('currentDay> ' + this.currentDate);
@@ -92,8 +109,23 @@ export class CalendarMatchPage {
     this.getDaysOfMonth();
   }
 
-  reserve() {
-
+  reserve(reserva: number) {
+    let matchReserve: Match;
+    matchReserve = {
+      id: 0,
+      day: this.currentDate,
+      month: this.currentMonth,
+      year: this.currentYear,
+      field: Number(this.cancha),
+      hour: reserva.toString()
+    }
+    console.log('reserva  ' + JSON.stringify(matchReserve));
+    //this.navCtrl.push(DetailTeamPage, { team: reserva });
   }
 
+  // este metodo servira para buscar si ya esta ocupado.... meterlo en el servicio
+  //   getMovie(id: number): Observable<Movie> {
+  //     return this.getMovies()
+  //     .map(movies => movies.find(movie => movie.id == id));
+  // }
 }

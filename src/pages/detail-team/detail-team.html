@@ -1,17 +1,18 @@
 <ion-header>
-  <ion-navbar color="dark">
+  <ion-navbar color="primary">
     <!-- <ion-buttons left>
       <button ion-button clear color="primary" icon-only navPop>
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons> -->
     <ion-title>{{team.name}}</ion-title>
+    
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <ion-fab class="addButtonfab" right bottom>
+  <ion-fab  *ngIf="!bandLength" class="addButtonfab" right bottom>
     <button ion-fab mini class="addButton" round icon-only (click)="addPlayer()">
       <ion-icon color="dark" name="md-add"></ion-icon>
     </button>
@@ -20,6 +21,8 @@
   <ion-list>
     <ion-list-header  text-center *ngIf="true">
       Jugadores
+      <div text-center> <ion-note >Capacidad Maxima de {{team.sizeTeam}} jugadores</ion-note></div>
+     
     </ion-list-header>
     <ion-item-sliding *ngFor="let player of team.players; let i=index">
       <ion-item>
@@ -43,12 +46,12 @@
         </ion-grid>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="danger" small clear icon-only (click)="removeProductsToOrder(product,i)">
+        <button ion-button color="danger" small clear icon-only (click)="removePlayer(i)">
           <ion-icon name="md-trash"></ion-icon>
         </button>
       </ion-item-options>
       <ion-item-options side="left">
-        <button ion-button color="danger" small clear icon-only (click)="removeProductsToOrder(product)">
+        <button ion-button color="danger" small clear icon-only (click)="removePlayer(i)">
           <ion-icon name="md-trash"></ion-icon>
         </button>
       </ion-item-options>
