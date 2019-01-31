@@ -84,4 +84,8 @@ export class DetailTeamPage {
       });
     this.navCtrl.pop();
   }
+
+  changeState(index: number) {
+    this.team.players[index].state = 2;
+  }
 }

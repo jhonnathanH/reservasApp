@@ -1,28 +1,34 @@
 <ion-header>
   <ion-navbar color="primary">
-    <!-- <ion-buttons left>
-      <button ion-button clear color="primary" icon-only navPop>
-        <ion-icon name="arrow-back"></ion-icon>
-      </button>
-    </ion-buttons> -->
+    <!-- 
+      
+      <div *ngIf="isValid;else other_content">
+          content here ...
+      </div>
+
+<ng-template #other_content>other content here...</ng-template>
+
+-->
     <ion-title>{{team.name}}</ion-title>
-    
+
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <ion-fab  *ngIf="!bandLength" class="addButtonfab" right bottom>
+  <ion-fab *ngIf="!bandLength" class="addButtonfab" right bottom>
     <button ion-fab mini class="addButton" round icon-only (click)="addPlayer()">
       <ion-icon color="dark" name="md-add"></ion-icon>
     </button>
   </ion-fab>
 
   <ion-list>
-    <ion-list-header  text-center *ngIf="true">
+    <ion-list-header text-center *ngIf="true">
       Jugadores
-      <div text-center> <ion-note >Capacidad Maxima de {{team.sizeTeam}} jugadores</ion-note></div>
-     
+      <div text-center>
+        <ion-note>Capacidad Maxima de {{team.sizeTeam}} jugadores</ion-note>
+      </div>
+
     </ion-list-header>
     <ion-item-sliding *ngFor="let player of team.players; let i=index">
       <ion-item>
@@ -38,9 +44,26 @@
                 </div>
               </ion-avatar>
             </ion-col>
-            <ion-col auto>
-              <h2>{{ player?.name }}</h2>
-              <h3>{{ player?.email }}</h3>
+            <ion-col col-7>
+              <h2 class="nom">{{ player?.name }}</h2>
+              <ion-note class="nom">{{ player?.email }}</ion-note>
+            </ion-col>
+            <ion-col col-2>
+              <ion-buttons right *ngIf="player?.state===1">
+                <button  ion-button class="estate" color="secondary"  clear icon-only (click)="changeState(i)">
+                  <ion-icon name="checkmark-circle"></ion-icon>
+                </button>
+              </ion-buttons >
+              <ion-buttons right *ngIf="player?.state===2">
+                  <button  ion-button  class="estate" color="danger"  clear icon-only (click)="changeState(i)">
+                    <ion-icon name="close-circle"></ion-icon>
+                  </button>
+                </ion-buttons >
+                <ion-buttons right *ngIf="player?.state===3">
+                    <button  ion-button  class="estate" color="lightColor"  clear icon-only (click)="changeState(i)">
+                      <ion-icon name="hand"></ion-icon>
+                    </button>
+                  </ion-buttons >
             </ion-col>
           </ion-row>
         </ion-grid>

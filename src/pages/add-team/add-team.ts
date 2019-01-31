@@ -1,19 +1,14 @@
+import { TeamsPage } from './../teams/teams';
 import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, App } from 'ionic-angular';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Team } from '../../models/team';
 import { User } from '../../models/user';
 import { TeamServiceProvider } from '../../providers/team-service/team-service';
-import { DetailTeamPage } from '../detail-team/detail-team';
+//import { DetailTeamPage } from '../detail-team/detail-team';
 
-/**
- * Generated class for the AddTeamPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-add-team',
@@ -29,6 +24,7 @@ export class AddTeamPage {
   constructor(public navCtrl: NavController,
     public teamService: TeamServiceProvider,
     public navParams: NavParams,
+    public appCtrl: App,
     public playersService: PlayersServiceProvider,
     public userService: UserServiceProvider,
     private formBuilder: FormBuilder) {
@@ -37,8 +33,9 @@ export class AddTeamPage {
       .then(
         (user: User) => {
           this.user = user;
+          this.user.state=1;
           this.userTeam.push(this.user);
-          console.log("alaaa" + this.user);
+          console.log("alaaa" + (JSON.stringify(this.user)));
         }
       ).catch(
         err => {
@@ -71,17 +68,18 @@ export class AddTeamPage {
       sizeTeam: this.todo.value.sizeTeam,
       players: this.userTeam
     }
+    console.log("teamx" + (JSON.stringify(newTeam)));
     this.teamService.addTeam(newTeam)
        .then(() => {
         
       this.playersService.removeAllPlayerstoTeam();
-      this.navCtrl.push(DetailTeamPage,{team:newTeam});
+      this.todo.reset();
+      this.appCtrl.getRootNav().setRoot(TeamsPage);
+    //  this.navCtrl.push(DetailTeamPage,{team:newTeam});
        });
-    this.todo.reset();
+    
     console.log('sss DetailTeamPage');
-   
     // const modal = this.modalCtrl.create(OrderPage, { customer: customer , order: null, index: null });
-   
   }
 
   searchProduct(form: NgForm) {
