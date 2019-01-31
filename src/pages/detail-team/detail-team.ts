@@ -163,7 +163,7 @@ export class DetailTeamPage {
     this.playersService.addPlayerstoTeam(this.user);
     this.team.players = this.playersService.getPlayers();
     this.updateTeam();
-
+    this.here = true;
   }
 
   cancel() {
