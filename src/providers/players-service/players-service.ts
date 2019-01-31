@@ -11,7 +11,7 @@ export class PlayersServiceProvider {
   }
   removeAllPlayerstoTeam() {
     console.log('remove all players to team');
-    return this.players = [];
+    this.players = [];
   }
   removePlayerstoTeam(index: number) {
     this.players.splice(index, 1);

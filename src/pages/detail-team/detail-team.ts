@@ -1,10 +1,11 @@
-
+import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { TeamServiceProvider } from './../../providers/team-service/team-service';
 import { PlayersPage } from './../players/players';
 import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 import { Team } from '../../models/team';
+import { User } from '../../models/user';
 
 /**
  * Generated class for the DetailTeamPage page.
@@ -20,18 +21,38 @@ import { Team } from '../../models/team';
 export class DetailTeamPage {
   team: Team;
   bandLength: boolean;
+  user: User;
+  bandLeader: boolean;
+  here: boolean;
+  originalPlayers: User[];
   constructor(public teamService: TeamServiceProvider,
     public playersService: PlayersServiceProvider,
+    public userService: UserServiceProvider,
     public navCtrl: NavController,
+    private viewCtrl: ViewController,
     public alertCtrl: AlertController,
     public navParams: NavParams) {
 
     this.team = this.navParams.get("team");
     if (this.team != null) {
+      this.originalPlayers = this.team.players;
       for (let i = 0; i < this.team.players.length; i++) {
         this.playersService.addPlayerstoTeam(this.team.players[i]);
       }
     }
+
+    this.userService.getStoreUser()
+      .then(
+        (user: User) => {
+          this.user = user;
+          if (this.user.uid == this.team.leadUser.uid) {
+            this.bandLeader = true;
+          }
+        }
+      ).catch(
+        err => {
+          console.log(err);
+        });
   }
 
   ionViewWillEnter() {
@@ -41,6 +62,12 @@ export class DetailTeamPage {
     if (this.team.sizeTeam == this.team.players.length) {
       this.bandLength = true;
     }
+    for (let i = 0; i < this.team.players.length; i++) {
+      if (this.team.players[i].uid == this.user.uid) {
+        this.here = true;
+      }
+    }
+
   }
 
   ionViewWillLeave() {
@@ -74,18 +101,74 @@ export class DetailTeamPage {
 
   update() {
     this.playersService.removeAllPlayerstoTeam();
-    this.teamService.updateTeam(this.team.id,
-      {
-        id: this.team.id,
-        name: this.team.name,
-        leadUser: this.team.leadUser,
-        sizeTeam: this.team.sizeTeam,
-        players: this.team.players
-      });
+    this.updateTeam();
     this.navCtrl.pop();
   }
 
   changeState(index: number) {
-    this.team.players[index].state = 2;
+    if (this.bandLeader) {
+      let value = this.team.players[index].state;
+      switch (value) {
+        case 1:
+          console.log(index + '22222');
+          this.team.players[index].state = 2;
+          break;
+        case 2:
+          this.team.players[index].state = 1;
+          break;
+        case 3:
+          this.team.players[index].state = 1;
+          break;
+      }
+    } else {
+      if (this.user.uid == this.team.players[index].uid) {
+        let value = this.team.players[index].state;
+        switch (value) {
+          case 1:
+            console.log(index + '22222');
+            this.team.players[index].state = 2;
+            break;
+          case 2:
+            this.team.players[index].state = 3;
+            break;
+          case 3:
+            this.team.players[index].state = 2;
+            break;
+        }
+        this.updateTeam();
+      } else {
+        const alert = this.alertCtrl.create({
+          title: 'Accion no permitida',
+          message: 'No Puede Cambiar el estado de otro jugador',
+          buttons: ['OK']
+        });
+        alert.present();
+      }
+    }
+  }
+
+
+  private updateTeam() {
+    this.teamService.updateTeam(this.team.id, {
+      id: this.team.id,
+      name: this.team.name,
+      leadUser: this.team.leadUser,
+      sizeTeam: this.team.sizeTeam,
+      players: this.team.players
+    });
+  }
+
+  askAdd() {
+    this.user.state = 3;
+    this.playersService.addPlayerstoTeam(this.user);
+    this.team.players = this.playersService.getPlayers();
+    this.updateTeam();
+
+  }
+
+  cancel() {
+    this.playersService.removeAllPlayerstoTeam();
+    this.team.players = this.originalPlayers;
+    this.viewCtrl.dismiss();
   }
 }

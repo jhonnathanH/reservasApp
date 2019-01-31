@@ -44,20 +44,26 @@
     </ion-grid>
   </div>
 
-  <ion-list *ngIf="dateMatch">
-    <ion-list-header text-center class="head">
+  <ion-list-header *ngIf="!bandShow && dateMatch" text-center class="head" (click)="show()">
       {{dateMatch}}
     </ion-list-header>
-    <ion-item>
+  <ion-list *ngIf="dateMatch && bandShow">
+    <ion-list-header text-center class="head" (click)="show()">
+      {{dateMatch}}
+    </ion-list-header>
+    <ion-item *ngFor="let match of reservesMatch">
       <div class="hour" padding>
         <ion-note>
-          8:00AM - 9:00AM
+          {{match.hour}}
         </ion-note>
-        <div class="Disponible" text-center padding>
+        <div *ngIf="!match.team" class="Disponible" text-center padding>
           <button ion-button round small clear color="secondary" (click)="reserve(8)">Disponible</button>
         </div>
+        <div *ngIf="match.team" class="Ocupado" text-center padding>
+          <button ion-button round small clear color="secondary" (click)="reserve(8)">Ocupado</button>
+        </div>
       </div>
-      <div class="hour2" padding>
+      <!-- <div class="hour2" padding>
         <ion-note>
           9:00AM - 10:00AM
         </ion-note>
@@ -72,7 +78,7 @@
         <div class="Disponible3" text-center padding>
           <button ion-button round clear small color="secondary" (click)="reserve(10)">Disponible</button>
         </div>
-      </div>
+      </div> -->
     </ion-item>
   </ion-list>
 </ion-content>

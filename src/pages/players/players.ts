@@ -82,6 +82,7 @@ export class PlayersPage {
 
 
   addPlayer(TeamPlayer: User) {
+    TeamPlayer.state = 1;
     this.playersService.addPlayerstoTeam(TeamPlayer);
     this.navCtrl.pop();
   }

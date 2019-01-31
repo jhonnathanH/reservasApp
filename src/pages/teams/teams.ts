@@ -5,7 +5,7 @@ import { TeamServiceProvider } from './../../providers/team-service/team-service
 import { Team } from './../../models/team';
 import { AddTeamPage } from './../add-team/add-team';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, LoadingController, ModalController } from 'ionic-angular';
 import { PlayersServiceProvider } from '../../providers/players-service/players-service';
 import firebase from 'firebase';
 /**
@@ -32,8 +32,9 @@ export class TeamsPage {
     public toastCrl: ToastController,
     public userService: UserServiceProvider,
     public loadingCtrl: LoadingController,
+    public modalCtrl:ModalController,
     public teamService: TeamServiceProvider) {
-    
+
 
     this.teamService.getTeams().subscribe(res => {
       let loadingIni = this.loading('Cargando');
@@ -102,7 +103,9 @@ export class TeamsPage {
 
   goToDetail(team: Team) {
     this.playersService.removeAllPlayerstoTeam();
-    this.navCtrl.push(DetailTeamPage, { team: team });
+    //this.navCtrl.push(DetailTeamPage, { team: team });
+    const modal = this.modalCtrl.create(DetailTeamPage, { team: team });
+    modal.present();
   }
 
   searchTeams() {

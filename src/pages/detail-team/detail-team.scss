@@ -14,4 +14,10 @@ page-detail-team {
         //size: 20px;
        // font-size: 16px;
     }
+    .addButton{
+    background-color: color($colors, darkColor);
+        &:active{
+            background-color: color($colors, secondary);
+        }
+    }
 }

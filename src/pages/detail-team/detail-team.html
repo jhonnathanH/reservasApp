@@ -16,11 +16,17 @@
 
 <ion-content padding>
 
-  <ion-fab *ngIf="!bandLength" class="addButtonfab" right bottom>
+  <ion-fab *ngIf="!bandLength && bandLeader" class="addButtonfab" right bottom>
     <button ion-fab mini class="addButton" round icon-only (click)="addPlayer()">
-      <ion-icon color="dark" name="md-add"></ion-icon>
+      <ion-icon color="light" name="md-add"></ion-icon>
     </button>
   </ion-fab>
+
+  <ion-fab  class="addButtonfab" left bottom>
+      <button ion-fab mini class="addButton" round icon-only (click)="cancel()">
+        <ion-icon color="light" name="arrow-round-back"></ion-icon>
+      </button>
+    </ion-fab>
 
   <ion-list>
     <ion-list-header text-center *ngIf="true">
@@ -79,8 +85,11 @@
         </button>
       </ion-item-options>
     </ion-item-sliding>
+    <ion-item *ngIf="!bandLength && !bandLeader && !here">
+      <button ion-button color="secondary"  block round outline (click)="askAdd()">Solicitar Entrar </button>
+    </ion-item>
   </ion-list>
-  <div text-center>
+  <div text-center *ngIf="bandLeader">
     <button ion-button small round color="secondary" (click)="update()">Actualizar</button>
   </div>
 </ion-content>

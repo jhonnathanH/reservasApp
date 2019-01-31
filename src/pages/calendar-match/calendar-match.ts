@@ -25,7 +25,9 @@ export class CalendarMatchPage {
   dateMatch: any;
   cancha: string;
   reservesMatch: Match[] = [];
-  valueMaxDivHour = 3;
+  bandShow:boolean;
+  valueMaxDivHour = 14;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
     this.cancha = this.navParams.get("cancha");
@@ -39,15 +41,15 @@ export class CalendarMatchPage {
     this.getDaysOfMonth();
     for (let i = 0; i < this.valueMaxDivHour; i++) {
       let a: Match;
-      let numHourMin=8+i;
-      let numHourMax=9+i;
+      let numHourMin=9+i;
+      let numHourMax=10+i;
       a = {
         id: i,
         day: this.currentDate,
         month: this.currentMonth,
         year: this.currentYear,
         field: Number(this.cancha),
-        hour: numHourMin+':00AM - '+numHourMax+':00AM'
+        hour: numHourMin+':00 - '+numHourMax+':00'
       }
       this.reservesMatch.push(a);
     }
@@ -128,4 +130,9 @@ export class CalendarMatchPage {
   //     return this.getMovies()
   //     .map(movies => movies.find(movie => movie.id == id));
   // }
+
+  show(){
+    this.bandShow=!this.bandShow;
+  }
 }
+
