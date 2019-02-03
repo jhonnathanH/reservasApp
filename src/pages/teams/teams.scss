@@ -10,5 +10,13 @@ page-teams {
             background-color: color($colors, secondary);
         }
     }
+
+    .disp{
+        right: 0;
+        position: absolute;
+    }
+    .people{
+        padding-right: 5px;
+    }
  
 }

@@ -1,3 +1,4 @@
+import { HistoryMatchsPage } from './../pages/history-matchs/history-matchs';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { CalendarMatchPage } from './../pages/calendar-match/calendar-match';
 import { ProfilePage } from './../pages/profile/profile';
@@ -23,6 +24,8 @@ import { TeamServiceProvider } from '../providers/team-service/team-service';
 import { DetailTeamPage } from '../pages/detail-team/detail-team';
 import { PlayersPage } from '../pages/players/players';
 import { PlayersServiceProvider } from '../providers/players-service/players-service';
+import { SelectTeamPage } from '../pages/select-team/select-team';
+import { MatchServiceProvider } from '../providers/match-service/match-service';
 
 //config firebase 
 export const firebaseConfig = {
@@ -44,7 +47,9 @@ export const firebaseConfig = {
     AddTeamPage,
     CalendarMatchPage,
     DetailTeamPage,
-    PlayersPage
+    PlayersPage,
+    SelectTeamPage,
+    HistoryMatchsPage
   ],
   imports: [
     BrowserModule,
@@ -66,8 +71,10 @@ export const firebaseConfig = {
     AddTeamPage,
     CalendarMatchPage,
     DetailTeamPage,
-    PlayersPage
-  ],
+    PlayersPage,
+    SelectTeamPage,
+    HistoryMatchsPage
+    ],
   providers: [
     StatusBar,
     SplashScreen,
@@ -76,7 +83,8 @@ export const firebaseConfig = {
     AuthServiceProvider,
     TeamServiceProvider,
     GooglePlus,
-    PlayersServiceProvider
+    PlayersServiceProvider,
+    MatchServiceProvider
   ]
 })
 export class AppModule {}

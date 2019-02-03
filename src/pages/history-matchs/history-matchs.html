@@ -1,0 +1,43 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Mis Reservas</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-list>
+        
+        <ion-item *ngFor="let match of listaMatch; let i=index">
+          <ion-grid >
+            <ion-row>
+              <ion-col col-auto>
+                <div>
+                  <h2 class="product-name"> {{team.name}} </h2>
+                  <h3 class="product-name">
+                    <ion-note>Capacidad: </ion-note> {{team.sizeTeam}}
+                  </h3>
+                </div>
+              </ion-col>
+              <ion-col col-auto class="disp">
+                <div *ngIf="available(team)==team.sizeTeam">
+                  <h3 class="product-name">Disponibilidad </h3>
+                  <h3 class="product-name" >
+                    <ion-note color="danger"><ion-icon class="people" name="people"></ion-icon>  {{available(team)}} / {{team.sizeTeam}}</ion-note> 
+                  </h3>
+                </div>
+                <div *ngIf="available(team)!=team.sizeTeam">
+                    <h3 class="product-name">Disponibilidad </h3>
+                    <h3 class="product-name" >
+                      <ion-note color="primary"><ion-icon class="people" name="people"></ion-icon>  {{available(team)}} / {{team.sizeTeam}}</ion-note> 
+                    </h3>
+                  </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+</ion-content>

@@ -25,6 +25,7 @@ export class DetailTeamPage {
   bandLeader: boolean;
   here: boolean;
   originalPlayers: User[];
+  assisTeam: User[];
   constructor(public teamService: TeamServiceProvider,
     public playersService: PlayersServiceProvider,
     public userService: UserServiceProvider,
@@ -59,9 +60,7 @@ export class DetailTeamPage {
     this.team.players = this.playersService.getPlayers();
     console.log(this.team.sizeTeam + 'teamSizexx');
     console.log(this.team.players.length + 'lengthxxx');
-    if (this.team.sizeTeam == this.team.players.length) {
-      this.bandLength = true;
-    }
+    this.getValidAssis();
     for (let i = 0; i < this.team.players.length; i++) {
       if (this.team.players[i].uid == this.user.uid) {
         this.here = true;
@@ -87,6 +86,7 @@ export class DetailTeamPage {
       this.team.players = this.playersService.getPlayers();
       this.bandLength = false;
     }
+    this.getValidAssis();
   }
 
 
@@ -94,7 +94,7 @@ export class DetailTeamPage {
     console.log(this.team.sizeTeam + 'teamSize');
     console.log(this.team.players.length + 'length');
 
-    if (this.team.sizeTeam > this.team.players.length) {
+    if (this.team.sizeTeam > this.assisTeam.length) {
       this.navCtrl.push(PlayersPage, { players: this.team.players });
     }
   }
@@ -114,10 +114,15 @@ export class DetailTeamPage {
           this.team.players[index].state = 2;
           break;
         case 2:
-          this.team.players[index].state = 1;
+          if (!this.bandLength) {
+            this.team.players[index].state = 1;
+          }
+
           break;
         case 3:
-          this.team.players[index].state = 1;
+          if (!this.bandLength) {
+            this.team.players[index].state = 1;
+          }
           break;
       }
     } else {
@@ -145,6 +150,7 @@ export class DetailTeamPage {
         alert.present();
       }
     }
+    this.getValidAssis();
   }
 
 
@@ -170,5 +176,21 @@ export class DetailTeamPage {
     this.playersService.removeAllPlayerstoTeam();
     this.team.players = this.originalPlayers;
     this.viewCtrl.dismiss();
+  }
+
+  private getValidAssis() {
+    this.assisTeam = [];
+    for (let i = 0; i < this.team.players.length; i++) {
+      if (this.team.players[i].state == 1) {
+        this.assisTeam.push(this.team.players[i]);
+      }
+      //this.playersService.addPlayerstoTeam(this.team.players[i]);
+    }
+
+    if (this.team.sizeTeam == this.assisTeam.length) {
+      this.bandLength = true;
+    } else {
+      this.bandLength = false;
+    }
   }
 }

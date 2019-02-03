@@ -9,5 +9,5 @@ export class Match {
     hour?: string;
     field: number;
     team?: Team;
-    assis?: number[];
+    assis?: boolean;// validacion 
 }

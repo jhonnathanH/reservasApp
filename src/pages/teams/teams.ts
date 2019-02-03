@@ -8,12 +8,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController, LoadingController, ModalController } from 'ionic-angular';
 import { PlayersServiceProvider } from '../../providers/players-service/players-service';
 import firebase from 'firebase';
-/**
- * Generated class for the TeamsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-teams',
@@ -32,7 +26,7 @@ export class TeamsPage {
     public toastCrl: ToastController,
     public userService: UserServiceProvider,
     public loadingCtrl: LoadingController,
-    public modalCtrl:ModalController,
+    public modalCtrl: ModalController,
     public teamService: TeamServiceProvider) {
 
 
@@ -133,6 +127,16 @@ export class TeamsPage {
   onCancel(event) {
     console.log(event);
     this.selectSerch = false;
+  }
+
+  available(teamToReserve: Team) {
+    let assisTeam = [];
+    for (let i = 0; i < teamToReserve.players.length; i++) {
+      if (teamToReserve.players[i].state == 1) {
+        assisTeam.push(teamToReserve.players[i]);
+      }
+    }
+    return assisTeam.length
   }
 
   private toastSuccess(valor: string) {

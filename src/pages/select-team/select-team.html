@@ -1,0 +1,61 @@
+<ion-header *ngIf="!ifSelect()">
+
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Tus Equipos</ion-title>
+    <ion-buttons end>
+      <button ion-button clear class="search" color="dark" icon-only (click)="onSearch()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-header *ngIf="ifSelect()">
+  <ion-navbar color="darkColor">
+    <ion-searchbar class="searchbarcus" [animated]="true" [(ngModel)]="searchTerm" [showCancelButton]="true"
+      (ionCancel)="onCancel($event)" (ionInput)="searchTeams()"></ion-searchbar>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-list-header *ngIf="true" text-center>
+      Lista de Equipos
+    </ion-list-header>
+    <ion-item *ngFor="let team of listaTeam; let i=index">
+      <ion-grid (click)="goToReserve(team)">
+        <ion-row>
+          <ion-col col-auto>
+            <div>
+              <h2 class="product-name"> {{team.name}} </h2>
+              <h3 class="product-name">
+                <ion-note>Capacidad: </ion-note> {{team.sizeTeam}}
+              </h3>
+            </div>
+          </ion-col>
+          <ion-col col-auto class="disp">
+            <div *ngIf="available(team)==team.sizeTeam">
+              <h3 class="product-name">Disponibilidad </h3>
+              <h3 class="product-name" >
+                <ion-note color="danger"><ion-icon class="people" name="people"></ion-icon>  {{available(team)}} / {{team.sizeTeam}}</ion-note> 
+              </h3>
+            </div>
+            <div *ngIf="available(team)!=team.sizeTeam">
+                <h3 class="product-name">Disponibilidad </h3>
+                <h3 class="product-name" >
+                  <ion-note color="primary"><ion-icon class="people" name="people"></ion-icon>  {{available(team)}} / {{team.sizeTeam}}</ion-note> 
+                </h3>
+              </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+
+</ion-content>

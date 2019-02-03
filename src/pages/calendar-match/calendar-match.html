@@ -56,17 +56,17 @@
         <ion-note>
           {{match.hour}}
         </ion-note>
-        <div *ngIf="!match.team" class="Disponible" text-center padding>
-          <button ion-button round small clear color="secondary" (click)="reserve(8)">Disponible</button>
+        <div *ngIf="!match.assis" class="Disponible" text-center padding>
+          <button ion-button round small clear color="secondary" (click)="reserve(match.hour)">Disponible</button>
         </div>
-        <div *ngIf="match.team" class="Ocupado" text-center padding>
-          <button ion-button round small clear color="secondary" (click)="reserve(8)">Ocupado</button>
+        <div *ngIf="match.assis" class="Ocupado" text-center padding>
+          <button ion-button round small clear color="danger" (click)="seeReserve(match)">Ocupado</button>
         </div>
       </div>
       <!-- <div class="hour2" padding>
         <ion-note>
           9:00AM - 10:00AM
-        </ion-note>
+        </ion-note>danger
         <div class="Disponible2" text-center padding>
           <button ion-button round small clear color="secondary" (click)="reserve(9)">Disponible</button>
         </div>

@@ -1,13 +1,13 @@
+import { MatchServiceProvider } from './../../providers/match-service/match-service';
+import { SelectTeamPage } from './../select-team/select-team';
+import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Match } from '../../models/match';
+import { ProfilePage } from '../profile/profile';
+import firebase from 'firebase';
+import { User } from '../../models/user';
 
-/**
- * Generated class for the CalendarMatchPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-calendar-match',
@@ -25,10 +25,21 @@ export class CalendarMatchPage {
   dateMatch: any;
   cancha: string;
   reservesMatch: Match[] = [];
-  bandShow:boolean;
+  bandShow: boolean;
   valueMaxDivHour = 14;
+  userProfile: any;
+  user: User;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  listaMatch: Match[] = [];
+  original: Match[];
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public userService: UserServiceProvider,
+    public alertCtrl: AlertController,
+    public matchService: MatchServiceProvider,
+    public loadingCtrl: LoadingController) {
 
     this.cancha = this.navParams.get("cancha");
     console.log(' this.canch> ' + this.cancha);
@@ -36,33 +47,107 @@ export class CalendarMatchPage {
   }
 
   ionViewWillEnter() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.userService.getStoreUser().then(
+          (data) => {
+            this.userProfile = data;
+
+          }
+        );
+      } else {
+        // this.userProfile = null;
+      }
+    });
+
     this.date = new Date();
     this.monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     this.getDaysOfMonth();
+    this.getMacthsByDay();
+  }
+  private getMacthsByDay() {
+    this.reservesMatch = [];
     for (let i = 0; i < this.valueMaxDivHour; i++) {
       let a: Match;
-      let numHourMin=9+i;
-      let numHourMax=10+i;
+      let numHourMin = 9 + i;
+      let numHourMax = 10 + i;
       a = {
         id: i,
+        assis: false,
         day: this.currentDate,
         month: this.currentMonth,
         year: this.currentYear,
         field: Number(this.cancha),
-        hour: numHourMin+':00 - '+numHourMax+':00'
-      }
+        hour: numHourMin + ':00 - ' + numHourMax + ':00'
+      };
       this.reservesMatch.push(a);
     }
   }
+
   selectDate(day: any) {
+    let loadingIni = this.loading('Cargando');
     console.log('currentDay> ' + this.currentDate);
     console.log('dia es> ' + day);
     console.log('mes es> ' + this.currentMonth);
     console.log('año es> ' + this.currentYear);
     this.dateMatch = 'Disponibilidad para el Dia ' + day;
     this.currentDate = day;
+    this.getMacthsByDay();
+    this.checkMatchs();
+    loadingIni.dismiss();
+  }
+  seeReserve(seeMatch: Match) {
+    console.log('verrrr> ');
   }
 
+  checkMatchs() {
+    this.getMatchs();
+
+   
+
+  }
+
+  private filesandcolumns() {
+    for (let j = 0; j < this.listaMatch.length; j++) {
+      // console.log('verrrrj> ' + j);
+      for (let i = 0; i < this.reservesMatch.length; i++) {
+        //console.log('verrrri ' + i);
+        console.log(this.listaMatch[j].day + 'verrrri ' + this.reservesMatch[i].day);
+        if (this.listaMatch[j].day == this.reservesMatch[i].day &&
+          this.listaMatch[j].month == this.reservesMatch[i].month &&
+          this.listaMatch[j].year == this.reservesMatch[i].year &&
+          this.listaMatch[j].hour == this.reservesMatch[i].hour) {
+          console.log(j + 'pass> ' + i);
+          // this.reservesMatch[i] = this.listaMatch[j];
+          this.reservesMatch[i].assis = this.listaMatch[j].assis;
+          console.log('pass> ' + this.reservesMatch[i].assis);
+          //console.log(JSON.stringify(this.reservesMatch[i]));
+        }
+      }
+    }
+  }
+
+  private getMatchs() {
+    this.matchService.getMatchs().subscribe(res => {
+      // ordernar sort
+      // this.res.sort((a1, b1) => new Date(a1.created.toDate()).getTime() - new Date(b1.created.toDate()).getTime());
+      let x = res.sort((n1, n2) => n1.id - n2.id);
+      this.matchService.addMatchStore(x);
+      this.listaMatch = x;
+      this.original = x;
+
+       this.filesandcolumns();
+      //  console.log('ss' + JSON.stringify(this.listaTeam) + 'ss');
+    });
+    if (this.matchService.getMatchsStore()) {
+      console.log('sssACA');
+      let x = this.matchService.getMatchsStore();
+      this.listaMatch = x;
+      this.original = x;
+      this.filesandcolumns();
+    }
+    //console.log('ss' + JSON.stringify(this.listaMatch) + 'ss');
+  }
 
   getDaysOfMonth() {
     this.daysInThisMonth = new Array();
@@ -110,8 +195,17 @@ export class CalendarMatchPage {
     this.date = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0);
     this.getDaysOfMonth();
   }
+  // este metodo servira para buscar si ya esta ocupado.... meterlo en el servicio
+  //   getMovie(id: number): Observable<Movie> {
+  //     return this.getMovies()
+  //     .map(movies => movies.find(movie => movie.id == id));
+  // }
 
-  reserve(reserva: number) {
+  show() {
+    this.bandShow = !this.bandShow;
+  }
+
+  reserve(reserva: string) {
     let matchReserve: Match;
     matchReserve = {
       id: 0,
@@ -119,20 +213,61 @@ export class CalendarMatchPage {
       month: this.currentMonth,
       year: this.currentYear,
       field: Number(this.cancha),
-      hour: reserva.toString()
+      hour: reserva
     }
     console.log('reserva  ' + JSON.stringify(matchReserve));
     //this.navCtrl.push(DetailTeamPage, { team: reserva });
+
+    if (this.userProfile) {
+      console.log('this.usergetUser' + JSON.stringify(this.userProfile));
+      this.navCtrl.push(SelectTeamPage, { matchReserve: matchReserve, user: this.userProfile });
+    } else {
+      const alert = this.alertCtrl.create({
+        title: 'Debe Logearse',
+        subTitle: '¿Esta seguro?',
+        message: 'recuerde, logearse para reservar',
+        buttons:
+          [
+            {
+              text: 'Si, Continuar',
+              handler: () => {
+                console.log('OK');
+
+                this.navCtrl.push(ProfilePage);
+
+              }
+            },
+            {
+              text: 'No',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel cliecked');
+              }
+            }
+          ]
+      });
+      alert.present();
+    }
+  }
+  getUser() {
+    this.userService.getStoreUser()
+      .then(
+        (user: User) => {
+          this.user = user;
+          //
+        }
+      ).catch(
+        err => {
+          console.log(err);
+        });
   }
 
-  // este metodo servira para buscar si ya esta ocupado.... meterlo en el servicio
-  //   getMovie(id: number): Observable<Movie> {
-  //     return this.getMovies()
-  //     .map(movies => movies.find(movie => movie.id == id));
-  // }
-
-  show(){
-    this.bandShow=!this.bandShow;
+  private loading(textLoading: string) {
+    let loading = this.loadingCtrl.create({
+      content: textLoading
+    });
+    loading.present();
+    return loading;
   }
 }
 

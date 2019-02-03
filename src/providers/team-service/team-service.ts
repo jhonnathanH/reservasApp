@@ -41,31 +41,33 @@ export class TeamServiceProvider {
     return this.teamsStore.slice();
   }
 
-
-  addTeam(team: Team) {
-    return this.teams.doc((this.lengthListTeams + 1).toString()).set(team);
+  getTeamByID(uid: string) {
+  
   }
+    addTeam(team: Team) {
+      return this.teams.doc((this.lengthListTeams + 1).toString()).set(team);
+    }
 
-  updateTeam(teamID: number, team: Team) {
-    let a = new Team(team.id,
-      team.name,
-      team.leadUser,
-      team.sizeTeam,
-      team.players);
-    this.listTeams[teamID] = a;
-    console.log("succes load>" + JSON.stringify(this.listTeams));
-    return new Promise<any>((resolve, reject) => {
-      this.afs.collection('teams').doc(teamID.toString()).set({
-        id: team.id,
-        name: team.name,
-        leadUser: team.leadUser,
-        sizeTeam: team.sizeTeam,
-        players: team.players
+    updateTeam(teamID: number, team: Team) {
+      let a = new Team(team.id,
+        team.name,
+        team.leadUser,
+        team.sizeTeam,
+        team.players);
+      this.listTeams[teamID] = a;
+      console.log("succes load>" + JSON.stringify(this.listTeams));
+      return new Promise<any>((resolve, reject) => {
+        this.afs.collection('teams').doc(teamID.toString()).set({
+          id: team.id,
+          name: team.name,
+          leadUser: team.leadUser,
+          sizeTeam: team.sizeTeam,
+          players: team.players
+        })
+          .then(
+            res => resolve(res),
+            err => reject(err)
+          )
       })
-        .then(
-          res => resolve(res),
-          err => reject(err)
-        )
-    })
+    }
   }
-}

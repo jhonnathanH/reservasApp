@@ -74,7 +74,11 @@ export class PlayersPage {
     const position = this.listaUser.findIndex((user: User) => {
       return user.uid == player.uid;
     });
-    this.listaUser.splice(position, 1);
+    console.log("position" + position);
+    if (position >= 0) {
+      this.listaUser.splice(position, 1);
+    }
+    //console.log("listaUser" + (JSON.stringify(this.listaUser)));
   }
 
   ionViewWillEnter() {
