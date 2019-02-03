@@ -33,7 +33,7 @@ export class HomePage {
 
   find() {
     if (this.userProfile) {
-      this.navCtrl.push(HistoryMatchsPage);
+      this.navCtrl.push(HistoryMatchsPage, { user: this.userProfile });
     } else {
       const alert = this.alertCtrl.create({
         title: 'Debe Logearse',

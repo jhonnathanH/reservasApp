@@ -64,6 +64,7 @@ export class CalendarMatchPage {
     this.monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     this.getDaysOfMonth();
     this.getMacthsByDay();
+    this.checkMatchs();
   }
   private getMacthsByDay() {
     this.reservesMatch = [];

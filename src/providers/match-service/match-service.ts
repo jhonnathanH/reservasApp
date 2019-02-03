@@ -48,17 +48,24 @@ export class MatchServiceProvider {
       return this.matchs.doc((this.lengthListMatchs + 1).toString()).set(match);
     }
 
-    updateMatch(matchID: number, team: Match) {
+    updateMatch(matchID: number, match: Match) {
      // let a = new Team(team.id,
      //   team.name,
      //   team.leadUser,
      //   team.sizeTeam,
      //   team.players);
      //----- this.listMatchs[teamID] = a;
-      console.log("succes load>" + JSON.stringify(this.listMatchs));
+      console.log("succes load>" + JSON.stringify(match));
       return new Promise<any>((resolve, reject) => {
-        this.afs.collection('teams').doc(matchID.toString()).set({
-
+        this.afs.collection('matchs').doc(matchID.toString()).set({
+          id: match.id,
+          day: match.day,
+          month: match.month,
+          year: match.year,
+          hour: match.hour,
+          field: match.field,
+          team: match.team,
+          assis:match.assis
         })
           .then(
             res => resolve(res),

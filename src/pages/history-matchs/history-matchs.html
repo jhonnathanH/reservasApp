@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar>
     <ion-title>Mis Reservas</ion-title>
@@ -9,35 +8,39 @@
 
 <ion-content padding>
 
-    <ion-list>
-        
-        <ion-item *ngFor="let match of listaMatch; let i=index">
-          <ion-grid >
-            <ion-row>
-              <ion-col col-auto>
-                <div>
-                  <h2 class="product-name"> {{team.name}} </h2>
-                  <h3 class="product-name">
-                    <ion-note>Capacidad: </ion-note> {{team.sizeTeam}}
-                  </h3>
-                </div>
-              </ion-col>
-              <ion-col col-auto class="disp">
-                <div *ngIf="available(team)==team.sizeTeam">
-                  <h3 class="product-name">Disponibilidad </h3>
-                  <h3 class="product-name" >
-                    <ion-note color="danger"><ion-icon class="people" name="people"></ion-icon>  {{available(team)}} / {{team.sizeTeam}}</ion-note> 
-                  </h3>
-                </div>
-                <div *ngIf="available(team)!=team.sizeTeam">
-                    <h3 class="product-name">Disponibilidad </h3>
-                    <h3 class="product-name" >
-                      <ion-note color="primary"><ion-icon class="people" name="people"></ion-icon>  {{available(team)}} / {{team.sizeTeam}}</ion-note> 
-                    </h3>
-                  </div>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
-      </ion-list>
+  <ion-list>
+
+    <ion-item *ngFor="let match of listaMatch; let i=index">
+      <ion-grid class="hour">
+        <ion-row>
+          <ion-col col-6>
+            <div  >
+              <h4>{{match.day}} de {{match.month}} del {{match.year}} </h4>
+              <ion-note>
+                {{match.hour}}  <h5 class="h5can"> Cancha {{match.field}}</h5>
+              </ion-note>
+            </div>
+          </ion-col>
+          <ion-col col-6>
+
+            <h5 class="product-name">{{match.team.name}}</h5>
+            <h3 class="product-name">
+              <ion-note class="dis" color="lightColor">
+                <ion-icon class="people" name="people"></ion-icon> {{available(match.team)}} / {{match.team.sizeTeam}}
+              </ion-note>
+            </h3>
+          </ion-col>
+        </ion-row>
+        <div *ngIf="match.assis" class="Disponible" text-center >
+            <button ion-button round small outline color="danger" (click)="cancelMatch(match)">Cancelar Reserva</button>
+          </div>
+          <div *ngIf="!match.assis" class="Disponible" text-center >
+              <ion-note color="danger">
+                  Rerva Cancelada
+                </ion-note>
+            </div>
+      </ion-grid>
+      
+    </ion-item>
+  </ion-list>
 </ion-content>
