@@ -33,27 +33,34 @@ export class DetailTeamPage {
     private viewCtrl: ViewController,
     public alertCtrl: AlertController,
     public navParams: NavParams) {
-
+    this.user = this.navParams.get("user");
     this.team = this.navParams.get("team");
+    if (this.user.uid == this.team.leadUser.uid) {
+      this.bandLeader = true;
+    }
     if (this.team != null) {
       this.originalPlayers = this.team.players;
       for (let i = 0; i < this.team.players.length; i++) {
+        if (this.team.players[i].uid == this.user.uid) {
+          console.log(this.user.name + 'userX');
+          this.here = true;
+        }
         this.playersService.addPlayerstoTeam(this.team.players[i]);
       }
     }
 
-    this.userService.getStoreUser()
-      .then(
-        (user: User) => {
-          this.user = user;
-          if (this.user.uid == this.team.leadUser.uid) {
-            this.bandLeader = true;
-          }
-        }
-      ).catch(
-        err => {
-          console.log(err);
-        });
+    // this.userService.getStoreUser()
+    //   .then(
+    //     (user: User) => {
+    //       this.user = user;
+    //       if (this.user.uid == this.team.leadUser.uid) {
+    //         this.bandLeader = true;
+    //       }
+    //     }
+    //   ).catch(
+    //     err => {
+    //       console.log(err);
+    //     });
   }
 
   ionViewWillEnter() {

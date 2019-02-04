@@ -98,8 +98,36 @@ export class TeamsPage {
   goToDetail(team: Team) {
     this.playersService.removeAllPlayerstoTeam();
     //this.navCtrl.push(DetailTeamPage, { team: team });
-    const modal = this.modalCtrl.create(DetailTeamPage, { team: team });
-    modal.present();
+    if (this.userProfile) {
+      const modal = this.modalCtrl.create(DetailTeamPage, { team: team, user: this.userProfile });
+      modal.present();
+
+    } else {
+      const alert = this.alertCtrl.create({
+        title: 'Debe Logearse',
+        subTitle: '¿Esta seguro?',
+        message: 'recuerde, logearse para ver los equipos y jugadores',
+        buttons:
+          [
+            {
+              text: 'Si, Continuar',
+              handler: () => {
+                console.log('OK');
+                this.navCtrl.push(ProfilePage);
+
+              }
+            },
+            {
+              text: 'No',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel cliecked');
+              }
+            }
+          ]
+      });
+      alert.present();
+    }
   }
 
   searchTeams() {
