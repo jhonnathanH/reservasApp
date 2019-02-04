@@ -3,9 +3,10 @@ import { TeamServiceProvider } from './../../providers/team-service/team-service
 import { PlayersPage } from './../players/players';
 import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ViewController, Platform, ToastController } from 'ionic-angular';
 import { Team } from '../../models/team';
 import { User } from '../../models/user';
+import { OneSignal } from '@ionic-native/onesignal';
 
 /**
  * Generated class for the DetailTeamPage page.
@@ -32,6 +33,9 @@ export class DetailTeamPage {
     public navCtrl: NavController,
     private viewCtrl: ViewController,
     public alertCtrl: AlertController,
+    public platform: Platform,
+    public oneSignal: OneSignal,
+    public toastCrl: ToastController,
     public navParams: NavParams) {
     this.user = this.navParams.get("user");
     this.team = this.navParams.get("team");
@@ -110,6 +114,7 @@ export class DetailTeamPage {
     this.playersService.removeAllPlayerstoTeam();
     this.updateTeam();
     this.navCtrl.pop();
+    this.sendpush();
   }
 
   changeState(index: number) {
@@ -199,5 +204,39 @@ export class DetailTeamPage {
     } else {
       this.bandLength = false;
     }
+  }
+
+  //TODO PARA PUSH NOTIFICATION
+  sendpush() {
+    for (let i = 0; i < this.team.players.length; i++) {
+      let reciever_ID = this.team.players[i].deviceID;
+      ///Push The Notification
+      if (this.platform.is('cordova')) {
+        let notificationObj: any = {
+          include_player_ids: reciever_ID,
+          contents: { en: "Hello, This Is My First Notification With Onesignal" },
+        };
+
+        this.oneSignal.postNotification(notificationObj).then(success => {
+          console.log("Notification Post Success:", success);
+        }, error => {
+          console.log(error);
+          alert("Notification Post Failed:\n" + JSON.stringify(error));
+        });
+
+      }
+
+    }
+
+
+  }
+
+  private toastSuccess(valor: string) {
+    const toast = this.toastCrl.create({
+      message: valor,
+      duration: 1500,
+      position: 'bottom'
+    });
+    toast.present();
   }
 }

@@ -1,3 +1,4 @@
+import { OneSignal } from '@ionic-native/onesignal';
 import { ProfilePage } from './../pages/profile/profile';
 import { FieldsPage } from './../pages/fields/fields';
 import { TeamsPage } from './../pages/teams/teams';
@@ -21,6 +22,7 @@ export class MyApp {
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
+    private oneSignal: OneSignal,
     public alertCtrl: AlertController) {
     this.initializeApp();
 
@@ -42,7 +44,7 @@ export class MyApp {
       //this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#0031ca');
       this.splashScreen.hide();
-      
+      this.handlerNotifications();
       this.platform.registerBackButtonAction(() => {
         // if (this.ifOpenMenu) {
         //   this.menuCtrl.close();
@@ -55,6 +57,22 @@ export class MyApp {
         }
       });
     });
+  }
+  private handlerNotifications(){
+    this.oneSignal.startInit('30992fe4-bc5a-4666-9a20-bb7f822940d2', '416991332199');
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
+    this.oneSignal.setSubscription(true);
+    this.oneSignal.handleNotificationOpened()
+    .subscribe(jsonData => {
+      let alert = this.alertCtrl.create({
+        title: jsonData.notification.payload.title,
+        subTitle: jsonData.notification.payload.body,
+        buttons: ['OK']
+      });
+      alert.present();
+      console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    });
+    this.oneSignal.endInit();
   }
 
   openPage(page) {

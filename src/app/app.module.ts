@@ -26,7 +26,7 @@ import { PlayersPage } from '../pages/players/players';
 import { PlayersServiceProvider } from '../providers/players-service/players-service';
 import { SelectTeamPage } from '../pages/select-team/select-team';
 import { MatchServiceProvider } from '../providers/match-service/match-service';
-
+import { OneSignal } from '@ionic-native/onesignal';
 //config firebase 
 export const firebaseConfig = {
   apiKey: "AIzaSyBQkYH5YbaqfcM3SO-N-CH6SXKNaTTrf1Y",
@@ -84,7 +84,9 @@ export const firebaseConfig = {
     TeamServiceProvider,
     GooglePlus,
     PlayersServiceProvider,
-    MatchServiceProvider
+    MatchServiceProvider,
+    OneSignal
+    
   ]
 })
 export class AppModule {}

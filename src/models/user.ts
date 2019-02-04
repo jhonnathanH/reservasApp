@@ -3,6 +3,7 @@ export class User {
     uid: string;
     email: string;
     photoURL?: string;
-    state?:number;
+    state?: number;
+    deviceID?: string;
 
 }

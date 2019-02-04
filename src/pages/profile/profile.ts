@@ -7,6 +7,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import firebase from 'firebase';
 import { NgForm } from '@angular/forms';
+import { OneSignal } from '@ionic-native/onesignal';
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html',
@@ -22,6 +23,7 @@ export class ProfilePage {
     public toastCrl: ToastController,
     public alertCtrl: AlertController,
     public platform: Platform,
+    public oneSignal: OneSignal,
     public loadingCtrl: LoadingController) {
     //console.log(JSON.stringify(this.userService.getStoreUser()) + 'constructor');
     this.userService.getStoreUser().then(
@@ -59,6 +61,7 @@ export class ProfilePage {
           uid: v.uid,
           email: v.email,
           photoURL: v.photoURL,
+          deviceID: '123456789'
         };
         console.log("ddffff" + a);
         return this.userService.addUser(a).then(() => {
@@ -66,10 +69,9 @@ export class ProfilePage {
           this.userProfile = a;
           this.toastSuccess();
         });
-      })
-      .catch(console.log);
-
+      }).catch(console.log);
   }
+
   nativeGoogleLogin() {
     let a: User;
     console.log("11111");
@@ -81,16 +83,21 @@ export class ProfilePage {
           email: v.email,
           photoURL: v.photoURL,
         };
-        return this.userService.addUser(a).then(() => {
-          this.userService.storeUser(a);
-          this.userProfile = a;
-           this.toastSuccess();
+        return this.oneSignal.getIds().then(success => {
+          //Update  the database with onesignal_ID
+          a.deviceID = success.userId
+          this.userService.addUser(a).then(() => {
+            this.userService.storeUser(a);
+            this.userProfile = a;
+            this.toastSuccess();
+          });
         });
       })
       .catch(console.log);
   }
 
   onSingin(form: NgForm) {
+    let a: User;
     console.log('este' + form.value);
     const loading = this.loadingCtrl.create({
       content: 'Logeando...'
@@ -99,7 +106,7 @@ export class ProfilePage {
 
     this.auth.signin(form.value.email, form.value.password)
       .then(data => {
-        let a = {
+        a = {
           name: form.value.name,
           uid: data.user.uid,
           email: form.value.email,
@@ -107,10 +114,14 @@ export class ProfilePage {
         };
         console.log(JSON.stringify(data) + 'signin');
         loading.dismiss();
-        return this.userService.addUser(a).then(() => {
-          this.userService.storeUser(a);
-          this.userProfile = a;
-          this.toastSuccess();
+        return this.oneSignal.getIds().then(success => {
+          //Update  the database with onesignal_ID
+          a.deviceID = success.userId;
+          this.userService.addUser(a).then(() => {
+            this.userService.storeUser(a);
+            this.userProfile = a;
+            this.toastSuccess();
+          });
         });
       })
       //.catch(error => console.log(error));
@@ -120,6 +131,7 @@ export class ProfilePage {
       });
   }
   onSingup(form: NgForm) {
+    let a: User;
     console.log(form.value);
     const loading = this.loadingCtrl.create({
       content: 'Logeando...'
@@ -128,7 +140,7 @@ export class ProfilePage {
 
     this.auth.signup(form.value.email, form.value.password)
       .then(data => {
-        let a = {
+        a = {
           name: form.value.name,
           uid: data.user.uid,
           email: form.value.email,
@@ -138,10 +150,14 @@ export class ProfilePage {
         console.log('bienvenido+');
         console.log(JSON.stringify(data) + 'signup');
 
-        return this.userService.addUser(a).then(() => {
-          this.userService.storeUser(a);
-          this.userProfile = a;
-          this.toastSuccess();
+        return this.oneSignal.getIds().then(success => {
+          //Update  the database with onesignal_ID
+          a.deviceID = success.userId;
+          this.userService.addUser(a).then(() => {
+            this.userService.storeUser(a);
+            this.userProfile = a;
+            this.toastSuccess();
+          });
         });
       })
       .catch(error => {
@@ -160,7 +176,12 @@ export class ProfilePage {
 
   doGoogleLogin() {
     if (this.platform.is('cordova')) {
+      const loading = this.loadingCtrl.create({
+        content: 'Logeando...'
+      });
+      loading.present();
       this.nativeGoogleLogin();
+      loading.dismiss();
     } else {
       this.popoverGmailLogin()
     }
