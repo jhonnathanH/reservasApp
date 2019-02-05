@@ -144,10 +144,11 @@ export class DetailTeamPage {
           case 1:
             console.log(index + '22222');
             this.team.players[index].state = 2;
+            this.sendpushByID(this.team.leadUser.deviceID,this.user.name);
             break;
           case 2:
             this.team.players[index].state = 3;
-            this.sendpushByID(this.team.leadUser.deviceID);
+            this.sendpushByID(this.team.leadUser.deviceID,this.user.name);
             break;
           case 3:
             this.team.players[index].state = 2;
@@ -183,7 +184,7 @@ export class DetailTeamPage {
     this.team.players = this.playersService.getPlayers();
     this.updateTeam();
     this.here = true;
-    this.sendpushByID(this.team.leadUser.deviceID);
+    this.sendpushByID(this.team.leadUser.deviceID,this.user.name);
   }
 
   cancel() {
@@ -216,7 +217,7 @@ export class DetailTeamPage {
       if (this.platform.is('cordova')) {
         let notificationObj: any = {
           include_player_ids: [reciever_ID],
-          contents: { en: "Hay actualizaciones en el equipo: " + this.team.name +" dirígete a <<Equipos>>"},
+          contents: { en: "Hay actualizaciones en el equipo: " + this.team.name + " dirígete a <<Equipos>>" },
         };
 
         this.oneSignal.postNotification(notificationObj).then(success => {
@@ -229,13 +230,13 @@ export class DetailTeamPage {
       }
     }
   }
-  sendpushByID(id: string) {
+  sendpushByID(id: string, name: string) {
     let reciever_ID = id;
     ///Push The Notification
     if (this.platform.is('cordova')) {
       let notificationObj: any = {
         include_player_ids: [reciever_ID],
-        contents: { en: "Hay actualizaciones en el equipo: " + this.team.name },
+        contents: { en: "Hay actualizaciones en el equipo: " + this.team.name + ' por parte de ' + name },
       };
       this.oneSignal.postNotification(notificationObj).then(success => {
         console.log("Notification Post Success:", success);
