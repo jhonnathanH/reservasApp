@@ -32,8 +32,6 @@ export class TeamsPage {
 
     this.teamService.getTeams().subscribe(res => {
       let loadingIni = this.loading('Cargando');
-      console.log('00' + JSON.stringify(res[0].name) + '00');
-      console.log('ss' + JSON.stringify(res) + 'ss');
       // ordernar sort
       // this.res.sort((a1, b1) => new Date(a1.created.toDate()).getTime() - new Date(b1.created.toDate()).getTime());
       let x = res.sort((n1, n2) => n1.id - n2.id);
