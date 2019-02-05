@@ -1,0 +1,62 @@
+<!--
+  Generated template for the TeamReservePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Reserva del Equipo {{team.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-list-header text-center *ngIf="true">
+      Jugadores
+      <div text-center>
+        <ion-note>Capacidad Maxima de {{team.sizeTeam}} jugadores</ion-note>
+      </div>
+    </ion-list-header>
+      <ion-item *ngFor="let player of team.players; let i=index">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-2>
+              <ion-avatar item-left>
+                <div *ngIf="!player?.photoURL">
+                  <img src="assets/imgs/noPhoto.png" />
+                </div>
+                <div *ngIf="player?.photoURL">
+                  <img [src]="player?.photoURL">
+                </div>
+              </ion-avatar>
+            </ion-col>
+            <ion-col col-7>
+              <h2 class="nom">{{ player?.name }} <ion-note *ngIf="i==0" text-right> Lider</ion-note> </h2>
+              <ion-note class="nom">{{ player?.email }}</ion-note>
+            </ion-col>
+            <ion-col col-2>
+              <ion-buttons right *ngIf="player?.state===1">
+                <button  ion-button class="estate" color="secondary"  clear icon-only >
+                  <ion-icon name="checkmark-circle"></ion-icon>
+                </button>
+              </ion-buttons >
+              <ion-buttons right *ngIf="player?.state===2">
+                  <button  ion-button  class="estate" color="danger"  clear icon-only >
+                    <ion-icon name="close-circle"></ion-icon>
+                  </button>
+                </ion-buttons >
+                <ion-buttons right *ngIf="player?.state===3">
+                    <button  ion-button  class="estate" color="lightColor"  clear icon-only >
+                      <ion-icon name="hand"></ion-icon>
+                    </button>
+                  </ion-buttons >
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      
+  </ion-list>
+  
+</ion-content>

@@ -4,6 +4,7 @@ import { NavController, NavParams, ToastController, LoadingController } from 'io
 import { User } from '../../models/user';
 import { Match } from '../../models/match';
 import { Team } from '../../models/team';
+import { TeamReservePage } from '../team-reserve/team-reserve';
 
 /**
  * Generated class for the HistoryMatchsPage page.
@@ -96,6 +97,10 @@ export class HistoryMatchsPage {
   cancelMatch(macth: Match) {
     macth.assis = false;
     this.matchService.updateMatch(macth.id, macth);
+  }
+
+  seeTeam(team: Team) {
+    this.navCtrl.push(TeamReservePage, { team: team });
   }
 
 }

@@ -53,6 +53,10 @@ export class ProfilePage {
 
   popoverGmailLogin() {
     let a: User;
+    const loading = this.loadingCtrl.create({
+      content: 'Iniciando...'
+    });
+    loading.present();
     this.auth.loginWithGoogle()
       .then((v) => {
         console.log("dtttdffff" + v.uid);
@@ -64,17 +68,25 @@ export class ProfilePage {
           deviceID: '123456789'
         };
         console.log("ddffff" + a);
+        loading.dismiss();
         return this.userService.addUser(a).then(() => {
           this.userService.storeUser(a);
           this.userProfile = a;
           this.toastSuccess();
         });
-      }).catch(console.log);
+      }).catch(error => {
+        loading.dismiss();
+        this.showError(error + "singin");
+      });
   }
 
   nativeGoogleLogin() {
     let a: User;
     console.log("11111");
+    const loading = this.loadingCtrl.create({
+      content: 'Iniciando...'
+    });
+    loading.present();
     this.auth.loginWithGoogleNative()
       .then((v) => {
         a = {
@@ -83,6 +95,8 @@ export class ProfilePage {
           email: v.email,
           photoURL: v.photoURL,
         };
+
+        loading.dismiss();
         return this.oneSignal.getIds().then(success => {
           //Update  the database with onesignal_ID
           a.deviceID = success.userId
@@ -93,14 +107,17 @@ export class ProfilePage {
           });
         });
       })
-      .catch(console.log);
+      .catch(error => {
+        loading.dismiss();
+        this.showError(error + "singin");
+      });
   }
 
   onSingin(form: NgForm) {
     let a: User;
     console.log('este' + form.value);
     const loading = this.loadingCtrl.create({
-      content: 'Logeando...'
+      content: 'Iniciando...'
     });
     loading.present();
 
@@ -124,7 +141,6 @@ export class ProfilePage {
           });
         });
       })
-      //.catch(error => console.log(error));
       .catch(error => {
         loading.dismiss();
         this.showError(error + "singin");
@@ -134,7 +150,7 @@ export class ProfilePage {
     let a: User;
     console.log(form.value);
     const loading = this.loadingCtrl.create({
-      content: 'Logeando...'
+      content: 'Iniciando...'
     });
     loading.present();
 
@@ -176,12 +192,7 @@ export class ProfilePage {
 
   doGoogleLogin() {
     if (this.platform.is('cordova')) {
-      const loading = this.loadingCtrl.create({
-        content: 'Logeando...'
-      });
-      loading.present();
       this.nativeGoogleLogin();
-      loading.dismiss();
     } else {
       this.popoverGmailLogin()
     }

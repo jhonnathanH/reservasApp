@@ -27,6 +27,7 @@ import { PlayersServiceProvider } from '../providers/players-service/players-ser
 import { SelectTeamPage } from '../pages/select-team/select-team';
 import { MatchServiceProvider } from '../providers/match-service/match-service';
 import { OneSignal } from '@ionic-native/onesignal';
+import { TeamReservePage } from '../pages/team-reserve/team-reserve';
 //config firebase 
 export const firebaseConfig = {
   apiKey: "AIzaSyBQkYH5YbaqfcM3SO-N-CH6SXKNaTTrf1Y",
@@ -49,7 +50,8 @@ export const firebaseConfig = {
     DetailTeamPage,
     PlayersPage,
     SelectTeamPage,
-    HistoryMatchsPage
+    HistoryMatchsPage,
+    TeamReservePage
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ export const firebaseConfig = {
     DetailTeamPage,
     PlayersPage,
     SelectTeamPage,
-    HistoryMatchsPage
+    HistoryMatchsPage,
+    TeamReservePage
     ],
   providers: [
     StatusBar,

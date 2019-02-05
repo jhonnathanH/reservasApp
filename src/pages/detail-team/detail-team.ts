@@ -147,6 +147,7 @@ export class DetailTeamPage {
             break;
           case 2:
             this.team.players[index].state = 3;
+            this.sendpushByID(this.team.leadUser.deviceID);
             break;
           case 3:
             this.team.players[index].state = 2;
@@ -182,6 +183,7 @@ export class DetailTeamPage {
     this.team.players = this.playersService.getPlayers();
     this.updateTeam();
     this.here = true;
+    this.sendpushByID(this.team.leadUser.deviceID);
   }
 
   cancel() {
@@ -208,27 +210,41 @@ export class DetailTeamPage {
 
   //TODO PARA PUSH NOTIFICATION
   sendpush() {
-    for (let i = 0; i < this.team.players.length; i++) {
+    for (let i = 1; i < this.team.players.length; i++) {
       let reciever_ID = this.team.players[i].deviceID;
       ///Push The Notification
       if (this.platform.is('cordova')) {
         let notificationObj: any = {
-          include_player_ids: reciever_ID,
-          contents: { en: "Hello, This Is My First Notification With Onesignal" },
+          include_player_ids: [reciever_ID],
+          contents: { en: "Hay actualizaciones en el equipo: " + this.team.name +" dirígete a <<Equipos>>"},
         };
 
         this.oneSignal.postNotification(notificationObj).then(success => {
           console.log("Notification Post Success:", success);
+          this.toastSuccess('Se envio notificaciones a los jugadores');
         }, error => {
           console.log(error);
           alert("Notification Post Failed:\n" + JSON.stringify(error));
         });
-
       }
-
     }
-
-
+  }
+  sendpushByID(id: string) {
+    let reciever_ID = id;
+    ///Push The Notification
+    if (this.platform.is('cordova')) {
+      let notificationObj: any = {
+        include_player_ids: [reciever_ID],
+        contents: { en: "Hay actualizaciones en el equipo: " + this.team.name },
+      };
+      this.oneSignal.postNotification(notificationObj).then(success => {
+        console.log("Notification Post Success:", success);
+        this.toastSuccess('Se envio la notificación al Lider');
+      }, error => {
+        console.log(error);
+        alert("Notification Post Failed:\n" + JSON.stringify(error));
+      });
+    }
   }
 
   private toastSuccess(valor: string) {

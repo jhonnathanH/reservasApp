@@ -9,7 +9,7 @@
 <ng-template #other_content>other content here...</ng-template>
 
 -->
-    <ion-title>{{team.name}}</ion-title>
+    <ion-title text-center>{{team.name}}</ion-title>
 
   </ion-navbar>
 </ion-header>
@@ -51,7 +51,7 @@
               </ion-avatar>
             </ion-col>
             <ion-col col-7>
-              <h2 class="nom">{{ player?.name }}</h2>
+              <h2 class="nom">{{ player?.name }} <ion-note *ngIf="i==0" text-right> Lider</ion-note> </h2>
               <ion-note class="nom">{{ player?.email }}</ion-note>
             </ion-col>
             <ion-col col-2>

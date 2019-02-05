@@ -29,10 +29,11 @@
                 <ion-icon class="people" name="people"></ion-icon> {{available(match.team)}} / {{match.team.sizeTeam}}
               </ion-note>
             </h3>
+             <button ion-button round small clear  class="seeTeam" color="secondary" (click)="seeTeam(match.team)">Ver</button>
           </ion-col>
         </ion-row>
         <div *ngIf="match.assis" class="Disponible" text-center >
-            <button ion-button round small outline color="danger" (click)="cancelMatch(match)">Cancelar Reserva</button>
+            <button end ion-button round small outline color="danger" (click)="cancelMatch(match)">Cancelar Reserva</button>
           </div>
           <div *ngIf="!match.assis" class="Disponible" text-center >
               <ion-note color="danger">
