@@ -3,7 +3,7 @@ import { ProfilePage } from './../pages/profile/profile';
 import { FieldsPage } from './../pages/fields/fields';
 import { TeamsPage } from './../pages/teams/teams';
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController } from 'ionic-angular';
+import { Nav, Platform, AlertController, ViewController, App, MenuController, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -17,12 +17,17 @@ export class MyApp {
 
   rootPage: any = HomePage;
   activePage: any;
+  ifOpenMenu: boolean;
+  ifCloseMenu: boolean;
   pages: Array<{ title: string, icon: string, component: any }>;
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private oneSignal: OneSignal,
+    public app: App,
+    public toastCtrl: ToastController,
+    public menuCtrl: MenuController,
     public alertCtrl: AlertController) {
     this.initializeApp();
 
@@ -47,17 +52,46 @@ export class MyApp {
       if (this.platform.is('cordova')) {
         this.handlerNotifications();
       }
-      this.platform.registerBackButtonAction(() => {
-        // if (this.ifOpenMenu) {
-        //   this.menuCtrl.close();
-        //   return;
-        // }
-        if (this.nav.canGoBack()) {
-          this.nav.pop();
-        } else {
-          this.showAlert();
-        }
-      });
+      // this.platform.registerBackButtonAction(() => {
+      // if (this.ifOpenMenu) {
+      //   this.menuCtrl.close();
+      //   return;
+      // }
+      //   if (this.nav.canGoBack()) {
+      //   this.nav.pop();
+      //  } else {
+      //   this.showAlert();
+      //  }
+      // });
+      var lastTimeBackPress = 0;
+      var timePeriodToExit = 2000;
+      // this.platform.registerBackButtonAction(() => {
+      //   if (this.ifOpenMenu) {
+      //     this.menuCtrl.close();
+      //     return;
+      //   }
+      //   let view = this.nav.getActive();
+      //   if (view.component.name == "HomePage") {
+      //     //Double check to exit app                  
+      //     if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+      //       this.platform.exitApp(); //Exit from app
+      //     } else {
+      //       let toast = this.toastCtrl.create({
+      //         message: 'Press back again to exit App',
+      //         duration: 3000,
+      //         position: 'bottom'
+      //       });
+      //       toast.present();
+      //       lastTimeBackPress = new Date().getTime();
+      //     }
+      //   } else if (view.component.name == "ProfilePage") {
+      //     // go to previous page
+      //     this.nav.pop();
+      //   }
+      //   else {
+      //     this.nav.pop({});
+      //   }
+      // });
     });
   }
   private handlerNotifications() {
@@ -81,6 +115,17 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  menuOpened() {
+    this.ifOpenMenu = true;
+    this.ifCloseMenu = false;
+    console.log(this.ifOpenMenu);
+  }
+  menuClose() {
+    this.ifCloseMenu = true;
+    this.ifOpenMenu = false;
+    console.log(this.ifCloseMenu + 's');
   }
 
   public checkActivePage(page): boolean {

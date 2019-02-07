@@ -1,3 +1,4 @@
+import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { MatchServiceProvider } from './../../providers/match-service/match-service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
@@ -19,6 +20,7 @@ import { TeamReservePage } from '../team-reserve/team-reserve';
 })
 export class HistoryMatchsPage {
   user: User;
+  teamSearch: Team;
   listaMatch: Match[] = [];
   original: Match[];
   searchTerm: string = '';
@@ -28,9 +30,10 @@ export class HistoryMatchsPage {
     public navParams: NavParams,
     public toastCrl: ToastController,
     public loadingCtrl: LoadingController,
+    public playersService: PlayersServiceProvider,
     public matchService: MatchServiceProvider) {
     this.user = this.navParams.get("user");
-
+    this.teamSearch = this.navParams.get("teamSearch");
 
     this.matchService.getMatchs().subscribe(res => {
       let loadingIni = this.loading('Cargando');
@@ -38,7 +41,12 @@ export class HistoryMatchsPage {
       // this.res.sort((a1, b1) => new Date(a1.created.toDate()).getTime() - new Date(b1.created.toDate()).getTime());
       let x = res.sort((n1, n2) => n1.id - n2.id);
       this.matchService.addMatchStore(x);
-      x = this.getMatchByID(this.user, x);
+      if (this.user != null) {
+        x = this.getMatchByID(this.user, x);
+      }
+      if (this.teamSearch != null) {
+        x = this.getMatchByTeamID(this.teamSearch, x);
+      }
       this.listaMatch = x;
       this.original = x;
       //save Team
@@ -46,9 +54,14 @@ export class HistoryMatchsPage {
       //  console.log('ss' + JSON.stringify(this.listaTeam) + 'ss');
     });
     if (this.matchService.getMatchsStore()) {
-      console.log('sssACA');
+
       let x = this.matchService.getMatchsStore();
-      x = this.getMatchByID(this.user, x);
+      if (this.user != null) {
+        x = this.getMatchByID(this.user, x);
+      }
+      if (this.teamSearch != null) {
+        x = this.getMatchByTeamID(this.teamSearch, x);
+      }
       this.listaMatch = x;
       this.original = x;
       this.toastSuccess('Equipos Cargados');
@@ -58,9 +71,19 @@ export class HistoryMatchsPage {
   getMatchByID(user: User, xList: Match[]) {
     let newX: Match[] = [];
     for (let i = 0; i < xList.length; i++) {
-      console.log('useruid' + user.uid);
-      console.log('xList[i].leadUser.uid' + xList[i]);
       if (user.uid == xList[i].team.leadUser.uid) {
+        newX.push(xList[i])
+      }
+    }
+    return newX;
+  }
+
+  getMatchByTeamID(team: Team, xList: Match[]) {
+    console.log('team aca ' + team.name);
+    let newX: Match[] = [];
+    for (let i = 0; i < xList.length; i++) {
+      console.log('team acaFOr ' + xList[i].team.name);
+      if (team.id == xList[i].team.id) {
         newX.push(xList[i])
       }
     }
@@ -94,13 +117,14 @@ export class HistoryMatchsPage {
     return loading;
   }
 
-  cancelMatch(macth: Match) {
-    macth.assis = false;
-    this.matchService.updateMatch(macth.id, macth);
+  cancelMatch(match: Match) {
+    this.playersService.removeAllPlayerstoTeam();
+    match.assis = false;
+    this.matchService.updateMatch(match.id, match);
   }
 
-  seeTeam(team: Team) {
-    this.navCtrl.push(TeamReservePage, { team: team });
+  seeTeam(match: Match) {
+    this.navCtrl.push(TeamReservePage, { team: match.team, match: match });
   }
 
 }

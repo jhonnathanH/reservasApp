@@ -1,4 +1,7 @@
-<ion-menu [content]="content" class="my-sidemenu" type="push" side="left">
+<ion-menu [content]="content" 
+(ionOpen)="menuOpened()" 
+(ionClose)="menuClose()" 
+           class="my-sidemenu" type="push" side="left">
     <ion-header>
       <ion-toolbar>
         <ion-title>Menu</ion-title>

@@ -20,9 +20,9 @@ export class TeamServiceProvider {
       .map(actions => {
         return actions.map(item => {
           const data = item.payload.doc.data() as Team;
-          console.log('team' + data);
-          console.log('team2' +  JSON.stringify(data));
-          console.log('this.listaNormalTeam' + JSON.stringify(this.listTeams));
+         // console.log('team' + data);
+          //console.log('team2' +  JSON.stringify(data));
+          //console.log('this.listaNormalTeam' + JSON.stringify(this.listTeams));
           this.lengthListTeams = actions.length;
           //     const id = item.payload.doc.id;
           return { ...data };

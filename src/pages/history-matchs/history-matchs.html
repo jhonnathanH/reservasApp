@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Mis Reservas</ion-title>
+    <ion-title> Reservas</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -29,15 +29,15 @@
                 <ion-icon class="people" name="people"></ion-icon> {{available(match.team)}} / {{match.team.sizeTeam}}
               </ion-note>
             </h3>
-             <button ion-button round small clear  class="seeTeam" color="secondary" (click)="seeTeam(match.team)">Ver</button>
+             <button ion-button round small clear  class="seeTeam" color="secondary" (click)="seeTeam(match)">Ver</button>
           </ion-col>
         </ion-row>
-        <div *ngIf="match.assis" class="Disponible" text-center >
+        <div *ngIf="match.assis && user" class="Disponible" text-center >
             <button end ion-button round small outline color="danger" (click)="cancelMatch(match)">Cancelar Reserva</button>
           </div>
           <div *ngIf="!match.assis" class="Disponible" text-center >
               <ion-note color="danger">
-                  Rerva Cancelada
+                  Rerserva Cancelada
                 </ion-note>
             </div>
       </ion-grid>

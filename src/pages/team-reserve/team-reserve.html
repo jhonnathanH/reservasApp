@@ -12,14 +12,29 @@
 </ion-header>
 
 <ion-content padding>
+
+  <ion-fab *ngIf="!bandLength && bandLeader" class="addButtonfab" right bottom>
+    <button ion-fab mini class="addButton" round icon-only (click)="addPlayer()">
+      <ion-icon color="light" name="md-add"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <ion-fab  class="addButtonfab" left bottom>
+      <button ion-fab mini class="addButton" round icon-only (click)="cancel()">
+        <ion-icon color="light" name="arrow-round-back"></ion-icon>
+      </button>
+    </ion-fab>
+
   <ion-list>
     <ion-list-header text-center *ngIf="true">
       Jugadores
       <div text-center>
         <ion-note>Capacidad Maxima de {{team.sizeTeam}} jugadores</ion-note>
       </div>
+
     </ion-list-header>
-      <ion-item *ngFor="let player of team.players; let i=index">
+    <ion-item-sliding *ngFor="let player of team.players; let i=index">
+      <ion-item>
         <ion-grid>
           <ion-row>
             <ion-col col-2>
@@ -38,17 +53,17 @@
             </ion-col>
             <ion-col col-2>
               <ion-buttons right *ngIf="player?.state===1">
-                <button  ion-button class="estate" color="secondary"  clear icon-only >
+                <button  ion-button class="estate" color="secondary"  clear icon-only (click)="changeState(i)">
                   <ion-icon name="checkmark-circle"></ion-icon>
                 </button>
               </ion-buttons >
               <ion-buttons right *ngIf="player?.state===2">
-                  <button  ion-button  class="estate" color="danger"  clear icon-only >
+                  <button  ion-button  class="estate" color="danger"  clear icon-only (click)="changeState(i)">
                     <ion-icon name="close-circle"></ion-icon>
                   </button>
                 </ion-buttons >
                 <ion-buttons right *ngIf="player?.state===3">
-                    <button  ion-button  class="estate" color="lightColor"  clear icon-only >
+                    <button  ion-button  class="estate" color="lightColor"  clear icon-only (click)="changeState(i)">
                       <ion-icon name="hand"></ion-icon>
                     </button>
                   </ion-buttons >
@@ -56,7 +71,22 @@
           </ion-row>
         </ion-grid>
       </ion-item>
-      
+      <ion-item-options side="right">
+        <button ion-button color="danger" small clear icon-only (click)="removePlayer(i)">
+          <ion-icon name="md-trash"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item-options side="left">
+        <button ion-button color="danger" small clear icon-only (click)="removePlayer(i)">
+          <ion-icon name="md-trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+    <ion-item *ngIf="!bandLength && !bandLeader && !here">
+      <button ion-button color="secondary"  block round outline (click)="askAdd()">Solicitar Entrar </button>
+    </ion-item>
   </ion-list>
-  
+  <div text-center *ngIf="bandLeader">
+    <button ion-button small round color="secondary" (click)="update()">Actualizar</button>
+  </div>
 </ion-content>

@@ -3,7 +3,7 @@ import { TeamServiceProvider } from './../../providers/team-service/team-service
 import { PlayersPage } from './../players/players';
 import { PlayersServiceProvider } from './../../providers/players-service/players-service';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ViewController, Platform, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Platform, ToastController } from 'ionic-angular';
 import { Team } from '../../models/team';
 import { User } from '../../models/user';
 import { OneSignal } from '@ionic-native/onesignal';
@@ -31,7 +31,6 @@ export class DetailTeamPage {
     public playersService: PlayersServiceProvider,
     public userService: UserServiceProvider,
     public navCtrl: NavController,
-    private viewCtrl: ViewController,
     public alertCtrl: AlertController,
     public platform: Platform,
     public oneSignal: OneSignal,
@@ -144,11 +143,11 @@ export class DetailTeamPage {
           case 1:
             console.log(index + '22222');
             this.team.players[index].state = 2;
-            this.sendpushByID(this.team.leadUser.deviceID,this.user.name);
+            this.sendpushByID(this.team.leadUser.deviceID, this.user.name, ' cancelo la asistencia ');
             break;
           case 2:
             this.team.players[index].state = 3;
-            this.sendpushByID(this.team.leadUser.deviceID,this.user.name);
+            this.sendpushByID(this.team.leadUser.deviceID, this.user.name, ' solicito unirse ');
             break;
           case 3:
             this.team.players[index].state = 2;
@@ -184,13 +183,13 @@ export class DetailTeamPage {
     this.team.players = this.playersService.getPlayers();
     this.updateTeam();
     this.here = true;
-    this.sendpushByID(this.team.leadUser.deviceID,this.user.name);
+    this.sendpushByID(this.team.leadUser.deviceID, this.user.name, ' solicito unirse ');
   }
 
   cancel() {
     this.playersService.removeAllPlayerstoTeam();
     this.team.players = this.originalPlayers;
-    this.viewCtrl.dismiss();
+    this.navCtrl.pop();
   }
 
   private getValidAssis() {
@@ -217,7 +216,7 @@ export class DetailTeamPage {
       if (this.platform.is('cordova')) {
         let notificationObj: any = {
           include_player_ids: [reciever_ID],
-          contents: { en: "Hay actualizaciones en el equipo: " + this.team.name + " dirígete a <<Equipos>>" },
+          contents: { en: this.team.leadUser.name + ' te ha invitado/actualizo ' + this.team.name },
         };
 
         this.oneSignal.postNotification(notificationObj).then(success => {
@@ -230,13 +229,13 @@ export class DetailTeamPage {
       }
     }
   }
-  sendpushByID(id: string, name: string) {
+  sendpushByID(id: string, name: string, msg: string) {
     let reciever_ID = id;
     ///Push The Notification
     if (this.platform.is('cordova')) {
       let notificationObj: any = {
         include_player_ids: [reciever_ID],
-        contents: { en: "Hay actualizaciones en el equipo: " + this.team.name + ' por parte de ' + name },
+        contents: { en: name + msg + ' al equipo ' + this.team.name },
       };
       this.oneSignal.postNotification(notificationObj).then(success => {
         console.log("Notification Post Success:", success);

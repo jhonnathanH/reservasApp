@@ -39,8 +39,8 @@
           Lista de Equipos
         </ion-list-header>
         <ion-item *ngFor="let team of listaTeam; let i=index">
-          <ion-grid (click)="goToDetail(team)">
-              <ion-row>
+          <ion-grid >
+              <ion-row (click)="goToDetail(team)">
                   <ion-col col-auto>
                     <div>
                       <h2 class="product-name"> {{team.name}} </h2>
@@ -64,6 +64,9 @@
                       </div>
                   </ion-col>
                 </ion-row>
+                <div *ngIf="sizeMatch(team.nextMatch)" class="Disponible" text-center >
+                  <button end ion-button round small outline color="secondary" (click)="seeMatchs(team.nextMatch,i)">Proximo Partido {{seeDay(team.nextMatch)}}</button>
+                </div>
           </ion-grid>
         </ion-item>
       </ion-list>
