@@ -124,6 +124,7 @@ export class HistoryMatchsPage {
   }
 
   seeTeam(match: Match) {
+    this.playersService.removeAllPlayerstoTeam();
     this.navCtrl.push(TeamReservePage, { team: match.team, match: match });
   }
 
