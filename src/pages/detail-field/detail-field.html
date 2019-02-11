@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title text-center>{{field.fieldName}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content  padding>
+  <ion-card>
+
+    <img *ngIf="!bandSee" src="assets/imgs/cancha1.jpg">
+    <agm-map *ngIf="bandSee && bandField" [latitude]="field.location.lat" [longitude]="field.location.lng" [zoom]="12">
+      <agm-marker [latitude]="field.location.lat" [longitude]="field.location.lng" [label]="field.fieldName"></agm-marker>
+    </agm-map>
+    <ion-fab right top>
+      <button ion-fab  (click)="seeMap()">
+        <ion-icon name="pin"></ion-icon>
+      </button>
+    </ion-fab>
+
+    <ion-item>
+      <ion-icon name="football" item-start large></ion-icon>
+      <h2>{{field.addres}}</h2>
+      <p>{{field.city}}</p>
+      <p>{{field.town}}</p>
+      
+      <ion-note>{{field.phone}}</ion-note>
+    </ion-item>
+
+    <ion-item>
+      <!-- <span item-start>18 min</span>
+      <span item-start>(2.6 mi)</span> -->
+      <button ion-button icon-start clear item-center (click)="goToCalendar(field.id)">
+        <ion-icon name="navigate"></ion-icon>
+        Reservar Partido
+      </button>
+    </ion-item>
+
+  </ion-card>
+</ion-content>

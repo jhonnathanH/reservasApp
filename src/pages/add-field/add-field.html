@@ -1,0 +1,115 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+    <!-- <ion-buttons left>
+     <button 
+          ion-button 
+          clear
+          color="dark" 
+          icon-only 
+         navPop>
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+  </ion-buttons> -->
+    <ion-title>Añadir Campo</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="todo"  (ngSubmit)="onAddItem()">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Nombre</ion-label>
+        <ion-input 
+                  type="text" 
+                  formControlName="fieldName"
+                  required
+                   ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Ubicación</ion-label>
+        <ion-input 
+                  type="text" 
+                  formControlName="addres"
+                  required
+                   ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Provincia</ion-label>
+        <ion-input 
+                  type="text" 
+                  formControlName="town"
+                  required
+                   ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Ciudad</ion-label>
+        <ion-input 
+                  type="text" 
+                  formControlName="city"
+                  required
+                   ></ion-input>
+      </ion-item>
+    <!-- <ion-item>
+        <ion-label floating>Horarios</ion-label>
+        <ion-input 
+                  type="text" 
+                  formControlName="hours"
+                  required
+                   ></ion-input>
+      </ion-item>-->
+      <ion-item>
+        <ion-label floating>Telefono</ion-label>
+        <ion-input 
+                 type="number" 
+                 formControlName="phone"
+                 required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Capacidad</ion-label>
+        <ion-input 
+                 type="number" 
+                 formControlName="sizeField"
+                 required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Bufet</ion-label>
+        <ion-input 
+                  type="text" 
+                  formControlName="bufet"
+                  required
+                   ></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button
+            ion-button
+            block
+            outline
+            type="button"
+            icon-left small
+            (click)="onLocate()">
+            <ion-icon name="locate"></ion-icon>
+            Ubic. Actual
+          </button>
+        </ion-col>
+        <ion-col>
+          <button
+            ion-button
+            block
+            outline small
+            type="button"
+            icon-left
+            (click)="onOpenMap()">
+            <ion-icon name="map"></ion-icon>
+            Seleccionar Ubic.
+          </button>
+        </ion-col> 
+       </ion-row>
+      </ion-grid>
+    <button ion-button type="submit" block [disabled]="!todo.valid">Crear Cancha</button>
+  </form>
+</ion-content>

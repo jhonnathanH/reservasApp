@@ -1,27 +1,86 @@
 
-<ion-header>
+<ion-header *ngIf="!ifSelect()">
 
   <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Canchas</ion-title>
+    <ion-title>Equipos</ion-title>
     <ion-buttons end>
-      <button 
-            ion-button 
-            clear
-            class="search" 
-            color="dark" 
-            icon-only 
-            (click)="onSearch()">
+      <button ion-button clear class="search" color="dark" icon-only (click)="onSearch()">
         <ion-icon name="search"></ion-icon>
       </button>
+      <button ion-button clear class="more" color="dark" icon-only (click)="onShowOptions($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
     </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-header *ngIf="ifSelect()">
+  <ion-navbar color="darkColor">
+    <ion-searchbar 
+    class="searchbarcus" 
+    [animated]="true" 
+    [(ngModel)]="searchTerm" 
+    [showCancelButton]="true"
+    (ionCancel)="onCancel($event)"
+    (ionInput)="searchTeams()"></ion-searchbar>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content padding>
+<ion-content *ngIf="!bandSeeMap" padding>
+  <agm-map [zoom]="zoomValue" [latitude]="lat" [longitude]="lng">
+    <agm-marker [latitude]="-35.568667" [longitude]="-58.475005"></agm-marker>´
+    <agm-marker [latitude]="-34.679764" [longitude]="-58.397630" [label]="'Cancha 1'"></agm-marker>
+  </agm-map>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-2>
+        <button ion-button clear class="more" color="dark" icon-only (click)="goBackField()">
+          <ion-icon name="arrow-dropleft"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-8>
+        <button ion-button block small class="search" color="primary" (click)="zoomField()">
+          Buscar cancha
+        </button>
+      </ion-col>
+      <ion-col col-2>
+        <button ion-button clear class="more" color="dark" icon-only (click)="goForwardField()">
+          <ion-icon name="arrow-dropright"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+
+<ion-content *ngIf="bandSeeMap" padding>
+  <ion-list>
+    <ion-list-header *ngIf="true" text-center>
+      Lista de Canchas
+    </ion-list-header>
+    <ion-item *ngFor="let field of listaField; let i=index">
+      <ion-grid>
+        <ion-row (click)="goToDetail(field)">
+          <ion-col col-auto>
+            <div>
+              <h2 class="product-name"> {{field.fieldName}} </h2>
+              <h3 class="product-name">
+                <ion-note>Ubicacion: </ion-note> {{field.addres}}
+              </h3>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+<ion-content *ngIf="false" padding>
   <ion-card>
 
     <img src="assets/imgs/cancha1.jpg">
@@ -30,19 +89,19 @@
         <ion-icon name="pin"></ion-icon>
       </button>
     </ion-fab>
-  
+
     <ion-item>
       <ion-icon name="football" item-start large></ion-icon>
       <h2>Cancha N°1</h2>
       <p>calle 1, avenida 1, Cod 1</p>
     </ion-item>
-  
+
     <!-- <ion-item>
       <ion-icon name="wine" item-start large ></ion-icon>
       <h2>Institute of Fine Cocktails</h2>
       <p>14 S. Hop Avenue, Madison, WI 53703</p>
     </ion-item> -->
-  
+
     <ion-item>
       <!-- <span item-start>18 min</span>
       <span item-start>(2.6 mi)</span> -->
@@ -51,7 +110,7 @@
         Reservar Partido
       </button>
     </ion-item>
-  
+
   </ion-card>
   <ion-card>
 
@@ -61,19 +120,19 @@
         <ion-icon name="pin"></ion-icon>
       </button>
     </ion-fab>
-  
+
     <ion-item>
       <ion-icon name="football" item-start large></ion-icon>
       <h2>Cancha N°2</h2>
       <p>calle 2, avenida 1, Cod2</p>
     </ion-item>
-  
+
     <!-- <ion-item>
       <ion-icon name="wine" item-start large ></ion-icon>
       <h2>Institute of Fine Cocktails</h2>
       <p>14 S. Hop Avenue, Madison, WI 53703</p>
     </ion-item> -->
-  
+
     <ion-item>
       <!-- <span item-start>18 min</span>
       <span item-start>(2.6 mi)</span> -->
@@ -82,7 +141,7 @@
         Reservar Partido
       </button>
     </ion-item>
-  
+
   </ion-card>
   <ion-card>
 
@@ -92,19 +151,19 @@
         <ion-icon name="pin"></ion-icon>
       </button>
     </ion-fab>
-  
+
     <ion-item>
       <ion-icon name="football" item-start large></ion-icon>
       <h2>Cancha N°3</h2>
       <p>calle 3, avenida 3, Cod 3</p>
     </ion-item>
-  
+
     <!-- <ion-item>
       <ion-icon name="wine" item-start large ></ion-icon>
       <h2>Institute of Fine Cocktails</h2>
       <p>14 S. Hop Avenue, Madison, WI 53703</p>
     </ion-item> -->
-  
+
     <ion-item>
       <!-- <span item-start>18 min</span>
       <span item-start>(2.6 mi)</span> -->
@@ -113,6 +172,6 @@
         Reservar Partido
       </button>
     </ion-item>
-  
+
   </ion-card>
 </ion-content>

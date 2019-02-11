@@ -7,6 +7,7 @@ import { Match } from '../../models/match';
 import { ProfilePage } from '../profile/profile';
 import firebase from 'firebase';
 import { User } from '../../models/user';
+import { Field } from '../../models/field';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class CalendarMatchPage {
   valueMaxDivHour = 14;
   userProfile: any;
   user: User;
-
+  field: Field;
   listaMatch: Match[] = [];
   original: Match[];
 
@@ -42,7 +43,8 @@ export class CalendarMatchPage {
     public loadingCtrl: LoadingController) {
 
     this.cancha = this.navParams.get("cancha");
-    console.log(' this.canch> ' + this.cancha);
+    this.field = this.navParams.get("field");
+    console.log(' this.field> ' + this.field);
 
   }
 
@@ -78,7 +80,7 @@ export class CalendarMatchPage {
         day: this.currentDate,
         month: this.currentMonth,
         year: this.currentYear,
-        field: Number(this.cancha),
+        field: this.field,
         hour: numHourMin + ':00 - ' + numHourMax + ':00'
       };
       this.reservesMatch.push(a);
@@ -104,7 +106,7 @@ export class CalendarMatchPage {
   checkMatchs() {
     this.getMatchs();
 
-   
+
 
   }
 
@@ -137,7 +139,7 @@ export class CalendarMatchPage {
       this.listaMatch = x;
       this.original = x;
 
-       this.filesandcolumns();
+      this.filesandcolumns();
       //  console.log('ss' + JSON.stringify(this.listaTeam) + 'ss');
     });
     if (this.matchService.getMatchsStore()) {
@@ -213,7 +215,7 @@ export class CalendarMatchPage {
       day: this.currentDate,
       month: this.currentMonth,
       year: this.currentYear,
-      field: Number(this.cancha),
+      field: this.field,
       hour: reserva
     }
     console.log('reserva  ' + JSON.stringify(matchReserve));

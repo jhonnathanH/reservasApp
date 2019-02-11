@@ -1,4 +1,5 @@
 import { Team } from "./team";
+import { Field } from "./field";
 
 export class Match {
     id: number;
@@ -7,7 +8,7 @@ export class Match {
     month: string;
     year: string;
     hour?: string;
-    field: number;
+    field: Field;
     team?: Team;
     assis?: boolean;// validacion 
 }
