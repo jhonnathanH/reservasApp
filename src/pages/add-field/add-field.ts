@@ -1,3 +1,4 @@
+import { ImagePicker } from '@ionic-native/image-picker';
 import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { FieldsPage } from './../fields/fields';
 import { FieldServiceProvider } from './../../providers/field-service/field-service';
@@ -9,13 +10,9 @@ import { User } from '../../models/user';
 import { ProfilePage } from '../profile/profile';
 import { SetLocationPage } from '../set-location/set-location';
 import { LocationField } from '../../models/locationField';
-
-/**
- * Generated class for the AddFieldPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { SetHoursPage } from '../set-hours/set-hours';
+import { normalizeURL } from 'ionic-angular';
+import { FirebaseImageServiceProvider } from '../../providers/firebase-image-service/firebase-image-service';
 
 @Component({
   selector: 'page-add-field',
@@ -26,7 +23,9 @@ export class AddFieldPage {
   user: User;
   location: LocationField;
   locationIsSet: boolean;
-
+  hours: string[];
+  bandHours: boolean;
+  nroImage = 1;
   constructor(public navCtrl: NavController,
     public appCtrl: App,
     public alertCtrl: AlertController,
@@ -34,7 +33,11 @@ export class AddFieldPage {
     public userService: UserServiceProvider,
     private formBuilder: FormBuilder,
     public modalCtrl: ModalController,
+    public imagePicker: ImagePicker,
+    public firebaseImageService: FirebaseImageServiceProvider,
     public navParams: NavParams) {
+
+
 
     this.userService.getStoreUser()
       .then(
@@ -59,7 +62,7 @@ export class AddFieldPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddFieldPage');
+    console.log('ionViewDidLoad length' + this.fieldService.lengthListFields);
   }
 
   onOpenMap() {
@@ -81,6 +84,21 @@ export class AddFieldPage {
     );
   }
 
+  getHours() {
+
+    const modal = this.modalCtrl.create(SetHoursPage);
+    modal.present();
+    modal.onDidDismiss(
+      data => {
+        if (data) {
+          this.hours = data.hours;
+          this.bandHours = true;
+          console.log('hours hours' + JSON.stringify(this.hours));
+        }
+      }
+    );
+
+  }
   onLocate() {
 
   }
@@ -113,10 +131,66 @@ export class AddFieldPage {
       alert.present();
       return;
     }
+    if (!this.bandHours) {
+      const alert = this.alertCtrl.create({
+        title: 'No selecciono Horaios',
+        subTitle: 'no hay horarios seleccionado',
+        message: 'por favor ingrese valores',
+        buttons:
+          [
+            {
+              text: 'Si, Continuar',
+              handler: () => {
+                console.log('OK');
+                this.getHours();
+              }
+            },
+            {
+              text: 'No',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel cliecked');
+              }
+            }
+          ]
+      });
+      alert.present();
+      return;
+    }
+    if (this.location == null) {
+      this.location = {
+        lat: -34.9964963,
+        lng: -64.9672817
+      };
+      const alert = this.alertCtrl.create({
+        title: 'No selecciono ubicacion',
+        message: 'prosegir sin ubicacion',
+        buttons:
+          [
+            {
+              text: 'Si, Continuar',
+              handler: () => {
+                console.log('OK');
+                this.onOpenMap();
+              }
+            },
+            {
+              text: 'No',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel cliecked');
+
+              }
+            }
+          ]
+      });
+      alert.present();
+      return;
+    }
     console.log('ffffpp' + this.todo.value.categoria);
     let a = {
-      lat:this.location.lat,
-      lng:this.location.lng
+      lat: this.location.lat,
+      lng: this.location.lng
     }
     let newField: Field;
     newField = {
@@ -128,11 +202,15 @@ export class AddFieldPage {
       sizeField: this.todo.value.sizeField,
       phone: this.todo.value.phone,
       userCreate: this.user,
-      location : a
+      hours: this.hours,
+      countImages:this.nroImage
+    }
+    if (a.lat != null) {
+      newField.location = a;
     }
     if (this.locationIsSet) {
       console.log('location true');
-     
+
     }
 
     this.fieldService.addField(newField)
@@ -148,5 +226,61 @@ export class AddFieldPage {
     // const modal = this.modalCtrl.create(OrderPage, { customer: customer , order: null, index: null });
   }
 
+  getImages() {
+    this.imagePicker.hasReadPermission().then(
+      (result) => {
+        if (result == false) {
+          // no callbacks required as this opens a popup which returns async
+          this.imagePicker.requestReadPermission();
+        }
+        else if (result == true) {
+          this.imagePicker.getPictures({
+            maximumImagesCount: 1
+          }).then(
+            (results) => {
+              for (var i = 0; i < results.length; i++) {
+                this.uploadImageToFirebase(results[i]);
+              }
+            }, (err) => console.log(err)
+          );
+        }
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  uploadImageToFirebase(image) {
+    image = normalizeURL(image);
+
+    //uploads img to firebase storage
+    this.firebaseImageService.uploadImage(image, this.fieldService.lengthListFields + 1, this.nroImage)
+      .then(photoURL => {
+        this.nroImage = this.nroImage + 1;
+        const alert = this.alertCtrl.create({
+          title: 'Seleccionar Imagenes',
+          message: 'Agregar otra imagen',
+          buttons:
+            [
+              {
+                text: 'Si, Continuar',
+                handler: () => {
+                  console.log('OK');
+                  this.getImages();
+                }
+              },
+              {
+                text: 'No',
+                role: 'cancel',
+                handler: () => {
+                  console.log('Cancel cliecked');
+
+                }
+              }
+            ]
+        });
+        alert.present();
+        return;
+      })
+  }
 
 }

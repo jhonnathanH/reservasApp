@@ -24,6 +24,7 @@ export class TeamsPage {
   original: Team[];
   listaMatch: Match[] = [];
   originalM: Match[];
+  teamName: string;
   constructor(public playersService: PlayersServiceProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -85,6 +86,12 @@ export class TeamsPage {
       };
       //console.log('matchs' + JSON.stringify(this.listaMatch) + 'ss');
     }
+    this.teamName = this.navParams.get("teamName");
+    if (this.teamName != null) {
+      this.searchTerm = this.teamName;
+      this.searchTeams();
+    }
+
   }
 
   getMatchByID(teamSearch: Team, xList: Match[]) {

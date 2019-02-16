@@ -1,9 +1,10 @@
+import { UserServiceProvider } from './../providers/user-service/user-service';
 import { ViewController } from 'ionic-angular';
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'page-popover-maps-option',
-    template: `
+  selector: 'page-popover-maps-option',
+  template: `
                  <ion-grid>
                     <ion-row>
                       <ion-col class="custom-popover">
@@ -14,7 +15,7 @@ import { Component } from '@angular/core';
                     </ion-row>
                     <ion-row>
                       <ion-col class="custom-popover">
-                        <button ion-button full small clear  (click)="onAction('create')">
+                        <button *ngIf="bandRoot" ion-button full small clear  (click)="onAction('create')">
                            Crear Canchas
                         </button>
                       </ion-col>
@@ -24,10 +25,20 @@ import { Component } from '@angular/core';
 })
 
 export class PopOverMapsPage {
-    constructor(private viewCtrl: ViewController) {
-    }
+  bandRoot: boolean;
+  constructor(private viewCtrl: ViewController,
+    public userService: UserServiceProvider) {
+    this.userService.getStoreRoot().then(
+      (band: boolean) => {
+        this.bandRoot = band;
+      }
+    ).catch(
+      err => {
+        console.log(err);
+      });
+  }
 
-    onAction(option: string) {
-        this.viewCtrl.dismiss({action:option});
-    }
+  onAction(option: string) {
+    this.viewCtrl.dismiss({ action: option });
+  }
 }

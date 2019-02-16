@@ -31,4 +31,6 @@ export class SetLocationPage {
   onAbort() {
     this.viewCtrl.dismiss();
   }
+
+  
 }

@@ -70,10 +70,10 @@ export class CalendarMatchPage {
   }
   private getMacthsByDay() {
     this.reservesMatch = [];
+    this.valueMaxDivHour = this.field.hours.length;
     for (let i = 0; i < this.valueMaxDivHour; i++) {
       let a: Match;
-      let numHourMin = 9 + i;
-      let numHourMax = 10 + i;
+    
       a = {
         id: i,
         assis: false,
@@ -81,7 +81,7 @@ export class CalendarMatchPage {
         month: this.currentMonth,
         year: this.currentYear,
         field: this.field,
-        hour: numHourMin + ':00 - ' + numHourMax + ':00'
+        hour: this.field.hours[i]
       };
       this.reservesMatch.push(a);
     }

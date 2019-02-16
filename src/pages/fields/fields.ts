@@ -26,9 +26,11 @@ export class FieldsPage {
   lat: number = -34.9964963;
   lng: number = -64.9672817;
   zoomValue = 5;
-
+  indexList = 0;
   listaField: Field[] = [];
   original: Field[];
+  bandValid: boolean;
+  firstFieldName: string = '';
   constructor(public navCtrl: NavController,
     public fieldService: FieldServiceProvider,
     public toastCrl: ToastController,
@@ -36,7 +38,6 @@ export class FieldsPage {
     public loadingCtrl: LoadingController,
     public popoverCtrl: PopoverController,
     public navParams: NavParams) {
-
 
     this.fieldService.getField().subscribe(res => {
       let loadingIni = this.loading('Cargando');
@@ -49,7 +50,10 @@ export class FieldsPage {
       this.original = x;
       //save Team
       loadingIni.dismiss();
-      //  console.log('ss' + JSON.stringify(this.listaTeam) + 'ss');
+      if (this.listaField.length > 0) {
+        this.bandValid = true;
+        this.firstFieldName = this.listaField[this.indexList].fieldName;
+      }
     });
     if (this.fieldService.getFieldStore()) {
       console.log('sssACA');
@@ -58,7 +62,13 @@ export class FieldsPage {
       //toddoooooo metodo para ver las reservasssssss
       this.original = x;
       this.toastSuccess('Equipos Cargados');
+      if (this.listaField.length > 0) {
+        this.bandValid = true;
+        this.firstFieldName = this.listaField[this.indexList].fieldName;
+      }
     }
+
+
   }
 
   ionViewDidLoad() {
@@ -90,10 +100,50 @@ export class FieldsPage {
   }
 
   zoomField() {
-    this.zoomValue = 16;
-    this.lat = -34.679764;
-    this.lng = -58.397630;
+    if (this.bandValid) {
+      this.zoomValue = 16;
+      this.lat = this.listaField[this.indexList].location.lat;
+      this.lng = this.listaField[this.indexList].location.lng;
+      console.log(this.lat + ',' + this.lng);
+      this.firstFieldName = this.listaField[this.indexList].fieldName;
+    }
+  }
 
+  outField() {
+    if (this.bandValid) {
+      this.zoomValue = 5;
+    }
+  }
+
+  goBackField() {
+    if (this.bandValid) {
+      console.log('this.listaField.length' + this.listaField.length);
+      console.log('this.indexList' + this.indexList);
+      if (this.listaField.length < (1 - this.indexList + this.listaField.length)) {
+        this.indexList = this.listaField.length + this.indexList - 1;
+      } else {
+        this.indexList = this.indexList - 1;
+      }
+      this.lat = this.listaField[this.indexList].location.lat;
+      this.lng = this.listaField[this.indexList].location.lng;
+      console.log(this.lat + ',' + this.lng);
+      this.firstFieldName = this.listaField[this.indexList].fieldName;
+    }
+  }
+  goForwardField() {
+    if (this.bandValid) {
+      console.log('this.listaField.length' + this.listaField.length);
+      console.log('this.indexList' + this.indexList);
+      if (this.listaField.length > (this.indexList + 1)) {
+        this.indexList = this.indexList + 1;
+      } else {
+        this.indexList = 0;
+      }
+      this.lat = this.listaField[this.indexList].location.lat;
+      this.lng = this.listaField[this.indexList].location.lng;
+      console.log(this.lat + ',' + this.lng);
+      this.firstFieldName = this.listaField[this.indexList].fieldName;
+    }
   }
 
   searchTeams() {

@@ -72,4 +72,29 @@ export class UserServiceProvider {
     this.storage.remove('storeUser');
   }
 
+  storeRoot() {
+
+    this.storage.set('storeRoot', true)
+      .then(
+        data => { }
+      )
+      .catch(
+        err => {
+          console.log(err);
+        }
+      );
+  }
+
+
+  getStoreRoot() {
+    return this.storage.get('storeRoot')
+      .then(
+        (band: boolean) => {
+          return band;
+        }
+      ).catch(
+        //toast
+        err => console.log(err)
+      );
+  }
 }

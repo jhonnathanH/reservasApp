@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar  color="primary">
+    <ion-title>Selecciona el Horario</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item *ngFor="let hour of hoursTotal; let i=index">
+    <button ion-button  block *ngIf="hour.valid" (click)="setFalse(hour,i)"  color="secondary" padding>
+      <h3>
+        {{hour.time}}
+      </h3>
+    </button>
+    <button ion-button block *ngIf="!hour.valid" (click)="setFalse(hour,i)" color="danger" class="hour" padding>
+      <h3>
+        {{hour.time}}
+      </h3>
+    </button>
+
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button block color="secondary" (click)="onConfirm()">Confirmar</button>
+      </ion-col>
+      <ion-col>
+        <button ion-button block color="danger" (click)="onAbort()">Abortar</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

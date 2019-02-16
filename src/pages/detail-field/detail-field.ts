@@ -1,3 +1,4 @@
+import { FirebaseImageServiceProvider } from './../../providers/firebase-image-service/firebase-image-service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Field } from '../../models/field';
@@ -18,7 +19,10 @@ export class DetailFieldPage {
   field: Field;
   bandSee: boolean;
   bandField: boolean;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  images = [];
+  constructor(public navCtrl: NavController,
+    public firebaseImage: FirebaseImageServiceProvider,
+    public navParams: NavParams) {
 
     this.field = this.navParams.get("field");
     if (this.field.location != null) {
@@ -27,8 +31,10 @@ export class DetailFieldPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DetailFieldPage');
+    this.images = this.firebaseImage.downLoadImage(this.field.id, this.field.countImages);
+    console.log('this.image' + JSON.stringify(this.images));
   }
+
 
   goToCalendar(nomCancha: string) {
     console.log('nomCancha' + this.field.fieldName);

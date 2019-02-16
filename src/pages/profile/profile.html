@@ -39,6 +39,13 @@
       <h5 color="primary">Nombre <ion-note>{{ userProfile?.name }}</ion-note></h5>
       <h5 color="primary">Email <ion-note>{{ userProfile?.email }}</ion-note></h5>
     </div>
+
+    <div text-center *ngIf="!bandRoot">
+      <button padding icon-start ion-button round small color="light" (click)="root()">
+        <ion-icon left name="md-key"></ion-icon>
+        Administrador
+      </button>
+    </div>
   </div>
 
 

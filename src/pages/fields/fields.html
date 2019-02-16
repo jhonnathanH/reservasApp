@@ -1,11 +1,10 @@
-
 <ion-header *ngIf="!ifSelect()">
 
   <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Equipos</ion-title>
+    <ion-title>Canchas</ion-title>
     <ion-buttons end>
       <button ion-button clear class="search" color="dark" icon-only (click)="onSearch()">
         <ion-icon name="search"></ion-icon>
@@ -19,21 +18,16 @@
 </ion-header>
 <ion-header *ngIf="ifSelect()">
   <ion-navbar color="darkColor">
-    <ion-searchbar 
-    class="searchbarcus" 
-    [animated]="true" 
-    [(ngModel)]="searchTerm" 
-    [showCancelButton]="true"
-    (ionCancel)="onCancel($event)"
-    (ionInput)="searchTeams()"></ion-searchbar>
+    <ion-searchbar class="searchbarcus" [animated]="true" [(ngModel)]="searchTerm" [showCancelButton]="true"
+      (ionCancel)="onCancel($event)" (ionInput)="searchTeams()"></ion-searchbar>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content *ngIf="!bandSeeMap" padding>
   <agm-map [zoom]="zoomValue" [latitude]="lat" [longitude]="lng">
-    <agm-marker [latitude]="-35.568667" [longitude]="-58.475005"></agm-marker>´
-    <agm-marker [latitude]="-34.679764" [longitude]="-58.397630" [label]="'Cancha 1'"></agm-marker>
+    <agm-marker *ngFor="let field of listaField; let i=index" [latitude]="field?.location.lat" [longitude]="field?.location.lng"
+      [label]="field.fieldName"></agm-marker>
   </agm-map>
 
   <ion-grid>
@@ -45,7 +39,7 @@
       </ion-col>
       <ion-col col-8>
         <button ion-button block small class="search" color="primary" (click)="zoomField()">
-          Buscar cancha
+          Zoom {{firstFieldName}}
         </button>
       </ion-col>
       <ion-col col-2>
@@ -54,6 +48,12 @@
         </button>
       </ion-col>
     </ion-row>
+
+      <div  text-center>
+        <button *ngIf="zoomValue>10"  small outline ion-button round   color="danger" (click)="outField()">
+          Alejar Zoom
+        </button>
+      </div>
   </ion-grid>
 
 </ion-content>

@@ -14,6 +14,8 @@ import { OneSignal } from '@ionic-native/onesignal';
 })
 export class ProfilePage {
   userProfile: any = null;
+  adminPassword = 1234;
+  bandRoot: boolean;
   // xuser$: any;
   constructor(public navCtrl: NavController,
     // private afAuth: AngularFireAuth,///
@@ -200,6 +202,62 @@ export class ProfilePage {
 
   upPhoto() {
 
+  }
+  root() {
+    const rootPass = this.alertCtrl.create({
+      title: 'Ingrese la Clave',
+      inputs: [
+        {
+          name: 'password',
+          placeholder: 'Password',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Login',
+          handler: data => {
+            if (data.password.trim() == '' || data.password == null) {
+              const toast = this.toastCrl.create({
+                message: 'por favor, ingrese una clave',
+                duration: 2000,
+                position: 'bottom'
+              });
+              toast.present();
+              return;
+            } else {
+              if (this.adminPassword == data.password.trim()
+                || this.adminPassword == data.password) {
+                const toast = this.toastCrl.create({
+                  message: 'Bienvenido Admin',
+                  duration: 1500,
+                  position: 'bottom'
+                });
+                toast.present();
+                this.userService.storeRoot();
+                this.bandRoot=true;
+                return;
+              }
+              const toast = this.toastCrl.create({
+                message: ' ¡Clave invalida!',
+                duration: 1500,
+                position: 'bottom'
+              });
+              toast.present();
+              return;
+            }
+          }
+        }
+      ]
+    });
+    rootPass.present();
   }
 
 

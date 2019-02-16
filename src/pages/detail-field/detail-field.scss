@@ -3,7 +3,10 @@ page-detail-field {
     agm-map {
         height: 300px;
       }
-      img{
+      img,ion-slides{
         height: 300px;
+      }
+      ion-title{
+            margin-left: -21px !important;
       }
 }

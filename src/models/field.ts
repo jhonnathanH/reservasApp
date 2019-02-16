@@ -7,10 +7,11 @@ export class Field {
   town: string;
   city: string;
   phone: number;
-  //  hours: number;
+  hours: string[];
   bufet?: string;
   sizeField: number;
   userCreate: User;
+  countImages?: number;
   location?: {
     lat: number;
     lng: number;

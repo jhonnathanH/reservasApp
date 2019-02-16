@@ -35,6 +35,10 @@ import { AddFieldPage } from '../pages/add-field/add-field';
 import { FieldServiceProvider } from '../providers/field-service/field-service';
 import { DetailFieldPage } from '../pages/detail-field/detail-field';
 import { SetLocationPage } from '../pages/set-location/set-location';
+import { SetHoursPage } from '../pages/set-hours/set-hours';
+import { FirebaseImageServiceProvider } from '../providers/firebase-image-service/firebase-image-service';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 //config firebase 
 export const firebaseConfig = {
   apiKey: "AIzaSyBQkYH5YbaqfcM3SO-N-CH6SXKNaTTrf1Y",
@@ -62,7 +66,8 @@ export const firebaseConfig = {
     PopOverMapsPage,
     AddFieldPage,
     DetailFieldPage,
-    SetLocationPage
+    SetLocationPage,
+    SetHoursPage
   ],
   imports: [
     BrowserModule,
@@ -72,6 +77,7 @@ export const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     HttpModule,
+    IonicImageViewerModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDqBHmO5xJupFv2qdjXS1AudrQlaFPOxrE'
     })
@@ -94,7 +100,8 @@ export const firebaseConfig = {
     PopOverMapsPage,
     AddFieldPage,
     DetailFieldPage,
-    SetLocationPage
+    SetLocationPage,
+    SetHoursPage
     ],
   providers: [
     StatusBar,
@@ -107,7 +114,9 @@ export const firebaseConfig = {
     PlayersServiceProvider,
     MatchServiceProvider,
     OneSignal,
-    FieldServiceProvider
+    FieldServiceProvider,
+    ImagePicker,
+    FirebaseImageServiceProvider
     
   ]
 })

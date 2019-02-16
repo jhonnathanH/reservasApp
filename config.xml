@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.5.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ionic.starter" version="0.6.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>PlaySport</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="jhonnathan.henriquez@gmail.com" href="https://www.linkedin.com/in/jhonnathanhenriquez/">Jhonnathan Henriquez</author>
@@ -86,5 +86,8 @@
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.416991332199-grlumqdmjpftnocitghp6fhq4n0gbd9v" />
     </plugin>
     <plugin name="onesignal-cordova-plugin" spec="2.2.1" />
+    <plugin name="cordova-plugin-telerik-imagepicker" spec="2.2.3">
+        <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="playSport images" />
+    </plugin>
     <engine name="android" spec="6.2.0" />
 </widget>

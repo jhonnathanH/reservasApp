@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar color="primary">
     <!-- <ion-buttons left>
@@ -17,41 +16,25 @@
 
 
 <ion-content padding>
-  <form [formGroup]="todo"  (ngSubmit)="onAddItem()">
+  <form [formGroup]="todo" (ngSubmit)="onAddItem()">
     <ion-list>
       <ion-item>
         <ion-label floating>Nombre</ion-label>
-        <ion-input 
-                  type="text" 
-                  formControlName="fieldName"
-                  required
-                   ></ion-input>
+        <ion-input type="text" formControlName="fieldName" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Ubicación</ion-label>
-        <ion-input 
-                  type="text" 
-                  formControlName="addres"
-                  required
-                   ></ion-input>
+        <ion-input type="text" formControlName="addres" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Provincia</ion-label>
-        <ion-input 
-                  type="text" 
-                  formControlName="town"
-                  required
-                   ></ion-input>
+        <ion-input type="text" formControlName="town" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Ciudad</ion-label>
-        <ion-input 
-                  type="text" 
-                  formControlName="city"
-                  required
-                   ></ion-input>
+        <ion-input type="text" formControlName="city" required></ion-input>
       </ion-item>
-    <!-- <ion-item>
+      <!-- <ion-item>
         <ion-label floating>Horarios</ion-label>
         <ion-input 
                   type="text" 
@@ -61,30 +44,34 @@
       </ion-item>-->
       <ion-item>
         <ion-label floating>Telefono</ion-label>
-        <ion-input 
-                 type="number" 
-                 formControlName="phone"
-                 required></ion-input>
+        <ion-input type="number" formControlName="phone" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Capacidad</ion-label>
-        <ion-input 
-                 type="number" 
-                 formControlName="sizeField"
-                 required></ion-input>
+        <ion-input type="number" formControlName="sizeField" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Bufet</ion-label>
-        <ion-input 
-                  type="text" 
-                  formControlName="bufet"
-                  required
-                   ></ion-input>
+        <ion-input type="text" formControlName="bufet" required></ion-input>
       </ion-item>
     </ion-list>
     <ion-grid>
       <ion-row>
         <ion-col>
+          <button ion-button color="primary"  block  small type="button" icon-left (click)="getImages()">
+            Seleccionar Imagenes
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button color="secondary" block outline small type="button" icon-left (click)="getHours()">
+            Seleccionar Horarios
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <!--  <ion-col>
           <button
             ion-button
             block
@@ -95,21 +82,15 @@
             <ion-icon name="locate"></ion-icon>
             Ubic. Actual
           </button>
-        </ion-col>
+        </ion-col>-->
         <ion-col>
-          <button
-            ion-button
-            block
-            outline small
-            type="button"
-            icon-left
-            (click)="onOpenMap()">
+          <button ion-button block outline small type="button" icon-left (click)="onOpenMap()">
             <ion-icon name="map"></ion-icon>
-            Seleccionar Ubic.
+            Seleccionar Ubicacion
           </button>
-        </ion-col> 
-       </ion-row>
-      </ion-grid>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <button ion-button type="submit" block [disabled]="!todo.valid">Crear Cancha</button>
   </form>
 </ion-content>
