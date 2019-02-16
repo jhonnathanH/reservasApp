@@ -280,7 +280,7 @@ export class AddFieldPage {
     image = normalizeURL(image);
 
     //uploads img to firebase storage
-    this.firebaseImageService.uploadImage(image, this.fieldService.lengthListFields + 1, this.nroImage)
+    this.firebaseImageService.uploadImage(image, this.fieldService.lengthListFields + 1, this.nroImage + 1)
       .then(photoURL => {
         this.nroImage = this.nroImage + 1;
         loadingIni.dismiss();
