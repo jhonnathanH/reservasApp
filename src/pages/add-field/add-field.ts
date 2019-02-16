@@ -3,7 +3,7 @@ import { UserServiceProvider } from './../../providers/user-service/user-service
 import { FieldsPage } from './../fields/fields';
 import { FieldServiceProvider } from './../../providers/field-service/field-service';
 import { Component } from '@angular/core';
-import { NavController, NavParams, App, AlertController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, App, AlertController, ModalController, LoadingController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Field } from '../../models/field';
 import { User } from '../../models/user';
@@ -34,6 +34,7 @@ export class AddFieldPage {
     private formBuilder: FormBuilder,
     public modalCtrl: ModalController,
     public imagePicker: ImagePicker,
+    public loadingCtrl: LoadingController,
     public firebaseImageService: FirebaseImageServiceProvider,
     public navParams: NavParams) {
 
@@ -157,6 +158,31 @@ export class AddFieldPage {
       alert.present();
       return;
     }
+    if (this.nroImage == 1) {
+      const alert = this.alertCtrl.create({
+        title: 'No selecciono ninguna imagen',
+        message: 'por favor ingrese al menos una imagen',
+        buttons:
+          [
+            {
+              text: 'Si, Continuar',
+              handler: () => {
+                console.log('OK');
+                this.getImages();
+              }
+            },
+            {
+              text: 'No',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel cliecked');
+              }
+            }
+          ]
+      });
+      alert.present();
+      return;
+    }
     if (this.location == null) {
       this.location = {
         lat: -34.9964963,
@@ -203,7 +229,7 @@ export class AddFieldPage {
       phone: this.todo.value.phone,
       userCreate: this.user,
       hours: this.hours,
-      countImages:this.nroImage
+      countImages: this.nroImage
     }
     if (a.lat != null) {
       newField.location = a;
@@ -250,12 +276,14 @@ export class AddFieldPage {
   }
 
   uploadImageToFirebase(image) {
+    let loadingIni = this.loading('Cargando');
     image = normalizeURL(image);
 
     //uploads img to firebase storage
     this.firebaseImageService.uploadImage(image, this.fieldService.lengthListFields + 1, this.nroImage)
       .then(photoURL => {
         this.nroImage = this.nroImage + 1;
+        loadingIni.dismiss();
         const alert = this.alertCtrl.create({
           title: 'Seleccionar Imagenes',
           message: 'Agregar otra imagen',
@@ -280,7 +308,17 @@ export class AddFieldPage {
         });
         alert.present();
         return;
+      }).catch((err) => {
+        loadingIni.dismiss();
       })
+  }
+
+  private loading(textLoading: string) {
+    let loading = this.loadingCtrl.create({
+      content: textLoading
+    });
+    loading.present();
+    return loading;
   }
 
 }
