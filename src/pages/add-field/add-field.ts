@@ -25,7 +25,7 @@ export class AddFieldPage {
   locationIsSet: boolean;
   hours: string[];
   bandHours: boolean;
-  nroImage = 1;
+  nroImage = 0;
   constructor(public navCtrl: NavController,
     public appCtrl: App,
     public alertCtrl: AlertController,
@@ -158,7 +158,7 @@ export class AddFieldPage {
       alert.present();
       return;
     }
-    if (this.nroImage == 1) {
+    if (this.nroImage == 0) {
       const alert = this.alertCtrl.create({
         title: 'No selecciono ninguna imagen',
         message: 'por favor ingrese al menos una imagen',
