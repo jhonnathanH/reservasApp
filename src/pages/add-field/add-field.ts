@@ -95,6 +95,9 @@ export class AddFieldPage {
           this.hours = data.hours;
           this.bandHours = true;
           console.log('hours hours' + JSON.stringify(this.hours));
+          if (this.hours.length < 1) {
+            this.bandHours = false;
+          }
         }
       }
     );

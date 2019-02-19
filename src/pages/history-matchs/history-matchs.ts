@@ -20,7 +20,7 @@ import { TeamReservePage } from '../team-reserve/team-reserve';
 })
 export class HistoryMatchsPage {
   user: User;
-  teamSearch: Team;
+  teamSearch: number;
   listaMatch: Match[] = [];
   original: Match[];
   searchTerm: string = '';
@@ -78,12 +78,12 @@ export class HistoryMatchsPage {
     return newX;
   }
 
-  getMatchByTeamID(team: Team, xList: Match[]) {
-    console.log('team aca ' + team.name);
+  getMatchByTeamID(teamID: number, xList: Match[]) {
+    //console.log('team aca ' + team.name);
     let newX: Match[] = [];
     for (let i = 0; i < xList.length; i++) {
-      console.log('team acaFOr ' + xList[i].team.name);
-      if (team.id == xList[i].team.id) {
+    //  console.log('team acaFOr ' + xList[i].team.name);
+      if (teamID== xList[i].team.id) {
         newX.push(xList[i])
       }
     }

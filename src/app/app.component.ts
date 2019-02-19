@@ -3,11 +3,13 @@ import { ProfilePage } from './../pages/profile/profile';
 import { FieldsPage } from './../pages/fields/fields';
 import { TeamsPage } from './../pages/teams/teams';
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController, ViewController, App, MenuController, ToastController } from 'ionic-angular';
+import { Nav, Platform, AlertController, App, MenuController, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
+import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
+import { HistoryMatchsPage } from '../pages/history-matchs/history-matchs';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,6 +30,7 @@ export class MyApp {
     public app: App,
     public toastCtrl: ToastController,
     public menuCtrl: MenuController,
+    public notificationsService: NotificationServiceProvider,
     public alertCtrl: AlertController) {
     this.initializeApp();
 
@@ -63,8 +66,8 @@ export class MyApp {
       //   this.showAlert();
       //  }
       // });
-      var lastTimeBackPress = 0;
-      var timePeriodToExit = 2000;
+      //var lastTimeBackPress = 0;
+      //var timePeriodToExit = 2000;
       // this.platform.registerBackButtonAction(() => {
       //   if (this.ifOpenMenu) {
       //     this.menuCtrl.close();
@@ -98,12 +101,41 @@ export class MyApp {
     this.oneSignal.startInit('30992fe4-bc5a-4666-9a20-bb7f822940d2', '416991332199');
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
     this.oneSignal.setSubscription(true);
+    this.oneSignal.handleNotificationReceived()
+      .subscribe(jsonData => {
+        console.log('handleNotificationReceived');
+
+        console.log('body ' + jsonData.payload.body, jsonData.payload);
+
+        console.log('idTeam ' + jsonData.payload.additionalData.idTeam);
+        this.notificationsService.save(jsonData.payload.body, jsonData.payload.additionalData.idTeam, jsonData.payload.additionalData.bandNot);
+      });
     this.oneSignal.handleNotificationOpened()
       .subscribe(jsonData => {
         let alert = this.alertCtrl.create({
           title: jsonData.notification.payload.title,
           subTitle: jsonData.notification.payload.body,
-          buttons: ['OK']
+          buttons:
+            [
+              {
+                text: 'Si, Continuar',
+                handler: () => {
+                  console.log('OK');
+                  if (jsonData.notification.payload.additionalData.bandNot) {
+                    this.nav.push(TeamsPage, { idTeam: jsonData.notification.payload.additionalData.idTeam });
+                  } else {
+                    this.nav.push(HistoryMatchsPage, { teamSearch: jsonData.notification.payload.additionalData.idTeam });
+                  }
+                }
+              },
+              {
+                text: 'No',
+                role: 'cancel',
+                handler: () => {
+                  console.log('Cancel cliecked');
+                }
+              }
+            ]
         });
         alert.present();
         console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));

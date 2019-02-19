@@ -50,6 +50,7 @@ export class TeamReservePage {
         this.playersService.addPlayerstoTeam(this.team.players[i]);
       }
     }
+    this.loadPalyers();
   }
 
   private getUserb() {
@@ -66,6 +67,10 @@ export class TeamReservePage {
   }
 
   ionViewWillEnter() {
+
+  }
+
+  private loadPalyers() {
     this.team.players = this.playersService.getPlayers();
     console.log(this.team.sizeTeam + 'teamSizexx');
     console.log(this.team.players.length + 'lengthxxx');
@@ -206,7 +211,8 @@ export class TeamReservePage {
       if (this.platform.is('cordova')) {
         let notificationObj: any = {
           include_player_ids: [reciever_ID],
-          contents: { en: this.team.leadUser.name + ' te ha invitado/actualizo ' + this.team.name },
+          contents: { en: this.team.leadUser.name + ' te ha invitado/actualizo ' + this.team.name + ' ' + this.match.day + '/' + this.match.month + '/' + this.match.year + ' ' + this.match.hour },
+          data: { idTeam: this.team.id, bandNot: false },
         };
 
         this.oneSignal.postNotification(notificationObj).then(success => {
@@ -225,7 +231,8 @@ export class TeamReservePage {
     if (this.platform.is('cordova')) {
       let notificationObj: any = {
         include_player_ids: [reciever_ID],
-        contents: { en: name + msg + ' al equipo ' + this.team.name },
+        contents: { en: name + msg + ' al equipo ' + this.team.name + ' ' + this.match.day + '/' + this.match.month + '/' + this.match.year + ' ' + this.match.hour },
+        data: { idTeam: this.team.id, bandNot: false },
       };
       this.oneSignal.postNotification(notificationObj).then(success => {
         console.log("Notification Post Success:", success);

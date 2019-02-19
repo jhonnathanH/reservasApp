@@ -1,9 +1,11 @@
+import { PopOverNotificationPage } from './../../popover/popover-notification';
 import { HistoryMatchsPage } from './../history-matchs/history-matchs';
 import { UserServiceProvider } from './../../providers/user-service/user-service';
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, PopoverController } from 'ionic-angular';
 import firebase from 'firebase';
 import { ProfilePage } from '../profile/profile';
+import { TeamsPage } from '../teams/teams';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -13,6 +15,7 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
+    public popoverCtrl: PopoverController,
     public userService: UserServiceProvider) {
 
   }
@@ -62,4 +65,19 @@ export class HomePage {
     }
   }
 
+  onNotifications(event: MouseEvent) {
+    const popover = this.popoverCtrl.create(PopOverNotificationPage);
+    popover.present({ ev: event });
+    popover.onDidDismiss(
+      data => {
+        if (data) {
+          if(data.notification.bandNot){
+            this.navCtrl.push(TeamsPage, { idTeam: data.notification.idTeam });
+          }else {
+            this.navCtrl.push(HistoryMatchsPage, { teamSearch: data.notification.idTeam });
+          }
+         
+        }
+      });
+  }
 }

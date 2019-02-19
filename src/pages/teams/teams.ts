@@ -24,6 +24,7 @@ export class TeamsPage {
   original: Team[];
   listaMatch: Match[] = [];
   originalM: Match[];
+  idTeam: number;
   teamName: string;
   constructor(public playersService: PlayersServiceProvider,
     public navCtrl: NavController,
@@ -35,7 +36,21 @@ export class TeamsPage {
     public modalCtrl: ModalController,
     public matchService: MatchServiceProvider,
     public teamService: TeamServiceProvider) {
+      this.idTeam = this.navParams.get("idTeam");
 
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          this.userService.getStoreUser().then(
+            (data) => {
+              this.userProfile = data;
+            
+            }
+          );
+        } else {
+          // this.userProfile = null;
+        }
+      });
+  
 
     this.teamService.getTeams().subscribe(res => {
       let loadingIni = this.loading('Cargando');
@@ -74,6 +89,7 @@ export class TeamsPage {
       loadingIni.dismiss();
       //console.log('matchhh' + JSON.stringify(this.listaMatch) + 'ss');
       //  console.log('ss' + JSON.stringify(this.listaTeam) + 'ss');
+      this.getNotifications();
     });
     if (this.matchService.getMatchsStore()) {
       console.log('sssACA');
@@ -85,12 +101,9 @@ export class TeamsPage {
 
       };
       //console.log('matchs' + JSON.stringify(this.listaMatch) + 'ss');
+      this.getNotifications();
     }
-    this.teamName = this.navParams.get("teamName");
-    if (this.teamName != null) {
-      this.searchTerm = this.teamName;
-      this.searchTeams();
-    }
+    
 
   }
 
@@ -126,18 +139,17 @@ export class TeamsPage {
   }
 
   ionViewWillEnter() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.userService.getStoreUser().then(
-          (data) => {
-            this.userProfile = data;
-          }
-        );
-      } else {
-        // this.userProfile = null;
-      }
-    });
+    
   }
+  private getNotifications() {
+    if (this.idTeam != null) {
+      this.teamName = this.listaTeam[this.idTeam - 1].name;
+      this.searchTerm = this.teamName;
+      this.searchTeams();
+    //  this.goToDetail(this.listaTeam[this.idTeam - 1]);
+    }
+  }
+
   seeDay(match: Match[]) {
     if (match != null) {
       let a1 = match[0];
@@ -279,7 +291,7 @@ export class TeamsPage {
   seeMatchs(match: Match[], index: number) {
     console.log('xxxxxxs' + match[0].team.name);
     console.log('matchs' + JSON.stringify(match[0].team) + 'ss');
-    this.navCtrl.push(HistoryMatchsPage, { teamSearch: match[0].team });
+    this.navCtrl.push(HistoryMatchsPage, { teamSearch: match[0].team.id });
   }
 
 }

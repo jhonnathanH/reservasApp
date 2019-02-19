@@ -217,6 +217,7 @@ export class DetailTeamPage {
         let notificationObj: any = {
           include_player_ids: [reciever_ID],
           contents: { en: this.team.leadUser.name + ' te ha invitado/actualizo ' + this.team.name },
+          data: { idTeam: this.team.id, bandNot: true },
         };
 
         this.oneSignal.postNotification(notificationObj).then(success => {
@@ -236,6 +237,7 @@ export class DetailTeamPage {
       let notificationObj: any = {
         include_player_ids: [reciever_ID],
         contents: { en: name + msg + ' al equipo ' + this.team.name },
+        data: { idTeam: this.team.id },
       };
       this.oneSignal.postNotification(notificationObj).then(success => {
         console.log("Notification Post Success:", success);

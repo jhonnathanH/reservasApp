@@ -1,3 +1,4 @@
+import { PopOverNotificationPage } from './../popover/popover-notification';
 import { AgmCoreModule } from '@agm/core';
 
 import { HistoryMatchsPage } from './../pages/history-matchs/history-matchs';
@@ -39,6 +40,7 @@ import { SetHoursPage } from '../pages/set-hours/set-hours';
 import { FirebaseImageServiceProvider } from '../providers/firebase-image-service/firebase-image-service';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
+import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
 //config firebase 
 export const firebaseConfig = {
   apiKey: "AIzaSyBQkYH5YbaqfcM3SO-N-CH6SXKNaTTrf1Y",
@@ -64,6 +66,7 @@ export const firebaseConfig = {
     HistoryMatchsPage,
     TeamReservePage,
     PopOverMapsPage,
+    PopOverNotificationPage,
     AddFieldPage,
     DetailFieldPage,
     SetLocationPage,
@@ -98,6 +101,7 @@ export const firebaseConfig = {
     HistoryMatchsPage,
     TeamReservePage,
     PopOverMapsPage,
+    PopOverNotificationPage,
     AddFieldPage,
     DetailFieldPage,
     SetLocationPage,
@@ -116,7 +120,8 @@ export const firebaseConfig = {
     OneSignal,
     FieldServiceProvider,
     ImagePicker,
-    FirebaseImageServiceProvider
+    FirebaseImageServiceProvider,
+    NotificationServiceProvider
     
   ]
 })
