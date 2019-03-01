@@ -8,19 +8,14 @@ import { FieldServiceProvider } from '../../providers/field-service/field-servic
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { DetailFieldPage } from '../detail-field/detail-field';
 
-/**
- * Generated class for the FieldsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 
 @Component({
   selector: 'page-fields',
   templateUrl: 'fields.html',
 })
 export class FieldsPage {
-  bandSeeMap: boolean;
+  bandSeeMap: boolean = true;
   searchTerm: string = '';
   selectSerch = false;
   lat: number = -34.9964963;
@@ -70,6 +65,8 @@ export class FieldsPage {
 
 
   }
+
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FieldsPage');
@@ -181,7 +178,7 @@ export class FieldsPage {
         if (data) {
           if (data.action == 'show') {
             console.log('primero');
-            this.bandSeeMap = true;
+            this.bandSeeMap = !this.bandSeeMap;
           } else if (data.action == 'create') { //create
             console.log('segundo');
             this.navCtrl.push(AddFieldPage);
@@ -190,5 +187,8 @@ export class FieldsPage {
         }
       });
   }
+
+
+
 
 }

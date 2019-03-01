@@ -6,12 +6,14 @@
     </button>
     <ion-title>Canchas</ion-title>
     <ion-buttons end>
-      <button ion-button clear class="search" color="dark" icon-only (click)="onSearch()">
+      <button ion-button clear class="search" color="light" icon-only (click)="onSearch()">
         <ion-icon name="search"></ion-icon>
       </button>
-      <button ion-button clear class="more" color="dark" icon-only (click)="onShowOptions($event)">
+      <page-notificationOn ></page-notificationOn>
+      <button ion-button clear class="more" color="light" icon-only (click)="onShowOptions($event)">
         <ion-icon name="more"></ion-icon>
       </button>
+      
     </ion-buttons>
   </ion-navbar>
 
@@ -24,13 +26,13 @@
 </ion-header>
 
 
-<ion-content *ngIf="!bandSeeMap" padding>
-  <agm-map [zoom]="zoomValue" [latitude]="lat" [longitude]="lng">
+<ion-content  padding>
+  <agm-map *ngIf="!ifSelect()" [zoom]="zoomValue" [latitude]="lat" [longitude]="lng">
     <agm-marker *ngFor="let field of listaField; let i=index" [latitude]="field?.location.lat" [longitude]="field?.location.lng"
       [label]="field.fieldName"></agm-marker>
   </agm-map>
 
-  <ion-grid>
+  <ion-grid *ngIf="!ifSelect()">
     <ion-row>
       <ion-col col-2>
         <button ion-button clear class="more" color="dark" icon-only (click)="goBackField()">
@@ -56,10 +58,8 @@
       </div>
   </ion-grid>
 
-</ion-content>
 
-<ion-content *ngIf="bandSeeMap" padding>
-  <ion-list>
+  <ion-list *ngIf="bandSeeMap">
     <ion-list-header *ngIf="true" text-center>
       Lista de Canchas
     </ion-list-header>

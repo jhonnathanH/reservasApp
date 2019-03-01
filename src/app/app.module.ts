@@ -41,6 +41,7 @@ import { FirebaseImageServiceProvider } from '../providers/firebase-image-servic
 import { ImagePicker } from '@ionic-native/image-picker';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
+import { NotificationON } from '../component/notificationOn';
 //config firebase 
 export const firebaseConfig = {
   apiKey: "AIzaSyBQkYH5YbaqfcM3SO-N-CH6SXKNaTTrf1Y",
@@ -70,7 +71,8 @@ export const firebaseConfig = {
     AddFieldPage,
     DetailFieldPage,
     SetLocationPage,
-    SetHoursPage
+    SetHoursPage,
+    NotificationON
   ],
   imports: [
     BrowserModule,
@@ -105,7 +107,8 @@ export const firebaseConfig = {
     AddFieldPage,
     DetailFieldPage,
     SetLocationPage,
-    SetHoursPage
+    SetHoursPage,
+    NotificationON
     ],
   providers: [
     StatusBar,

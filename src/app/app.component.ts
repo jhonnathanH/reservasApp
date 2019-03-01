@@ -144,9 +144,11 @@ export class MyApp {
   }
 
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    if (page == HomePage) {
+      this.nav.setRoot(page.component);
+    } else {
+      this.nav.push(page.component);
+    }
   }
 
   menuOpened() {
