@@ -1,3 +1,4 @@
+import { UserServiceProvider } from './../providers/user-service/user-service';
 import { OneSignal } from '@ionic-native/onesignal';
 import { ProfilePage } from './../pages/profile/profile';
 import { FieldsPage } from './../pages/fields/fields';
@@ -10,6 +11,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
 import { HistoryMatchsPage } from '../pages/history-matchs/history-matchs';
+import { LoginPage } from '../pages/login/login';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,7 +19,7 @@ import { HistoryMatchsPage } from '../pages/history-matchs/history-matchs';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
   activePage: any;
   ifOpenMenu: boolean;
   ifCloseMenu: boolean;
@@ -27,6 +29,7 @@ export class MyApp {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private oneSignal: OneSignal,
+    private userService: UserServiceProvider,
     public app: App,
     public toastCtrl: ToastController,
     public menuCtrl: MenuController,
@@ -55,46 +58,7 @@ export class MyApp {
       if (this.platform.is('cordova')) {
         this.handlerNotifications();
       }
-      // this.platform.registerBackButtonAction(() => {
-      // if (this.ifOpenMenu) {
-      //   this.menuCtrl.close();
-      //   return;
-      // }
-      //   if (this.nav.canGoBack()) {
-      //   this.nav.pop();
-      //  } else {
-      //   this.showAlert();
-      //  }
-      // });
-      //var lastTimeBackPress = 0;
-      //var timePeriodToExit = 2000;
-      // this.platform.registerBackButtonAction(() => {
-      //   if (this.ifOpenMenu) {
-      //     this.menuCtrl.close();
-      //     return;
-      //   }
-      //   let view = this.nav.getActive();
-      //   if (view.component.name == "HomePage") {
-      //     //Double check to exit app                  
-      //     if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
-      //       this.platform.exitApp(); //Exit from app
-      //     } else {
-      //       let toast = this.toastCtrl.create({
-      //         message: 'Press back again to exit App',
-      //         duration: 3000,
-      //         position: 'bottom'
-      //       });
-      //       toast.present();
-      //       lastTimeBackPress = new Date().getTime();
-      //     }
-      //   } else if (view.component.name == "ProfilePage") {
-      //     // go to previous page
-      //     this.nav.pop();
-      //   }
-      //   else {
-      //     this.nav.pop({});
-      //   }
-      // });
+      this.getUser();
     });
   }
   private handlerNotifications() {
@@ -143,8 +107,22 @@ export class MyApp {
     this.oneSignal.endInit();
   }
 
+  getUser() {
+    this.userService.getStoreUser().then(
+      (data) => {
+        let x = data;
+        if (x != null) {
+          this.rootPage = HomePage;
+        } else {
+          console.log('no hay id ');
+          this.rootPage = LoginPage;
+        }
+      }
+    );
+  }
+
   openPage(page) {
-    if (page == HomePage) {
+    if (page.component == HomePage) {
       this.nav.setRoot(page.component);
     } else {
       this.nav.push(page.component);

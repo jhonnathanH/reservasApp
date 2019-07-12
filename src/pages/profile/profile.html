@@ -83,8 +83,12 @@
     <ion-note>O tambien con..</ion-note>
   </div>
   <button block padding ion-button color="darkColor" (click)="doGoogleLogin()" *ngIf="!userProfile">
-    <ion-icon name="logo-googleplus"></ion-icon>
+    <ion-icon padding-right name="logo-googleplus"></ion-icon>
     Login con Google
+  </button>
+  <button block padding ion-button color="darkColor" (click)="doFacebookLogin()" *ngIf="!userProfile">
+    <ion-icon padding-right name="logo-facebook"></ion-icon>
+    Login con Facebook
   </button>
   <!-- <ion-list>
     <ion-list-header *ngIf="userProfile">

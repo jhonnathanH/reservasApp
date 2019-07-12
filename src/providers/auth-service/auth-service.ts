@@ -24,7 +24,7 @@ export class AuthServiceProvider {
   }
 
   signin(email: string, pass: string) {
-    console.log('Sign in with email');
+    console.log('Sign in with email' + email + " " + pass);
     return firebase.auth().signInWithEmailAndPassword(email, pass);
     //return firebase.auth().
   }
@@ -77,7 +77,8 @@ export class AuthServiceProvider {
   }
 
   logoutUser(): Promise<void> {
-    return firebase.auth().signOut();
+    console.log("press logout");
+    return this.afAuth.auth.signOut();
   }
 
   private showError(error: any) {
@@ -88,5 +89,5 @@ export class AuthServiceProvider {
     });
     alert.present();
   }
-  
+
 }

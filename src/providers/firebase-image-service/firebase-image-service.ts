@@ -35,6 +35,19 @@ export class FirebaseImageServiceProvider {
     })
   }
 
+  uploadImageProfile(imageURI, id: string) {
+    let storageRef = firebase.storage().ref();
+    let imageRef = storageRef.child('imageProfiles').child('pic_' + id);
+    alert(imageRef);
+    return imageRef.putString(imageURI, 'base64', { contentType: 'image/png' })
+      .then(() => {
+        return imageRef.getDownloadURL().then(downloadURL => {
+         alert('x ' + downloadURL);
+          return downloadURL;
+        });
+      });
+  }
+
   encodeImageUri(imageUri, callback) {
     var c = document.createElement('canvas');
     var ctx = c.getContext("2d");

@@ -27,6 +27,19 @@ export class UserServiceProvider {
   getUsers() {
     return this.listUser;
   }
+
+  storeUsers(storeUsers: any) {
+
+    this.storage.set('storeUsers', storeUsers)
+      .then(
+        data => { }
+      )
+      .catch(
+        err => {
+          console.log(err);
+        }
+      );
+  }
   addUserStore(x: User[]) {
     this.userStore = x;
     console.log('add  addUserStore');
@@ -67,6 +80,19 @@ export class UserServiceProvider {
         err => console.log(err)
       );
   }
+
+  getStoreUsers() {
+    return this.storage.get('storeUsers')
+      .then(
+        (user: any) => {
+          return user;
+        }
+      ).catch(
+        //toast
+        err => console.log(err)
+      );
+  }
+
 
   deleteUser() {
     this.storage.remove('storeUser');

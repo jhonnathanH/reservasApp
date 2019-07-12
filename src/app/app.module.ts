@@ -1,3 +1,5 @@
+import { SkipPage } from './../pages/skip/skip';
+import { LoginPage } from './../pages/login/login';
 import { PopOverNotificationPage } from './../popover/popover-notification';
 import { AgmCoreModule } from '@agm/core';
 
@@ -42,6 +44,8 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
 import { NotificationON } from '../component/notificationOn';
+import { Facebook } from '@ionic-native/facebook';
+import { FacebookServiceProvider } from '../providers/facebook-service/facebook-service';
 //config firebase 
 export const firebaseConfig = {
   apiKey: "AIzaSyBQkYH5YbaqfcM3SO-N-CH6SXKNaTTrf1Y",
@@ -72,7 +76,9 @@ export const firebaseConfig = {
     DetailFieldPage,
     SetLocationPage,
     SetHoursPage,
-    NotificationON
+    NotificationON,
+    LoginPage,
+    SkipPage
   ],
   imports: [
     BrowserModule,
@@ -108,7 +114,9 @@ export const firebaseConfig = {
     DetailFieldPage,
     SetLocationPage,
     SetHoursPage,
-    NotificationON
+    NotificationON,
+    LoginPage,
+    SkipPage
     ],
   providers: [
     StatusBar,
@@ -124,7 +132,9 @@ export const firebaseConfig = {
     FieldServiceProvider,
     ImagePicker,
     FirebaseImageServiceProvider,
-    NotificationServiceProvider
+    NotificationServiceProvider,
+    Facebook,
+    FacebookServiceProvider
     
   ]
 })

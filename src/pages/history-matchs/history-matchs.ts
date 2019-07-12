@@ -39,7 +39,7 @@ export class HistoryMatchsPage {
       let loadingIni = this.loading('Cargando');
       // ordernar sort
       // this.res.sort((a1, b1) => new Date(a1.created.toDate()).getTime() - new Date(b1.created.toDate()).getTime());
-      let x = res.sort((n1, n2) => n1.id - n2.id);
+      let x = res.sort((n1, n2) => n2.id - n1.id);
       this.matchService.addMatchStore(x);
       if (this.user != null) {
         x = this.getMatchByID(this.user, x);

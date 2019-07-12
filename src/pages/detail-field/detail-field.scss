@@ -9,4 +9,10 @@ page-detail-field {
       ion-title{
             margin-left: -21px !important;
       }
+      .swiper-slide img {
+        height: 300px !important;
+        width: fit-content;
+        background-position: center !important;
+        background-size: cover !important;
+    }
 }

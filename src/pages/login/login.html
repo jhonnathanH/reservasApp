@@ -1,0 +1,70 @@
+<ion-content padding class="animated fadeIn login auth-page">
+  <div class="login-content">
+
+    <!-- Logo -->
+    <div padding-horizontal text-center class="animated fadeInDown">
+      <div class="logo">
+
+      </div>
+      <h2 padding-top ion-text class="text-primary">
+        <strong>Bienvenido</strong>
+      </h2>
+      <h5 ion-text class="text-primary">
+        <ion-note>Ingrese tus datos para continuar</ion-note>
+      </h5>
+    </div>
+
+    <form #f="ngForm" *ngIf="!userProfile">
+      <ion-list>
+        <ion-item *ngIf="band2">
+          <ion-label stacked>Nombre</ion-label>
+          <ion-input class="inputEmail" type="string" ngModel name="name" required></ion-input>
+        </ion-item>
+        <ion-item *ngIf="band1 || band2">
+          <ion-label stacked>Email</ion-label>
+          <ion-input class="inputEmail" type="email" ngModel name="email" required></ion-input>
+        </ion-item>
+        <ion-item *ngIf="band1 || band2">
+          <ion-label stacked>Password</ion-label>
+          <ion-input class="inputEmail" type="password" ngModel name="password" [minlength]="8" required></ion-input>
+        </ion-item>
+      </ion-list>
+
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <button *ngIf="band1" ion-button block (click)="onSingin(f)" [disabled]="!f.valid">Log In</button>
+            <button *ngIf="band2" ion-button block (click)="bandLog()">Log In</button>
+          </ion-col>
+          <ion-col>
+            <button *ngIf="band2" ion-button block (click)="onSingup(f)" [disabled]="!f.valid">Sing Up</button>
+            <button *ngIf="band1" ion-button block (click)="bandUp()">Sing Up</button>
+          </ion-col>
+        </ion-row>
+        <ion-row padding-top>
+          <ion-col>
+            <button *ngIf="!band1 && !band2" color="light" ion-button block (click)="bandLog()">Log In</button>
+          </ion-col>
+          <ion-col>
+            <button *ngIf="!band1 && !band2" ion-button block (click)="bandUp()">Sing Up</button>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+    </form>
+
+
+    <div text-center padding *ngIf="!userProfile">
+      <ion-note>O tambien con..</ion-note>
+    </div>
+    <button block padding ion-button color="darkColor" (click)="doGoogleLogin()" *ngIf="!userProfile">
+      <ion-icon padding-right name="logo-googleplus"></ion-icon>
+      Login con Google
+    </button>
+    <button block padding ion-button color="darkColor" (click)="doFacebookLogin()" *ngIf="!userProfile">
+      <ion-icon padding-right name="logo-facebook"></ion-icon>
+      Login con Facebook
+    </button>
+  </div>
+</ion-content>

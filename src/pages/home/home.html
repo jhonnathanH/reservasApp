@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-note>Aplicación Hibrida hecha en Ionic 3 y Angular 5</ion-note>
+ <!--  <ion-note>Aplicación Hibrida hecha en Ionic 3 y Angular 5</ion-note>
 
   <h5>
    Apliacion para Reservas de Partidos
@@ -22,4 +22,44 @@
   <div text-center padding>
     <button  ion-button round  small  color="primary" (click)="find()">Ver Reservas</button>
   </div>
+  -->
+  <div padding text-center> 
+    <ion-badge>
+     Lista de Reservas
+    </ion-badge>
+  </div>
+  <ion-card padding-top margin-top *ngFor="let match of listaMatch; let i=index">
+    <ion-grid class="hour">
+      <ion-row>
+        <ion-col col-6>
+          <div  >
+            <h4>{{match.day}} de {{match.month}} del {{match.year}} </h4>
+            <ion-note>
+              {{match.hour}}  <h5 class="h5can"> Cancha {{match.field.fieldName}}</h5>
+            </ion-note>
+          </div>
+        </ion-col>
+        <ion-col col-6>
+
+          <h5 class="product-name">{{match.team.name}}</h5>
+          <h3 class="product-name">
+            <ion-note class="dis" color="lightColor">
+              <ion-icon class="people" name="people"></ion-icon> {{available(match.team)}} / {{match.team.sizeTeam}}
+            </ion-note>
+          </h3>
+           <button ion-button round small clear  class="seeTeam" color="secondary" (click)="seeTeam(match)">Ver</button>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="match.assis && user" class="Disponible" text-center >
+          <button end ion-button round small outline color="danger" (click)="cancelMatch(match)">Cancelar Reserva</button>
+        </div>
+        <div *ngIf="!match.assis" class="Disponible" text-center >
+            <ion-note color="danger">
+                Rerserva Cancelada
+              </ion-note>
+          </div>
+    </ion-grid>
+    
+  </ion-card>
+
 </ion-content>

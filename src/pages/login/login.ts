@@ -1,25 +1,33 @@
-import { LoginPage } from './../login/login';
-import { FacebookServiceProvider } from './../../providers/facebook-service/facebook-service';
-import { GooglePlus } from '@ionic-native/google-plus';
+
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ToastController, AlertController, Platform } from 'ionic-angular';
-import { User } from './../../models/user';
-//import { AngularFireAuth } from 'angularfire2/auth';
+import { NavController, NavParams, ToastController, AlertController, Platform, LoadingController } from 'ionic-angular';
+import { GooglePlus } from '@ionic-native/google-plus';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { OneSignal } from '@ionic-native/onesignal';
+import { FacebookServiceProvider } from '../../providers/facebook-service/facebook-service';
 import firebase from 'firebase';
 import { NgForm } from '@angular/forms';
-import { OneSignal } from '@ionic-native/onesignal';
-import { FirebaseImageServiceProvider } from '../../providers/firebase-image-service/firebase-image-service';
-import { ImagePicker } from '@ionic-native/image-picker';
+import { User } from '../../models/user';
+import { SkipPage } from '../skip/skip';
+
+/**
+ * Generated class for the LoginPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
 @Component({
-  selector: 'page-profile',
-  templateUrl: 'profile.html',
+  selector: 'page-login',
+  templateUrl: 'login.html',
 })
-export class ProfilePage {
+export class LoginPage {
   userProfile: any = null;
   adminPassword = 1234;
   bandRoot: boolean;
+  band1: boolean;
+  band2: boolean;
   aux: any;
   // xuser$: any;
   constructor(public navCtrl: NavController,
@@ -30,15 +38,23 @@ export class ProfilePage {
     public toastCrl: ToastController,
     public alertCtrl: AlertController,
     public platform: Platform,
-    public firebaseService: FirebaseImageServiceProvider,
     public oneSignal: OneSignal,
-    public imagePicker: ImagePicker,
     public facebook: FacebookServiceProvider,
     public loadingCtrl: LoadingController) {
     //console.log(JSON.stringify(this.userService.getStoreUser()) + 'constructor');
+    this.userService.getStoreUsers().then(
+      (data) => {
+        if(data){
+          this.aux = data;
+          console.log("##########  001" + JSON.stringify(this.aux.length));
+        }
+        
+      }
+    );
     this.userService.getStoreUser().then(
       (data) => {
         this.userProfile = data;
+        console.log("##########  1" + JSON.stringify(this.userProfile));
       }
     );
   }
@@ -46,60 +62,12 @@ export class ProfilePage {
   ionViewWillEnter() {
     //this.xuser$= this.userService.listUser;
     //this.xuser$.subscribe(data => console.log('z'+data.toString()) );
-   
+    console.log("##########  11");
     this.userService.getUsers().subscribe(res => {
       this.aux = res;
+      this.userService.storeUsers(this.aux);
       console.log(JSON.stringify(this.aux));
     })
-
-  }
-
-  upPhoto() {
-    this.imagePicker.hasReadPermission().then(
-      (result) => {
-        if (result == false) {
-          // no callbacks required as this opens a popup which returns async
-          this.imagePicker.requestReadPermission();
-        }
-        else if (result == true) {
-          this.imagePicker.getPictures({
-            maximumImagesCount: 1
-          }).then(
-            (results) => {
-              for (var i = 0; i < results.length; i++) {
-                this.take(results[i]);
-              }
-            }, (err) => console.log(err)
-          );
-        }
-      }, (err) => {
-        console.log(err);
-      });
-  }
-
-  take(imageData) {
-    console.log(this.userProfile);
-    const loader = this.loadingCtrl.create({
-      content: "Cargando...",
-      duration: 8000
-    });
-    loader.present();
-    this.firebaseService.uploadImageProfile(imageData, this.userProfile.id)
-      .then(photoURL => {
-        setTimeout(() => {
-          loader.dismiss();
-          //  this.sendFile(photoURL);
-        }, 2000);
-        //   this.sendFile(photoURL);
-        this.userProfile.photoURL = photoURL
-        this.userService.addUser(this.userProfile).then(() => {
-          this.userService.storeUser(this.userProfile);
-          this.toastSuccess();
-        });
-        //  return;
-      }).catch((err) => {
-        loader.dismiss();
-      })
   }
 
 
@@ -125,6 +93,7 @@ export class ProfilePage {
           this.userService.storeUser(a);
           this.userProfile = a;
           this.toastSuccess();
+          this.navCtrl.setRoot(SkipPage);
         });
       }).catch(error => {
         loading.dismiss();
@@ -156,6 +125,7 @@ export class ProfilePage {
             this.userService.storeUser(a);
             this.userProfile = a;
             this.toastSuccess();
+            this.navCtrl.setRoot(SkipPage);
           });
         });
       })
@@ -164,10 +134,18 @@ export class ProfilePage {
         this.showError(error + "singin");
       });
   }
+  bandUp() {
+    this.band2 = true;
+    this.band1 = false;
+  }
+  bandLog() {
+    this.band1 = true;
+    this.band2 = false;
+  }
 
   onSingin(form: NgForm) {
     let a: User;
-    console.log('este' + form.value);
+    console.log('este' + JSON.stringify(form.value));
     const loading = this.loadingCtrl.create({
       content: 'Iniciando...'
     });
@@ -175,34 +153,56 @@ export class ProfilePage {
 
     this.auth.signin(form.value.email, form.value.password)
       .then(data => {
-        a = {
-          name: form.value.name,
-          uid: data.user.uid,
-          email: form.value.email,
-          photoURL: "",
-        };
-        for (let i = 0; i < this.aux.length; i++) {
-          if (this.aux[i].email == a.email) {
-            a.name = this.aux[i].name;
+        if (data) {
+          console.log("##########  2");
+
+          a = {
+            name: "",
+            uid: data.user.uid,
+            email: form.value.email,
+            photoURL: "",
+          };
+
+          console.log("##########  2.1" + JSON.stringify(a));
+          for (let i = 0; i < this.aux.length; i++) {
+            if (this.aux[i].email == a.email) {
+              a.name = this.aux[i].name;
+            }
+          }
+
+          console.log(JSON.stringify(data) + 'signin');
+          loading.dismiss();
+          if (this.platform.is('cordova')) {
+            this.oneSignal.getIds().then(success => {
+              //Update  the database with onesignal_ID
+              a.deviceID = success.userId;
+              this.userService.addUser(a).then(() => {
+                this.userService.storeUser(a);
+                this.userProfile = a;
+                this.toastSuccess();
+                this.navCtrl.setRoot(SkipPage);
+              });
+            });
+          } else {
+            console.log("##########  3");
+            console.log("##########  4" + JSON.stringify(a));
+            this.userService.addUser(a).then(() => {
+              this.userService.storeUser(a);
+              this.userProfile = a;
+              console.log("##########  43" + JSON.stringify(a));
+              this.toastSuccess();
+              this.navCtrl.setRoot(SkipPage);
+            }).catch(err =>
+              console.log("##########  4 err" + JSON.stringify(err)));
           }
         }
-
-        console.log(JSON.stringify(data) + 'signin');
-        loading.dismiss();
-        return this.oneSignal.getIds().then(success => {
-          //Update  the database with onesignal_ID
-          a.deviceID = success.userId;
-          this.userService.addUser(a).then(() => {
-            this.userService.storeUser(a);
-            this.userProfile = a;
-            this.toastSuccess();
-          });
-        });
       })
       .catch(error => {
         loading.dismiss();
-        this.showError(error + "singin");
+        console.log("##########  1");
+        this.showError(error + " singin");
       });
+
   }
   onSingup(form: NgForm) {
     let a: User;
@@ -223,16 +223,25 @@ export class ProfilePage {
         loading.dismiss();
         console.log('bienvenido+');
         console.log(JSON.stringify(data) + 'signup');
-
-        return this.oneSignal.getIds().then(success => {
-          //Update  the database with onesignal_ID
-          a.deviceID = success.userId;
+        if (this.platform.is('cordova')) {
+          this.oneSignal.getIds().then(success => {
+            //Update  the database with onesignal_ID
+            a.deviceID = success.userId;
+            this.userService.addUser(a).then(() => {
+              this.userService.storeUser(a);
+              this.userProfile = a;
+              this.toastSuccess();
+              this.navCtrl.setRoot(SkipPage);
+            });
+          });
+        } else {
           this.userService.addUser(a).then(() => {
             this.userService.storeUser(a);
             this.userProfile = a;
             this.toastSuccess();
+            this.navCtrl.setRoot(SkipPage);
           });
-        });
+        }
       })
       .catch(error => {
         loading.dismiss();
@@ -241,13 +250,7 @@ export class ProfilePage {
 
   }
 
-  signOut() {
-    this.userService.deleteUser();
-    console.log("press Logout");
-   
-    this.navCtrl.setRoot(LoginPage);
-    return  this.auth.logoutUser();
-  }
+
 
   doGoogleLogin() {
     if (this.platform.is('cordova')) {
@@ -283,6 +286,7 @@ export class ProfilePage {
               this.userProfile = a;
               this.userService.storeUser(this.userProfile);
               this.toastSuccess();
+              this.navCtrl.setRoot(SkipPage);
             });
           });
         })
@@ -292,64 +296,6 @@ export class ProfilePage {
       }
     }, (error) => { console.log(error); });
   }
-
-  root() {
-    const rootPass = this.alertCtrl.create({
-      title: 'Ingrese la Clave',
-      inputs: [
-        {
-          name: 'password',
-          placeholder: 'Password',
-          type: 'password'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Login',
-          handler: data => {
-            if (data.password.trim() == '' || data.password == null) {
-              const toast = this.toastCrl.create({
-                message: 'por favor, ingrese una clave',
-                duration: 2000,
-                position: 'bottom'
-              });
-              toast.present();
-              return;
-            } else {
-              if (this.adminPassword == data.password.trim()
-                || this.adminPassword == data.password) {
-                const toast = this.toastCrl.create({
-                  message: 'Bienvenido Admin',
-                  duration: 1500,
-                  position: 'bottom'
-                });
-                toast.present();
-                this.userService.storeRoot();
-                this.bandRoot = true;
-                return;
-              }
-              const toast = this.toastCrl.create({
-                message: ' ¡Clave invalida!',
-                duration: 1500,
-                position: 'bottom'
-              });
-              toast.present();
-              return;
-            }
-          }
-        }
-      ]
-    });
-    rootPass.present();
-  }
-
 
   private toastSuccess() {
     const toast = this.toastCrl.create({

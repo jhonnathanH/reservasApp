@@ -50,11 +50,11 @@
   <ion-list-header *ngIf="!bandShow && dateMatch" text-center class="head" (click)="show()">
       {{dateMatch}}
     </ion-list-header>
-  <ion-list *ngIf="dateMatch && bandShow">
+  <ion-list *ngIf="dateMatch && bandShow" >
     <ion-list-header text-center class="head" (click)="show()">
       {{dateMatch}}
     </ion-list-header>
-    <ion-item *ngFor="let match of reservesMatch">
+    <ion-item no-lines *ngFor="let match of reservesMatch">
       <div class="hour" padding>
         <ion-note>
           {{match.hour}}

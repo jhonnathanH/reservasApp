@@ -10,7 +10,7 @@
   <ion-card>
 
      <!-- <img *ngIf="!bandSee" src="assets/imgs/cancha1.jpg">  slidesPerView="2" imageViewer-->
-    <ion-slides  *ngIf="!bandSee" class="image-slider" loop="true" >
+    <ion-slides  pager *ngIf="!bandSee" class="image-slider" loop="true" >
         <ion-slide *ngFor="let img of images">
           <img src="{{img}}" class="thumb-img" imageViewer/>
         </ion-slide>
