@@ -42,10 +42,11 @@ export class FacebookServiceProvider {
     return Observable.create(observer => {
       if (this.session.status === "connected") {
         this.facebook.api("/me?fields=name,email,id,picture", ["public_profile", "email"]).then((response) => {
-          console.log(response);
+          console.log(JSON.stringify(response));
           observer.next(response);    //We return the Facebook response with the fields name and picture
           observer.complete();
         }, (error) => {
+          alert('x'+error)
           console.log(error)
         });
       } else {

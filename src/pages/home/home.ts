@@ -33,22 +33,19 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public playersService: PlayersServiceProvider,
     public userService: UserServiceProvider) {
-    this.user = this.userProfile;
+  
   }
 
   ionViewWillEnter() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
+
         this.userService.getStoreUser().then(
           (data) => {
             this.userProfile = data;
+            this.user = this.userProfile;
             this.getMAtch();
           }
         );
-      } else {
-        // this.userProfile = null;
-      }
-    });
+     
   }
 
   find() {

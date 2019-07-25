@@ -36,20 +36,12 @@ export class TeamsPage {
     public modalCtrl: ModalController,
     public matchService: MatchServiceProvider,
     public teamService: TeamServiceProvider) {
-      this.idTeam = this.navParams.get("idTeam");
-
-      firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-          this.userService.getStoreUser().then(
-            (data) => {
-              this.userProfile = data;
-            
-            }
-          );
-        } else {
-          // this.userProfile = null;
+    this.idTeam = this.navParams.get("idTeam");
+    this.userService.getStoreUser().then(
+        (data) => {
+          this.userProfile = data;
         }
-      });
+      );
   
 
     this.teamService.getTeams().subscribe(res => {

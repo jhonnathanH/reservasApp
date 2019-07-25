@@ -51,7 +51,7 @@ export class UserServiceProvider {
 
 
   addUser(user: User) {
-
+ //   alert(JSON.stringify(this.users));
     return this.users.doc(user.uid).set(user);
   }
 

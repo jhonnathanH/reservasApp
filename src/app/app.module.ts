@@ -46,6 +46,7 @@ import { NotificationServiceProvider } from '../providers/notification-service/n
 import { NotificationON } from '../component/notificationOn';
 import { Facebook } from '@ionic-native/facebook';
 import { FacebookServiceProvider } from '../providers/facebook-service/facebook-service';
+import { Camera } from '@ionic-native/camera';
 //config firebase 
 export const firebaseConfig = {
   apiKey: "AIzaSyBQkYH5YbaqfcM3SO-N-CH6SXKNaTTrf1Y",
@@ -134,7 +135,8 @@ export const firebaseConfig = {
     FirebaseImageServiceProvider,
     NotificationServiceProvider,
     Facebook,
-    FacebookServiceProvider
+    FacebookServiceProvider,
+    Camera
     
   ]
 })

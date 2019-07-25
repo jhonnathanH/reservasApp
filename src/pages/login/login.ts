@@ -167,6 +167,7 @@ export class LoginPage {
           for (let i = 0; i < this.aux.length; i++) {
             if (this.aux[i].email == a.email) {
               a.name = this.aux[i].name;
+             // a.photoURL = this.aux[i].photoURL;
             }
           }
 
@@ -270,7 +271,6 @@ export class LoginPage {
       if (connected === true) {
         this.facebook.getProfile().subscribe((profile) => {   //If connected, we retrieve the profile
           let userFace = profile;
-          this.toastSuccess();
 
           a = {
             name: userFace.name,
@@ -284,7 +284,7 @@ export class LoginPage {
             a.deviceID = success.userId
             this.userService.addUser(a).then(() => {
               this.userProfile = a;
-              this.userService.storeUser(this.userProfile);
+              this.userService.storeUser(a);
               this.toastSuccess();
               this.navCtrl.setRoot(SkipPage);
             });

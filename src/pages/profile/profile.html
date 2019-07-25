@@ -27,7 +27,7 @@
       <img *ngIf="userProfile?.photoURL" class="perfilImg" [src]="userProfile.photoURL" height="50" width="50">
       <img *ngIf="!userProfile?.photoURL" class="perfilImg" src="assets/imgs/noPhoto.png" height="50" width="50">
       <ion-buttons end>
-        <button  padding ion-button color="secondary" (click)="upPhoto()" *ngIf="userProfile">
+        <button  padding ion-button color="secondary" (click)="getImageSheet()" *ngIf="userProfile">
           <ion-icon class="icoSubir" name="camera"></ion-icon>
           Subir
         </button>

@@ -2,8 +2,9 @@ import { LoginPage } from './../login/login';
 import { FacebookServiceProvider } from './../../providers/facebook-service/facebook-service';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ToastController, AlertController, Platform } from 'ionic-angular';
+import { NavController, LoadingController, ToastController, AlertController, Platform, Events, ActionSheetController } from 'ionic-angular';
 import { User } from './../../models/user';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 //import { AngularFireAuth } from 'angularfire2/auth';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
@@ -33,7 +34,10 @@ export class ProfilePage {
     public firebaseService: FirebaseImageServiceProvider,
     public oneSignal: OneSignal,
     public imagePicker: ImagePicker,
+    public events: Events,
     public facebook: FacebookServiceProvider,
+    public camera: Camera,
+    public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController) {
     //console.log(JSON.stringify(this.userService.getStoreUser()) + 'constructor');
     this.userService.getStoreUser().then(
@@ -46,15 +50,27 @@ export class ProfilePage {
   ionViewWillEnter() {
     //this.xuser$= this.userService.listUser;
     //this.xuser$.subscribe(data => console.log('z'+data.toString()) );
-   
+
     this.userService.getUsers().subscribe(res => {
       this.aux = res;
       console.log(JSON.stringify(this.aux));
     })
 
+    this.events.subscribe('menu:userpic', () => {
+      this.userService.getStoreUser().then(
+        (data) => {
+          this.userProfile = data;
+          this.userService.addUser(this.userProfile).then(() => {
+            this.toastSuccess();
+          });
+        }
+      );
+    });
+
   }
 
   upPhoto() {
+    console.log(this.userProfile);
     this.imagePicker.hasReadPermission().then(
       (result) => {
         if (result == false) {
@@ -78,28 +94,26 @@ export class ProfilePage {
   }
 
   take(imageData) {
+    alert(imageData);
     console.log(this.userProfile);
     const loader = this.loadingCtrl.create({
       content: "Cargando...",
-      duration: 8000
+      duration: 10000
     });
     loader.present();
-    this.firebaseService.uploadImageProfile(imageData, this.userProfile.id)
-      .then(photoURL => {
-        setTimeout(() => {
-          loader.dismiss();
-          //  this.sendFile(photoURL);
-        }, 2000);
-        //   this.sendFile(photoURL);
-        this.userProfile.photoURL = photoURL
-        this.userService.addUser(this.userProfile).then(() => {
-          this.userService.storeUser(this.userProfile);
-          this.toastSuccess();
-        });
-        //  return;
-      }).catch((err) => {
-        loader.dismiss();
-      })
+
+    this.firebaseService.uploadImageProfile(imageData, this.userProfile.email, this.userProfile)
+
+    setTimeout(() => {
+      alert("user  success");
+      this.userService.getStoreUser().then(
+        (data) => {
+          this.userProfile = data;
+        }
+      );
+    }, 12000);
+
+
   }
 
 
@@ -244,9 +258,9 @@ export class ProfilePage {
   signOut() {
     this.userService.deleteUser();
     console.log("press Logout");
-   
+
     this.navCtrl.setRoot(LoginPage);
-    return  this.auth.logoutUser();
+    return this.auth.logoutUser();
   }
 
   doGoogleLogin() {
@@ -368,6 +382,91 @@ export class ProfilePage {
     });
     alert.present();
   }
+
+  public getImageSheet() {
+
+
+    const galeryOptions: CameraOptions = {
+      quality: 80,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,
+      targetWidth: 600,
+      targetHeight: 600,
+      correctOrientation: true
+    };
+
+    const cameraOptions: CameraOptions = {
+      quality: 80,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      targetWidth: 600,
+      targetHeight: 600,
+      correctOrientation: true
+    };
+
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Agregar fotos',
+      buttons: [
+        {
+          text: 'Galería',
+          icon: 'images',
+          handler: () => {
+            this.takePick(galeryOptions)
+          }
+        }, {
+          text: 'Cámara',
+          icon: 'camera',
+          handler: () => {
+            this.takePick(cameraOptions);
+          }
+        }, {
+          text: 'Cancelar',
+          role: 'cancel',
+          icon: 'close',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+
+  }
+
+  takePick(cameraOptions: any) {
+
+    this.camera.getPicture(cameraOptions).then((imageData) => {
+      const loader = this.loadingCtrl.create({
+        content: "Cargando...",
+        duration: 8000
+      });
+      loader.present();
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      //this.captureDataUrl = 'data:image/jpeg;base64,' + imageData;
+
+      this.firebaseService.uploadImagePic(imageData, this.userProfile.email, this.userProfile)
+        .then(photoURL => {
+          setTimeout(() => {
+            loader.dismiss();
+            //  this.sendFile(photoURL);
+          }, 2000);
+          //  acaaaaa; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+          this.userProfile.photoURL = photoURL;
+          this.userService.addUser(this.userProfile).then(() => {
+            this.userService.storeUser(this.userProfile);
+            this.toastSuccess();
+          });
+
+        }).catch((err) => {
+          loader.dismiss();
+        })
+    }, (err) => {
+      // Handle error
+    });
+  }
+
 }
 
 

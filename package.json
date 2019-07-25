@@ -21,6 +21,7 @@
     "@angular/http": "5.2.11",
     "@angular/platform-browser": "5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
+    "@ionic-native/camera": "^4.20.0",
     "@ionic-native/core": "~4.18.0",
     "@ionic-native/facebook": "^4.20.0",
     "@ionic-native/google-plus": "^4.7.0",
@@ -30,8 +31,11 @@
     "@ionic-native/status-bar": "~4.18.0",
     "@ionic/storage": "2.2.0",
     "angularfire2": "5.1.1",
+    "cordova-android": "6.4.0",
+    "cordova-plugin-camera": "2.4.1",
+    "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-device": "^2.0.2",
-    "cordova-plugin-facebook4": "4.2.1",
+    "cordova-plugin-facebook4": "5.0.0",
     "cordova-plugin-googleplus": "^5.2.1",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^2.3.3",
@@ -47,8 +51,7 @@
     "rxjs": "6.0.0",
     "rxjs-compat": "6.3.3",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.29",
-    "cordova-android": "6.4.0"
+    "zone.js": "0.8.29"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.2.1",
@@ -74,8 +77,9 @@
         "APP_ID": "318988225463263",
         "APP_NAME": "PlaySport",
         "FACEBOOK_HYBRID_APP_EVENTS": "false",
-        "FACEBOOK_ANDROID_SDK_VERSION": "4.40.0"
-      }
+        "FACEBOOK_ANDROID_SDK_VERSION": "5.0.2"
+      },
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "android"

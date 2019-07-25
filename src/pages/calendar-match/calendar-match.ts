@@ -49,18 +49,13 @@ export class CalendarMatchPage {
   }
 
   ionViewWillEnter() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
         this.userService.getStoreUser().then(
           (data) => {
             this.userProfile = data;
 
           }
         );
-      } else {
-        // this.userProfile = null;
-      }
-    });
+  
 
     this.date = new Date();
     this.monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
