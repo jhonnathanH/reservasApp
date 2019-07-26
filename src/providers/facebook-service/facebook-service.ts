@@ -17,16 +17,17 @@ export class FacebookServiceProvider {
       this.facebook.login(['email']).then((response) => {
         if (response.status === "connected") {
           this.session = response;
-          observer.next(true);        //We return true or false according the connection status
-          observer.complete();
           const facebookCredential = firebase.auth.FacebookAuthProvider
             .credential(response.authResponse.accessToken);
           return firebase.auth().signInAndRetrieveDataWithCredential(facebookCredential)
             .then(suc => {
-            //  alert("Firebase success: " + JSON.stringify(suc));
-
+              //  alert("Firebase success: " + JSON.stringify(suc));
+              observer.next(true);
+              observer.complete();
             }).catch(err => {
               alert("error " + JSON.stringify(err.message));
+              observer.next(false);
+              observer.complete();
             })
         } else {
           observer.next(false);
@@ -46,7 +47,7 @@ export class FacebookServiceProvider {
           observer.next(response);    //We return the Facebook response with the fields name and picture
           observer.complete();
         }, (error) => {
-          alert('x'+error)
+          alert('x' + error)
           console.log(error)
         });
       } else {

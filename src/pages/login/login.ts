@@ -167,7 +167,7 @@ export class LoginPage {
           for (let i = 0; i < this.aux.length; i++) {
             if (this.aux[i].email == a.email) {
               a.name = this.aux[i].name;
-             // a.photoURL = this.aux[i].photoURL;
+              a.photoURL = this.aux[i].photoURL;
             }
           }
 
