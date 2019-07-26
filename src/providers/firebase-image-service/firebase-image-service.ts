@@ -13,11 +13,6 @@ export class FirebaseImageServiceProvider {
     //this.xuser$= this.userService.listUser;
     //this.xuser$.subscribe(data => console.log('z'+data.toString()) );
     console.log("##########  11");
-    this.userService.getUsers().subscribe(res => {
-      let aux = res;
-      this.userService.storeUsers(aux);
-      console.log(JSON.stringify(aux));
-    })
 
   }
 
@@ -91,11 +86,7 @@ export class FirebaseImageServiceProvider {
   }
 
   auxfun() {
-    this.userService.getUsers().subscribe(res => {
-      let aux = res;
-      this.userService.storeUsers(aux);
-      console.log(JSON.stringify(aux));
-    });
+   
   }
 
   encodeImageUri(imageUri, callback) {

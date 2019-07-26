@@ -67,7 +67,22 @@ export class LoginPage {
       this.aux = res;
       this.userService.storeUsers(this.aux);
       console.log(JSON.stringify(this.aux));
-    })
+      let xString = res;
+      console.log(xString);
+      
+      console.log("xString");
+      let x: User[] = xString.sort((n1, n2) => {
+        if (n1.name > n2.name) {
+          return 1;
+        }
+        if (n1.name < n2.name) {
+          return -1;
+        }
+        return 0;
+      });
+
+      this.userService.addUserStore(x);
+    });
   }
 
 

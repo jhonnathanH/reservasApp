@@ -54,8 +54,22 @@ export class ProfilePage {
     this.userService.getUsers().subscribe(res => {
       this.aux = res;
       console.log(JSON.stringify(this.aux));
-    })
+      let xString = res;
+      console.log(xString);
+      
+      console.log("xString");
+      let x: User[] = xString.sort((n1, n2) => {
+        if (n1.name > n2.name) {
+          return 1;
+        }
+        if (n1.name < n2.name) {
+          return -1;
+        }
+        return 0;
+      });
 
+      this.userService.addUserStore(x);
+    });
     this.events.subscribe('menu:userpic', () => {
       this.userService.getStoreUser().then(
         (data) => {

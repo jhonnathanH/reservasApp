@@ -25,6 +25,7 @@ export class UserServiceProvider {
   }
 
   getUsers() {
+    console.log("$$$$$$############333");
     return this.listUser;
   }
 

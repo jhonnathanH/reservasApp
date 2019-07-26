@@ -25,6 +25,7 @@ export class PlayersPage {
     if (this.userService.getStoreUser()) {
       let x = this.userService.getUserStore();
       this.listaUser = x;
+      console.log(this.listaUser);
       for (let i = 0; i < this.players.length; i++) {
 
         console.log(this.players[i].name);
@@ -35,18 +36,10 @@ export class PlayersPage {
       this.toastSuccess('Jugadores Cargados');
     }
     this.userService.getUsers().subscribe(res => {
-      // ordernar sort string
-      // var stringArray: string[] = ['AB', 'Z', 'A', 'AC'];
-      // var sortedArray: string[] = stringArray.sort((n1, n2) => {
-      //   if (n1 > n2) {
-      //     return 1;
-      //   }
-      //   if (n1 < n2) {
-      //     return -1;
-      //   }
-      //   return 0;
-      // });
       let xString = res;
+      console.log(xString);
+      
+      console.log("xString");
       let x: User[] = xString.sort((n1, n2) => {
         if (n1.name > n2.name) {
           return 1;
